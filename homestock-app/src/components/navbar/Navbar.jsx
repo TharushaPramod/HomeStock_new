@@ -27,7 +27,7 @@ const Navbar = () => {
           </ul>
         </div>
         <div>
-          <button className='mr-5 text-[10px] font-Poppins  border-white rounded-[20px] h-7 w-[80px] hover:bg-[#50de82] transition-colors duration-300 border hover:border-[#3df57d] '>
+          <button className='mr-5 text-[10px] font-Poppins  border-white rounded-[50px] h-7 w-[80px] hover:bg-[#ffffff] transition-colors duration-300 border hover:border-[#ffffff] '>
             SIGN IN 
           </button>
         </div>
