@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import React from 'react';
 
 const Navbar = () => {
@@ -8,8 +9,9 @@ const Navbar = () => {
           HOMESTOCK
         </div>
         <div>
-          <ul className='flex items-center space-x-8'>
+          <ul className='flex items-center space-x-6'>
             <li>
+            
               <a href='\' className='text-[12px] font-semibold hover:text-gray-200 font-Poppins hover:underline'>Home</a>
             </li>
             <li>
@@ -30,6 +32,7 @@ const Navbar = () => {
           <button className='mr-5 text-[10px] font-Poppins  border-white rounded-[50px] h-7 w-[80px] hover:bg-[#ffffff] transition-colors duration-300 border hover:border-[#ffffff] '>
             SIGN IN 
           </button>
+          
         </div>
       </nav>
     </header>
