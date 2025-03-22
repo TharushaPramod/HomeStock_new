@@ -9,7 +9,7 @@ const Navbar = () => {
           HOMESTOCK
         </div>
         <div>
-          <ul className='flex items-center space-x-6'>
+          <ul className='flex items-center space-x-7'>
             <li>
             
               <a href='\' className='text-[12px] font-semibold hover:text-gray-200 font-Poppins hover:underline'>Home</a>
