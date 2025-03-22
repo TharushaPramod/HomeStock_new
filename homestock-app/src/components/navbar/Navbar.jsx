@@ -1,7 +1,13 @@
-import { Button } from '@mui/material';
+
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+
+  const navigate = useNavigate();
+
+
+    
   return (
     <header className='mt-3'>
       <nav className='flex items-center justify-between w-[95%] mx-auto h-8 rounded-[20px] bg-transparent'>
@@ -9,13 +15,14 @@ const Navbar = () => {
           HOMESTOCK
         </div>
         <div>
-          <ul className='flex items-center space-x-7'>
+          
+          <ul className='flex items-center space-x-5'>
             <li>
             
-              <a href='\' className='text-[12px] font-semibold hover:text-gray-200 font-Poppins hover:underline'>Home</a>
+              <a  onClick={() => navigate('/')} className='text-[12px] font-semibold hover:text-gray-200 font-Poppins hover:underline'>Home</a>
             </li>
             <li>
-              <a href='\' className='text-[12px] font-semibold hover:text-gray-200 font-Poppins  hover:underline'>Grocery Stock</a>
+              <a  onClick={() => navigate('/groceryinventory')} className='text-[12px] font-semibold hover:text-gray-200 font-Poppins  hover:underline'>Grocery Stock</a>
             </li>
             <li>
               <a href='\' className='text-[12px] font-semibold hover:text-gray-200 font-Poppins  hover:underline'>Reminders</a>
