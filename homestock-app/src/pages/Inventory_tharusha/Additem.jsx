@@ -1,28 +1,89 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Itemform from '../../components/Inventory_com/Itemform'
 import Navbar from '../../components/navbar/navbar'
 import ItemTable from '../../components/Inventory_com/ItemTable';
+import Axios from 'axios';
 
 
-const items = [
-    {
-      id: 1,
-      name: 'Rice',
-      qty: 5,
-      weight: 1,
-      price: 50,
-      expireDate: '2025-12-31', // Date in YYYY-MM-DD format
-    },
-    {
-      id: 2,
-      name: 'Sugar',
-      qty: 10,
-      weight: 2,
-      price: 30,
-      expireDate: '2025-06-15', // Another example date
-    },
-  ];
 export default function Additem() {
+
+    const [items , setItems] = useState([]);
+    const [submitted ,setSubmitted] = useState(false);
+    const [isEdit ,setIsedit] = useState(false);
+    const[selectedItem,setSelectedItem] = useState({});
+
+    useEffect(()=>{
+      getItems();
+    },[]);
+
+    const getItems = ()=>{
+      Axios.get('http://localhost:3001/api/items')
+        .then(response => {
+          setItems(response.data?.response || []);
+        } )
+        .catch(error =>{
+          console.log("Axios Error : ",error);
+        })
+    }
+
+    const addItem = (data)=>{
+      setSubmitted(true);
+      
+      const payload = {
+        id : data.id,
+        name : data.name,
+        qty : data.qty,
+        weight :data.weight,
+        price : data.price,
+        expireDate : data.expireDate 
+      }
+      Axios.post('http://localhost:3001/api/item',payload)
+          .then(() => {
+            getItems();
+            setSubmitted(false);
+            isEdit(false);
+          } )
+          .catch(error =>{
+            console.log("Axios Error : ",error);
+          })
+    }
+
+    const updateItem = (data)=>{
+      setSubmitted(true);
+      
+      const payload = {
+        id : data.id,
+        name : data.name,
+        qty : data.qty,
+        weight :data.weight,
+        price : data.price,
+        expireDate : data.expireDate 
+      }
+      Axios.post('http://localhost:3001/api/updateitem',payload)
+          .then(() => {
+            getItems();
+            setSubmitted(false);
+            isEdit(false);
+          } )
+          .catch(error =>{
+            console.log("Axios Error : ",error);
+          })
+    }
+
+    const deleteItem = (data) =>{
+      Axios.post('http://localhost:3001/api/deleteitem',data)
+          .then(() => {
+            getItems();
+            
+          } )
+          .catch(error =>{
+            console.log("Axios Error : ",error);
+          })
+    }
+
+
+
+  
 
     const [showForm, setShowForm] = useState(false);
 
@@ -45,11 +106,18 @@ export default function Additem() {
       </div>
 
       {/* Conditionally render the form */}
-      {showForm && <Itemform />}
+      {showForm && <Itemform addItem={addItem} submitted={submitted} data={selectedItem} isEdit={isEdit} updateItem={updateItem} /> }
 
       {/* Display the table */}
-      <ItemTable rows={items} />
-    
+      <ItemTable  
+          rows={items} 
+          deleteItem ={data => window.confirm("Are you Sure ?") && deleteItem(data)}
+          selectedItem={data => {
+            setSelectedItem(data);
+            setIsedit(true);
+        
+          }}/>
+        
     
       
     </div>

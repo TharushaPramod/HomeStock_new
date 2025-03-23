@@ -1,7 +1,7 @@
 import { Box, TextField, Typography, Button } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const ItemForm = props => {
+const ItemForm = ({addItem , submitted ,data , isEdit ,updateItem}) => {
 
   const [id, setId] = useState('');
   const [name, setName] = useState('');
@@ -10,7 +10,28 @@ const ItemForm = props => {
   const [price, setPrice] = useState('');
   const [expireDate, setExpireDate] = useState('');
 
+  useEffect(()=>{
+    if(!submitted){
+      setId(0);
+      setName(''),
+      setQty(0);
+      setWeight(0);
+      setPrice(0);
+      setExpireDate('')
+      
+    }
+  },[submitted]);
 
+    useEffect(()=>{
+      if(data?.id  && data.id !==0){
+        setId(data.id);
+        setName(data.name);
+        setQty(data.qty);
+        setWeight(data.weight);
+        setPrice(data.price);
+        setExpireDate(data.expireDate)
+      }
+    },[data])
 
 
 
@@ -144,8 +165,11 @@ const ItemForm = props => {
           type="submit"
           variant="contained"
           className="h-10 px-4 py-2 font-bold text-white bg-green-600 rounded focus:outline-none focus:shadow-outline hover:bg-green-900 " 
+          onClick={()=> isEdit? updateItem({id,name,qty,weight,price,expireDate}) : addItem({id,name,qty,weight,price,expireDate})}
         >
-          Submit
+          {
+            isEdit ? 'Update' : 'Add'
+          }
         </Button>
         
       </Box>
