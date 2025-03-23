@@ -1,4 +1,4 @@
-import Navbar from './components/navbar/navbar'
+import Navbar from './components/navbar/Navbar'
 
 import './App.css'
 import Users from './components/userManagement/User'
