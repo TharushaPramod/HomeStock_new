@@ -12,11 +12,11 @@ const ItemForm = ({addItem , submitted ,data , isEdit ,updateItem}) => {
 
   useEffect(()=>{
     if(!submitted){
-      setId('');
+      setId(0);
       setName(''),
-      setQty('');
-      setWeight('');
-      setPrice('');
+      setQty(0);
+      setWeight(0);
+      setPrice(0);
       setExpireDate('')
       
     }
@@ -40,14 +40,14 @@ const ItemForm = ({addItem , submitted ,data , isEdit ,updateItem}) => {
 
     <div className="flex justify-center">
     
-    <Box className="flex flex-col items-center justify-center w-[90%]  mt-7 ml-2 ">
+    <Box className="flex flex-col items-center justify-center w-[70%]  mt-7 ml-2 ">
       
 
 
 
       <Box
         component="form"
-        className="grid grid-cols-3 gap-3 p-6 bg-white rounded-lg shadow-md sm:grid-cols-9 bg-opacity-30"
+        className="grid grid-cols-3 gap-3 p-6 bg-white rounded-lg shadow-md sm:grid-cols-3 bg-opacity-30"
         
       >
         <Typography  className="mb-2 text-xl font-bold font-Poppins">
@@ -59,7 +59,7 @@ const ItemForm = ({addItem , submitted ,data , isEdit ,updateItem}) => {
           <TextField
             fullWidth
             required
-            id="id"
+            id="avid"
             label="ID"
             variant="outlined"
             size="small"
@@ -76,7 +76,7 @@ const ItemForm = ({addItem , submitted ,data , isEdit ,updateItem}) => {
           <TextField
             fullWidth
             required
-            id="name"
+            id="avname"
             label="Name"
             variant="outlined"
             size="small"
@@ -115,7 +115,7 @@ const ItemForm = ({addItem , submitted ,data , isEdit ,updateItem}) => {
             type="number"
             variant="outlined"
            size="small"
-            className="w-full max-w-[200px]"
+            className="w-full max-w-[100px]"
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
             

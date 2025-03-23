@@ -4,7 +4,7 @@ const ItemTable = ({rows ,selectedItem, deleteItem}) =>{
 
 return(
     <div className="flex justify-center ">
-    <TableContainer component={Paper} className="w-[90%]  bg-white bg-opacity-60">
+    <TableContainer component={Paper} className="w-[90%]  bg-white bg-opacity-60 mt-10">
         <Table>
             <TableHead>
                 <TableRow>
@@ -15,8 +15,8 @@ return(
                     <TableCell>Price</TableCell>
                     <TableCell>Expire Date</TableCell>
                     <TableCell>Actions</TableCell>
-                    <TableCell>Use</TableCell>
-                    <TableCell>Avaialble</TableCell>
+                    {/* <TableCell>Use</TableCell>
+                    <TableCell>Avaialble</TableCell> */}
                 </TableRow>
             </TableHead>
             <TableBody>
@@ -48,7 +48,7 @@ return(
                                     >Delete</Button>
                                 </TableCell>
                                 
-                                <TableCell>
+                                {/* <TableCell>
                                     <TextField
                                     size="small"
                                     className="w-full max-w-[100px]"
@@ -71,6 +71,7 @@ return(
                                     ></TextField>
                                     <Button>Reduce</Button>
                                 </TableCell>
+                                <TableCell component='th'></TableCell> */}
                                 
                                
                             
