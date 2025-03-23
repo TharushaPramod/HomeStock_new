@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import router from './routes/itemrouter.js'; 
+import userRouter from './routes/userroute.js';
 
 
 const app = express();
@@ -30,3 +31,4 @@ const server = app.listen(port, host, () => {
 });
 
 app.use('/api', router);
+app.use('/api', userRouter);

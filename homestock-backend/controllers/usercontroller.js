@@ -1,23 +1,53 @@
-const users = [
-    {
-        id:1,
-        name:'gihan',
-    },
-    {
-        id:2,
-        name:'gihan2',
-    },
-];
+import User from "../models/User";
 
-const getUsers = (cb) => {
-    cb(users);
+export const getUsers = (req, res, next) => {
+    User.find()
+        .then(response => {
+            res.json({ response });
+        })
+        .catch(error => {
+            res.json({ error: error });
+        });
 };
 
-const getUserById = (id, cb) => {
-    const user = users.find(user => user.id == id);
-    cb(user); 
+export const addUser = (req, res, next) => {
+    const user = new User({
+        id: req.body.id,
+        username: req.body.username,
+        email: req.body.email,
+        phone: req.body.phone,
+        password: req.body.password,
+        confirmPassword: req.body.confirmPassword,
+        type:type,
+    });
+    item.save()
+        .then(response => {
+            res.json({ response });
+        })
+        .catch(error => {
+            res.json({ error: error });
+        });
 };
 
-exports.getUsers = getUsers;
+export const updateUser = (req, res, next) => {
+    const { id, username, email, phone, password,type } = req.body;
+    User.updateOne({ id: id },
+      { $set: { username: username, email: email, phone: phone, password: password, type:type } })
+      .then(response => {
+        res.json({ response }); 
+      })
+      .catch(error => {
+        res.json({ error: error });
+      });
+  };
 
-exports.getUserById = getUserById;
+  export const deleteUser = (req, res, next) => {
+    const id = req.body.id;
+    User.deleteOne({ id: id })
+      .then(response => {
+        res.json({ response });
+      })
+      .catch(error => {
+        res.json({ error: error });
+      });
+  };

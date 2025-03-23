@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { TextField, Button, Typography, Container, Paper } from "@mui/material";
 
 const RegisterForm = () => {
     const [formData, setFormData] = useState({
-        id: "",
+        id: 0,
         username: "",
         email: "",
         phone: "",
@@ -19,115 +20,104 @@ const RegisterForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+
         console.log("User Data:", formData);
         alert("Registration Successful!");
     };
 
     return (
-        <div className="max-w-md p-6 mx-auto mt-10 bg-white rounded-lg shadow-md">
-            <h1 className="mb-4 text-2xl font-bold text-center text-gray-800">Register</h1>
+        <Container maxWidth="sm" className="mt-10">
+            <Paper elevation={3} className="p-6 bg-white rounded-lg shadow-lg">
+                <Typography variant="h5" className="mb-4 font-bold text-center text-gray-800">
+                    Register
+                </Typography>
 
-            {/** ID */}
-            <div className="mb-4">
-                <label htmlFor="id" className="block font-medium text-gray-700">
-                    ID
-                </label>
-                <input
-                    type="number"
-                    id="id"
-                    name="id"
-                    className="w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
-                    value={formData.id}
-                    onChange={handleChange}
-                />
-            </div>
+                {error && <Typography className="mb-4 text-sm text-red-500">{error}</Typography>}
 
-            {/** Username */}
-            <div className="mb-4">
-                <label htmlFor="username" className="block font-medium text-gray-700">
-                    Username
-                </label>
-                <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    className="w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
-                    value={formData.username}
-                    onChange={handleChange}
-                />
-            </div>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    {/* ID */}
+                    <TextField
+                        label="ID"
+                        type="number"
+                        name="id"
+                        variant="outlined"
+                        fullWidth
+                        value={formData.id}
+                        onChange={handleChange}
+                        className="bg-white"
+                    />
 
-            {/** Email */}
-            <div className="mb-4">
-                <label htmlFor="email" className="block font-medium text-gray-700">
-                    Email
-                </label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    className="w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
-                    value={formData.email}
-                    onChange={handleChange}
-                />
-            </div>
+                    {/* Username */}
+                    <TextField
+                        label="Username"
+                        name="username"
+                        variant="outlined"
+                        fullWidth
+                        value={formData.username}
+                        onChange={handleChange}
+                        className="bg-white"
+                    />
 
-            {/** Phone */}
-            <div className="mb-4">
-                <label htmlFor="phone" className="block font-medium text-gray-700">
-                    Phone Number
-                </label>
-                <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    className="w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
-                    value={formData.phone}
-                    onChange={handleChange}
-                />
-            </div>
+                    {/* Email */}
+                    <TextField
+                        label="Email"
+                        type="email"
+                        name="email"
+                        variant="outlined"
+                        fullWidth
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="bg-white"
+                    />
 
-            {/** Password */}
-            <div className="mb-4">
-                <label htmlFor="password" className="block font-medium text-gray-700">
-                    Password
-                </label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    className="w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
-                    value={formData.password}
-                    onChange={handleChange}
-                />
-            </div>
+                    {/* Phone */}
+                    <TextField
+                        label="Phone Number"
+                        type="tel"
+                        name="phone"
+                        variant="outlined"
+                        fullWidth
+                        value={formData.phone}
+                        onChange={handleChange}
+                        className="bg-white"
+                    />
 
-            {/** Confirm Password */}
-            <div className="mb-4">
-                <label htmlFor="confirmPassword" className="block font-medium text-gray-700">
-                    Confirm Password
-                </label>
-                <input
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    className="w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                />
-            </div>
+                    {/* Password */}
+                    <TextField
+                        label="Password"
+                        type="password"
+                        name="password"
+                        variant="outlined"
+                        fullWidth
+                        value={formData.password}
+                        onChange={handleChange}
+                        className="bg-white"
+                    />
 
-            {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
+                    {/* Confirm Password */}
+                    <TextField
+                        label="Confirm Password"
+                        type="password"
+                        name="confirmPassword"
+                        variant="outlined"
+                        fullWidth
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        className="bg-white"
+                    />
 
-            {/** Submit Button */}
-            <button
-                onClick={handleSubmit}
-                className="w-full py-2 text-white transition duration-200 rounded-md bg-cyan-400 hover:bg-cyan-500"
-            >
-                Register
-            </button>
-        </div>
+                    {/* Submit Button */}
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        fullWidth
+                        className="py-2 mt-2 text-white transition duration-200 bg-blue-500 rounded-md hover:bg-blue-600"
+                    >
+                        Register
+                    </Button>
+                </form>
+            </Paper>
+        </Container>
     );
 };
 
