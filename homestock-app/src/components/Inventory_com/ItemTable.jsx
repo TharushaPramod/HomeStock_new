@@ -1,10 +1,10 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
 
-const ItemTable = ({rows}) =>{
+const ItemTable = ({rows ,selectedItem, deleteItem}) =>{
 
 return(
-    <div className="flex justify-center">
-    <TableContainer component={Paper} className="w-[90%] ">
+    <div className="flex justify-center ">
+    <TableContainer component={Paper} className="w-[90%]  bg-white bg-opacity-60">
         <Table>
             <TableHead>
                 <TableRow>
@@ -40,8 +40,12 @@ return(
                                 
                                 <TableCell component='th'>{row.expireDate}</TableCell>
                                 <TableCell>
-                                    <Button>Update</Button>
-                                    <Button>Delete</Button>
+                                    <Button
+                                        onClick={()=>selectedItem({id: row.id , name: row.name , qty : row.qty , weight:row.weight,price:row.price,expireDate:row.expireDate})}
+                                     >Update</Button>
+                                    <Button
+                                        onClick={()=>deleteItem({id:row.id})}
+                                    >Delete</Button>
                                 </TableCell>
                                 
                                 <TableCell>
