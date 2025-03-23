@@ -37,7 +37,9 @@ const Navbar = () => {
         </div>
         <div>
           <button className='mr-5 text-[15px] font-Poppins  border-white rounded-[50px] h-7 w-[80px] hover:bg-[#ffffff] transition-colors duration-300 border hover:border-[#ffffff] '>
+          <a  onClick={() => navigate('/register')}>
             SIGN IN 
+            </a>
           </button>
           
         </div>
