@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import Navbar from "../../components/navbar/navbar";
 import UserForm from "../../components/userManagement/UserForm";
-import UsersTable from "../../components/userManagement/Usertable";
+import UsersTable from "../../components/userManagement/UsersTable";
 import { useState } from "react";
 
 const registerUsers =[
@@ -12,7 +12,7 @@ const registerUsers =[
     
     {
         id:2,
-        name:'pamodya',
+        name:'gihan2',
     }
 ];
 
