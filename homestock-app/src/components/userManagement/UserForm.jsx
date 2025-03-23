@@ -1,19 +1,23 @@
 import { Button, Grid2, Input, Typography } from "@mui/material";
+import { useState } from "react";
 
 const UserForm = props => {
+
+    const [id, setId] = useState(0);
+    const [name, setName] = useState('');
+    
     return (
         <Grid2
             container
             spacing={2}
+            className = "m-20 bg-white"
             sx={{
-                backgroundColor: '#ffffff',
-                marginBottom: '30px',
                 display: 'block',
 
             }}
         >
             <Grid2 item xs={12}>
-                <Typography component={'h1'} sx={{ color: '#000000' }}>User Form</Typography>
+                <Typography component={'h1'} className="text-black">User Form</Typography>
             </Grid2>
 
 
@@ -39,8 +43,8 @@ const UserForm = props => {
                     sx={{
                         width: '400px'
                     }}
-                    value={''}
-                    onChange={e => { }}
+                    value={id}
+                    onChange={e => setId(e.target.value)}
                 />
             </Grid2>
 
@@ -68,19 +72,15 @@ const UserForm = props => {
                     sx={{
                         width: '400px'
                     }}
-                    value={''}
-                    onChange={e => { }}
+                    value={name}
+                    onChange={e => setName(e.target.value)}
                 />
             </Grid2>
 
             <Button
+                className="m-auto mt-20 mb-20 ml-16 text-black bg-cyan-400 "
                 sx={{
-                    margin:'auto',  //button center
-                    marginBottom:'20px',
-                    backgroundColor:'#00c6e6',
-                    color:'#000000',
-                    marginLeft:'15px',
-                    marginTop:'20px',
+                    
                     '&:hover':{
                         opacity:'0.7',
                         backgroundColor:'#00c6e6',
