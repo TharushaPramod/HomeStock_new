@@ -3,8 +3,10 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import router from './routes/itemrouter.js'; 
 
+
 const app = express();
 app.use(cors());
+
 app.use(express.json());
 
 const uri = 'mongodb+srv://sliit:sliit@cluster0.hcm3u.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';

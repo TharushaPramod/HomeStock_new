@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react'
 import Itemform from '../../components/Inventory_com/Itemform'
 import Navbar from '../../components/navbar/navbar'
 import ItemTable from '../../components/Inventory_com/ItemTable';
+
 import Axios from 'axios';
+
 
 
 export default function Additem() {
@@ -117,6 +119,9 @@ export default function Additem() {
             setIsedit(true);
         
           }}/>
+          
+        
+       
         
     
       
