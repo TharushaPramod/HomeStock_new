@@ -2,8 +2,8 @@
 import mongoose from 'mongoose';
 const mongoose = require('mongoose');
 
-// Define the User Schema
-const userSchema = new mongoose.Schema(
+// Define the User Schema / introduce what user have properties
+const userSchema = new mongoose.Schema(  
   {
     username: {
       type: String,
@@ -39,5 +39,5 @@ const userSchema = new mongoose.Schema(
 // Create the User Model
 const User = mongoose.model('User', userSchema);
 
-export default User;
+module.exports = User;
 
