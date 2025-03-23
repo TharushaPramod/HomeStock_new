@@ -1,4 +1,5 @@
 import User from "../models/User";
+import User from "../models/User";
 
 export const getUsers = (req, res, next) => {
     User.find()
@@ -18,7 +19,7 @@ export const addUser = (req, res, next) => {
         phone: req.body.phone,
         password: req.body.password,
         confirmPassword: req.body.confirmPassword,
-        type:type,
+        type: type,
     });
     item.save()
         .then(response => {
@@ -30,24 +31,24 @@ export const addUser = (req, res, next) => {
 };
 
 export const updateUser = (req, res, next) => {
-    const { id, username, email, phone, password,type } = req.body;
+    const { id, username, email, phone, password, type } = req.body;
     User.updateOne({ id: id },
-      { $set: { username: username, email: email, phone: phone, password: password, type:type } })
-      .then(response => {
-        res.json({ response }); 
-      })
-      .catch(error => {
-        res.json({ error: error });
-      });
-  };
+        { $set: { username: username, email: email, phone: phone, password: password, type: type } })
+        .then(response => {
+            res.json({ response });
+        })
+        .catch(error => {
+            res.json({ error: error });
+        });
+};
 
-  export const deleteUser = (req, res, next) => {
+export const deleteUser = (req, res, next) => {
     const id = req.body.id;
     User.deleteOne({ id: id })
-      .then(response => {
-        res.json({ response });
-      })
-      .catch(error => {
-        res.json({ error: error });
-      });
-  };
+        .then(response => {
+            res.json({ response });
+        })
+        .catch(error => {
+            res.json({ error: error });
+        });
+};
