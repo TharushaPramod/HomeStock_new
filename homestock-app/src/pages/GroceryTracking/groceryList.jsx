@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from '../../components/navbar/Navbar'; 
 import GroceryTable from '../../components/groceryManagement/GroceryTable';
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add'
 import { useNavigate } from 'react-router-dom';
 
@@ -31,6 +31,7 @@ const initialItems = [
 
 export default function GroceryList(){
   const[items, setItems] = useState(initialItems);
+  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
   const handleDelete = (id) => {
@@ -43,6 +44,10 @@ export default function GroceryList(){
   const handleAddItem = () => {
     navigate('/add-item');
   };
+
+  const filteredItems = items.filter((item) =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return(
     <div>
@@ -60,6 +65,14 @@ export default function GroceryList(){
                 Add Item
             </Button>
           </div>
+          <TextField
+            fullWidth
+            variant='outlined'
+            placeholder='Search items...'
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className='mb-6'
+          />
           <GroceryTable items={items} onDelete={handleDelete} />
         </div>
     </div>
