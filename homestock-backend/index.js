@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import router from './routes/itemrouter.js'; 
 
 
+import userRouter from './routes/userrouter.js'
 
 const app = express();
 app.use(cors());
@@ -30,5 +31,8 @@ const server = app.listen(port, host, () => {
   console.log(`Node server is listening to ${server.address().port}`);
 });
 
-app.use('/api', router);
+app.use('/api', router );
+app.use('/api', userRouter);
+
+
 
