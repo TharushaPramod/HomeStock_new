@@ -1,5 +1,5 @@
-import User from "../models/User";
-import User from "../models/User";
+import User from "../models/user_model.js";
+
 
 export const getUsers = (req, res, next) => {
     User.find()
@@ -21,7 +21,7 @@ export const addUser = (req, res, next) => {
         confirmPassword: req.body.confirmPassword,
         type: type,
     });
-    item.save()
+    user.save()
         .then(response => {
             res.json({ response });
         })
