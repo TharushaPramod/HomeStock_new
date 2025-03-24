@@ -7,7 +7,7 @@ import { addUser, deleteUser, getUsers, updateUser } from '../controllers/userco
 const userRouter = express.Router();
 
 userRouter.get('/users', getUsers);
-userRouter.post('/user', addUser);
+userRouter.post('/createUser', addUser);
 userRouter.post('/updateUser', updateUser);
 userRouter.post('/deleteUser', deleteUser);
 

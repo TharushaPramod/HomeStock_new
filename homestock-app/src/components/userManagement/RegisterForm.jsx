@@ -1,22 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TextField, Button, Typography, Container, Paper } from "@mui/material";
 
-const RegisterForm = () => {
-    const [formData, setFormData] = useState({
-        id: 0,
-        username: "",
-        email: "",
-        phone: "",
-        password: "",
-        confirmPassword: "",
-    });
+const RegisterForm = ({ addUser, updateUser, submitted, data, isEdit }) => {
+
+    const [id, setId] = useState(0);
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [type, setType] = useState('User');
 
     const [error, setError] = useState("");
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-        setError(""); // Clear error when user types
-    };
+    useEffect(() => {
+        if (!submitted) {
+            setId(0);
+            setUsername('');
+            setEmail('');
+            setPhone('');
+            setPassword('');
+            setConfirmPassword('');
+            setType('User');
+        }
+    }, [submitted]);
+
+    useEffect(() => {
+        if (data && data.id && data.id !== 0) {
+            setId(data.id);
+            setUsername(data.username);
+            setEmail(data.email);
+            setPhone(data.phone);
+            setPassword(data.password);
+            setConfirmPassword(data.confirmPassword);
+        }
+    }, [data]);
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -42,8 +61,8 @@ const RegisterForm = () => {
                         name="id"
                         variant="outlined"
                         fullWidth
-                        value={formData.id}
-                        onChange={handleChange}
+                        value={id}
+                        onChange={(e) => setId(e.target.value)}
                         className="bg-white"
                     />
 
@@ -53,8 +72,8 @@ const RegisterForm = () => {
                         name="username"
                         variant="outlined"
                         fullWidth
-                        value={formData.username}
-                        onChange={handleChange}
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                         className="bg-white"
                     />
 
@@ -65,8 +84,8 @@ const RegisterForm = () => {
                         name="email"
                         variant="outlined"
                         fullWidth
-                        value={formData.email}
-                        onChange={handleChange}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         className="bg-white"
                     />
 
@@ -77,8 +96,8 @@ const RegisterForm = () => {
                         name="phone"
                         variant="outlined"
                         fullWidth
-                        value={formData.phone}
-                        onChange={handleChange}
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
                         className="bg-white"
                     />
 
@@ -89,8 +108,8 @@ const RegisterForm = () => {
                         name="password"
                         variant="outlined"
                         fullWidth
-                        value={formData.password}
-                        onChange={handleChange}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         className="bg-white"
                     />
 
@@ -101,9 +120,22 @@ const RegisterForm = () => {
                         name="confirmPassword"
                         variant="outlined"
                         fullWidth
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                         className="bg-white"
+                    />
+
+                    {/* Confirm Password */}
+                    <TextField
+                        label="User type"
+                        type="text"
+                        name="userType"
+                        variant="outlined"
+                        fullWidth
+                        value={type}
+                        onChange={(e) => setType(e.target.value)}
+                        className="bg-white"
+
                     />
 
                     {/* Submit Button */}
@@ -112,8 +144,12 @@ const RegisterForm = () => {
                         variant="contained"
                         fullWidth
                         className="py-2 mt-2 text-white transition duration-200 bg-blue-500 rounded-md hover:bg-blue-600"
+                        onClick={() => isEdit ? updateUser({ id, username, email, phone, password, confirmPassword, type }) :
+                            addUser({ id, username, email, phone, password, confirmPassword, type })}
                     >
-                        Register
+                        {
+                            isEdit ? 'update' : 'Register'
+                        }
                     </Button>
                 </form>
             </Paper>

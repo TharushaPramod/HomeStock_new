@@ -19,7 +19,7 @@ export const addUser = (req, res, next) => {
         phone: req.body.phone,
         password: req.body.password,
         confirmPassword: req.body.confirmPassword,
-        type: type,
+        type: req.body.type,
     });
     user.save()
         .then(response => {
@@ -31,9 +31,9 @@ export const addUser = (req, res, next) => {
 };
 
 export const updateUser = (req, res, next) => {
-    const { id, username, email, phone, password, type } = req.body;
+    const { id, username, phone, password } = req.body;
     User.updateOne({ id: id },
-        { $set: { username: username, email: email, phone: phone, password: password, type: type } })
+        { $set: { username: username, phone: phone, password: password } })
         .then(response => {
             res.json({ response });
         })
