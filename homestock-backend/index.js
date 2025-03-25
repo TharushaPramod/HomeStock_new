@@ -1,36 +1,35 @@
-import express from 'express'
-import cors from 'cors'
-//import mongoose from 'mongoose'
+import express from 'express';
+import cors from 'cors';
+import mongoose from 'mongoose';
+//import router from './routes/itemrouter.js';
+import GLrouter from './routes/grocerylistRoute.js';
+//import userRouter from './routes/userrouter.js'
 
+const app = express();
+app.use(cors());
 
+app.use(express.json());
 
-//const express = require('express')
+const uri = 'mongodb+srv://sliit:sliit@cluster0.hcm3u.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
-//const mongoose = require('mongoose')
+const connect = async () => {
+  try {
+    await mongoose.connect(uri);
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.log('MongoDB Error:', error);
+  }
+};
 
-const app =  express()
-app.use(cors())
-app.use(express.json())
+connect();
 
-//mongo db
-// const uri ='mongodb+srv://homestock:@HomeStock123@cluster0.x0qvw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+const port = 3001;
+const host = 'localhost';
 
+const server = app.listen(port, host, () => {
+  console.log(`Node server is listening to ${server.address().port}`);
+});
 
-// const connect =  async () => {
-//     try{
-//         await mongoose.connect(uri)
-//         console.log('Connected to MongoDB')
-//     }catch(error){
-//         console.log('MongoDB Error: ',error)
-//     }
-// }
-  
-// connect();
-
-// 
-
-app.listen(process.env.PORT, ()=>{
-    console.log(`Server is running on port ${process.env.PORT} `)
-})
-
-
+//app.use('/api', router );
+//app.use('/api', userRouter);
+app.use('/api', GLrouter);
