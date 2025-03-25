@@ -21,7 +21,7 @@ return(
             </TableHead>
             <TableBody>
                 {
-                    rows.length > 0 ? rows.map(row =>(
+                    rows.length > 0 ? rows.map(row =>(   // rows map for row
                         <TableRow key={row.id}>
 
                                 <TableCell component='th'>{row.id}</TableCell>
@@ -38,40 +38,23 @@ return(
                                 <TableCell component='th'>{row.price}</TableCell>
 
                                 
-                                <TableCell component='th'>{row.expireDate}</TableCell>
+                                <TableCell component='th'>{new Date(row.expireDate).toLocaleDateString()}</TableCell>
+                              
                                 <TableCell>
+                                    
                                     <Button
                                         onClick={()=>selectedItem({id: row.id , name: row.name , qty : row.qty , weight:row.weight,price:row.price,expireDate:row.expireDate})}
-                                     >Update</Button>
+                                     >Update
+                                    </Button>
+                                     
                                     <Button
                                         onClick={()=>deleteItem({id:row.id})}
-                                    >Delete</Button>
+                                    >Delete
+                                    </Button>
+                                    
                                 </TableCell>
                                 
-                                {/* <TableCell>
-                                    <TextField
-                                    size="small"
-                                    className="w-full max-w-[100px]"
-                                    sx={{
-                                                    '& .MuiInputBase-root': {
-                                                      height: '30px', // Reduce height
-                                                      fontSize: '12px', // Reduce font size
-                                                      padding: '4px 8px', // Reduce padding
-                                                    },
-                                                    '& .MuiInputLabel-root': {
-                                                      fontSize: '12px', // Reduce label font size
-                                                      transform: 'translate(14px, 8px) scale(1)', // Adjust label position
-                                                    },
-                                                    '& .MuiInputLabel-shrink': {
-                                                      transform: 'translate(14px, -6px) scale(0.75)', // Adjust label position when shrunk
-                                                    },
-                                                  }}
-                                    
-                                    
-                                    ></TextField>
-                                    <Button>Reduce</Button>
-                                </TableCell>
-                                <TableCell component='th'></TableCell> */}
+                              
                                 
                                
                             
