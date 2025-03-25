@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
-import { TextField, Button, Card, CardContent, Typography, IconButton, Box, Paper } from "@mui/material";
+import { TextField, Button, Card, CardContent, Typography, IconButton, Box, Paper, Autocomplete } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 
-const ReminderForm = ({ addReminder, updateReminder, submitted, data, isEdit }) => {
+const ReminderForm = ({ addReminder, updateReminder, submitted, data, isEdit, items }) => {
 
   const [id, setId] = useState(0);
   const [itemName, setItemName] = useState('');
   const [currentWeight, setCurrentWeight] = useState('');
   const [thresholdWeight, setThresholdWeight] = useState('');
   const [reminderDate, setReminderDate] = useState('');
+
+
+  const [itemNames, setItemNames] = useState([]);
 
   useEffect(() => {
     if (!submitted) {
@@ -30,6 +33,19 @@ const ReminderForm = ({ addReminder, updateReminder, submitted, data, isEdit }) 
       setReminderDate(data.reminderDate);
     }
   }, [data]);
+
+  useEffect(() => {
+    const names = items.map(item => item.name);
+    setItemNames(names);
+  }, [items]);
+
+  const handleNameChange = (event, newValue) => {
+    setItemName(newValue);
+  };
+
+
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -56,14 +72,40 @@ const ReminderForm = ({ addReminder, updateReminder, submitted, data, isEdit }) 
             value={id}
             onChange={(e) => setId(e.target.value)}
           />
-          <TextField
+          {/* <TextField
             label="Item Name"
             variant="outlined"
             fullWidth
             name="itemName"
             value={itemName}
             onChange={(e) => setItemName(e.target.value)}
+          /> */}
+
+          <Autocomplete
+            options={itemNames}
+            value={itemName}
+            onChange={handleNameChange}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Select Item"
+                variant="outlined"
+                size="small"
+                required
+              />
+            )}
           />
+
+
+
+
+
+
+
+
+
+
+
           <TextField
             label="Current Weight (kg)"
             type="number"
