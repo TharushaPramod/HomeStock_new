@@ -1,12 +1,16 @@
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import router from './routes/itemrouter.js';
+
 import router from './routes/itemrouter.js'; 
 import "./geminiService.js";
 
 
 
 import userRouter from './routes/userrouter.js'
+import reminderRouters from './routes/reminderrouter.js';
+
 
 const app = express();
 app.use(cors());
@@ -33,8 +37,8 @@ const server = app.listen(port, host, () => {
   console.log(`Node server is listening to ${server.address().port}`);
 });
 
-app.use('/api', router );
+app.use('/api', router);
 app.use('/api', userRouter);
-
+app.use('/api', reminderRouters);
 
 
