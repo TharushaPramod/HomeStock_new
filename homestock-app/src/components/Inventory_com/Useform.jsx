@@ -1,181 +1,108 @@
-import { Box, TextField, Typography, Button } from '@mui/material';
+import { Box, TextField, Typography, Button, Autocomplete } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
-const ItemForm = ({addItem , submitted ,data , isEdit ,updateItem}) => {
+const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) => {
+    const [useId, setUseId] = useState('');
+    const [useName, setUseName] = useState('');
+    const [useWeight, setUseWeight] = useState('');
+    const [itemNames, setItemNames] = useState([]);
 
-  const [id, setId] = useState('');
-  const [name, setName] = useState('');
-  const [qty, setQty] = useState('');
-  const [weight, setWeight] = useState('');
-  const [price, setPrice] = useState('');
-  const [expireDate, setExpireDate] = useState('');
+    useEffect(() => {
+        if (data?.useId && data.useId !== 0) {
+            setUseId(data.useId);
+            setUseName(data.useName);
+            setUseWeight(data.useWeight);
+        }
+    }, [data]);
 
-  useEffect(()=>{
-    if(!submitted){
-      setId(0);
-      setName(''),
-      setQty(0);
-      setWeight(0);
-      setPrice(0);
-      setExpireDate('')
-      
-    }
-  },[submitted]);
+    useEffect(() => {
+        if (!submitted) {
+            setUseId('');
+            setUseName('');
+            setUseWeight('');
+        }
+    }, [submitted]);
 
-    useEffect(()=>{
-      if(data?.id  && data.id !==0){
-        setId(data.id);
-        setName(data.name);
-        setQty(data.qty);
-        setWeight(data.weight);
-        setPrice(data.price);
-        setExpireDate(data.expireDate)
-      }
-    },[data])
+    useEffect(() => {
+        const names = items.map(item => item.name);
+        setItemNames(names);
+    }, [items]);
 
+    const handleNameChange = (event, newValue) => {
+        setUseName(newValue);
+    };
 
+    return (
+        <div className='flex justify-center'>
+            <Box className="flex flex-col items-center p-4 bg-white bg-opacity-50 w-[90%] rounded-lg justify-center">
+                <Typography variant="h5" className="mb-6 font-bold">
+                    Use Grocery Item
+                </Typography>
+                
+                <Box
+                    component="form"
+                    className="grid grid-cols-1 gap-4 p-4 bg-white rounded-lg shadow-md sm:grid-cols-2 md:grid-cols-3 w-[90%]"
+                >
+                    {/* ID Field */}
+                    <TextField
+                        fullWidth
+                        required
+                        id="use-id"
+                        label="ID"
+                        variant="outlined"
+                        size="small"
+                        value={useId}
+                        onChange={(e) => setUseId(e.target.value)}
+                        type="number"
+                    />
 
-    
-  return (
+                    {/* Name Field - Autocomplete */}
+                    <Autocomplete
+                        options={itemNames}
+                        value={useName}
+                        onChange={handleNameChange}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label="Select Item"
+                                variant="outlined"
+                                size="small"
+                                required
+                            />
+                        )}
+                    />
 
-    <div className="flex justify-center">
-    
-    <Box className="flex flex-col items-center justify-center w-[70%]  mt-7 ml-2 ">
-      
+                    {/* Weight Field */}
+                    <TextField
+                        fullWidth
+                        required
+                        id="use-weight"
+                        label="Weight (kg)"
+                        type="number"
+                        variant="outlined"
+                        size="small"
+                        value={useWeight}
+                        onChange={(e) => setUseWeight(e.target.value)}
+                        inputProps={{ min: 0.1, step: 0.1 }}
+                    />
+                </Box>
 
-
-
-      <Box
-        component="form"
-        className="grid grid-cols-3 gap-3 p-6 bg-white rounded-lg shadow-md sm:grid-cols-3 bg-opacity-30"
-        
-      >
-        <Typography  className="mb-2 text-xl font-bold font-Poppins">
-        Add Grocery Item
-      </Typography>
-      
-        {/* ID Field */}
-        <div className="mb-4 ">
-          <TextField
-            fullWidth
-            required
-            id="avid"
-            label="ID"
-            variant="outlined"
-            size="small"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
-            
-            
-            className="w-full max-w-[200px]"
-          />
+                {/* Submit Button */}
+                <Box className="flex justify-center w-full mt-6">
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        className="h-10 col-span-3 px-4 py-2 font-bold text-white bg-green-600 rounded w-[25%] focus:outline-none focus:shadow-outline hover:bg-green-900"
+                        onClick={() => isEdit ? 
+                            updateUseItem({ useId, useName, useWeight }) : 
+                            addUseItem({ useId, useName, useWeight })}
+                    >
+                        {isEdit ? 'Update' : 'Add'}
+                    </Button>
+                </Box>
+            </Box>
         </div>
+    );
+};
 
-        {/* Name Field */}
-        <div className="mb-4">
-          <TextField
-            fullWidth
-            required
-            id="avname"
-            label="Name"
-            variant="outlined"
-            size="small"
-            className="w-full max-w-[200px]"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-
-            
-          />
-        </div>
-
-        {/* Quantity Field */}
-        <div className="mb-4">
-          <TextField
-            fullWidth
-            required
-            id="qty"
-            label="Quantity"
-            type="number"
-            variant="outlined"
-           size="small"
-            className="w-full max-w-[200px]"
-            value={qty}
-            onChange={(e) => setQty(e.target.value)}
-            
-          />
-        </div>
-
-        {/* Weight Field */}
-        <div className="mb-4">
-          <TextField
-            fullWidth
-            required
-            id="weight"
-            label="Weight"
-            type="number"
-            variant="outlined"
-           size="small"
-            className="w-full max-w-[100px]"
-            value={weight}
-            onChange={(e) => setWeight(e.target.value)}
-            
-            
-          />
-        </div>
-
-        {/* Price Field */}
-        <div className="mb-4">
-          <TextField
-            fullWidth
-            required
-            id="price"
-            label="Price"
-            type="number"
-            variant="outlined"
-           size="small"
-            className="w-full max-w-[200px]"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-           
-          />
-        </div>
-
-        {/* Expire Date Field */}
-        <div className="mb-6">
-          <TextField
-            fullWidth
-            required
-            id="expireDate"
-            label="Expire Date"
-            type="date"
-            variant="outlined"
-            size="small"
-            className="w-full max-w-[200px]"
-            InputLabelProps={{
-              shrink: true, // Ensures the label doesn't overlap the date input
-            }}
-            value={expireDate}
-            onChange={(e) => setExpireDate(e.target.value)}
-          />
-        </div>
-
-        {/* Submit Button */}
-        <div className="flex justify-center"></div>
-        <Button
-          type="submit"
-          variant="contained"
-          className="h-10 px-4 py-2 font-bold text-white bg-green-600 rounded focus:outline-none focus:shadow-outline hover:bg-green-900 " 
-          onClick={()=> isEdit? updateItem({id,name,qty,weight,price,expireDate}) : addItem({id,name,qty,weight,price,expireDate})}
-        >
-          {
-            isEdit ? 'Update' : 'Add'
-          }
-        </Button>
-        
-      </Box>
-    </Box>
-    </div>
-  );
-}
-
-export default ItemForm;
+export default Useform;
