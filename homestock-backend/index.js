@@ -3,7 +3,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import router from './routes/itemrouter.js';
 
-import router from './routes/itemrouter.js'; 
+
 import "./geminiService.js";
 
 
