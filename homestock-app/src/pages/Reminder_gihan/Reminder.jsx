@@ -6,11 +6,14 @@ import ReminderForm from "../../components/reminderManagement/ReminderForm";
 
 import { data } from "react-router-dom";
 import ReminderTable from "../../components/reminderManagement/ReminderTable";
+import InventorySummary from "../../components/Inventory_com/InventorySummary";
 
 
 
 
 const Reminder = () => {
+
+    const [items, setItems] = useState([]);
 
     const [reminders, setReminders] = useState([]);
     const [submitted, setSubmitted] = useState(false);
@@ -19,7 +22,18 @@ const Reminder = () => {
 
     useEffect(() => {
         fetchReminders();
+        getItems();
     }, []);
+
+    const getItems = () => {
+        Axios.get('http://localhost:3001/api/items')
+            .then(response => {
+                setItems(response.data?.response || []);
+            })
+            .catch(error => {
+                console.log("Axios Error: ", error);
+            })
+    }
 
     const fetchReminders = () => {
         Axios.get('http://localhost:3001/api/getReminders')
@@ -95,6 +109,7 @@ const Reminder = () => {
     return (
         <Box>
             <Navbar />
+            <InventorySummary/>
             <Box>
                 <ReminderForm
                     addReminder={addReminder}
@@ -102,6 +117,7 @@ const Reminder = () => {
                     submitted={submitted}
                     data={selectedReminder}
                     isEdit={isEdit}
+                    items ={items}
                 />
                 <ReminderTable
                     rows={reminders}
