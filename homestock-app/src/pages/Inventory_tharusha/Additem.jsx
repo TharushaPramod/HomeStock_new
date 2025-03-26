@@ -7,6 +7,7 @@ import Useform from '../../components/Inventory_com/Useform'
 import Usetable from '../../components/Inventory_com/Usetable';
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import InventorySummary from '../../components/Inventory_com/InventorySummary';
+import Image01 from '../../images/home-image.png';
 
 export default function Additem() {
     const [items, setItems] = useState([]);
@@ -70,6 +71,7 @@ export default function Additem() {
         const payload = {
             useId: data.useId,
             useName: data.useName,
+            useType:data.useType,
             useWeight: data.useWeight,
         }
         Axios.post('http://localhost:3001/api/addUseItem', payload)
@@ -111,6 +113,7 @@ export default function Additem() {
         const payload = {
             useId: data.useId,
             useName: data.useName,
+            useType:data.useType,
             useWeight: data.useWeight,
         };
         Axios.post('http://localhost:3001/api/updateUseItem', payload)
@@ -188,37 +191,47 @@ export default function Additem() {
         <div>
             <Navbar />
             
-          
-            <div className='flex items-center justify-center '>
-  <div className="table-wrapper w-[50%] mt-[50px] max-h-[300px] overflow-y-auto rounded-xl shadow-md ">
-    <table className="w-full">
-      <thead className="sticky top-0 z-10 text-center bg-green-600 bg-opacity-75">
-        <tr className='text-center'>
-          <th className='text-center font-Poppins text-[18px] font-semibold text-white py-2'>
-            Item Name
-          </th>
-          <th className='text-center font-Poppins text-[18px] font-semibold text-white py-2'>
-            Remaining (kg)
-          </th>
-        </tr>
-      </thead>
-      <tbody className='bg-green-50'>
-        {getInventorySummary().map((item, index) => (
-          <tr 
-            key={index} 
-            className={item.remaining < 0 ? 'negative' : ''}
-          >
-            <td className='text-center font-Poppins text-[15px] font-medium py-2'>
-              {item.name}
-            </td>
-            <td className='text-center font-Poppins text-[15px] font-medium py-2'>
-              {item.remaining.toFixed(2)}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
+         
+            <div className='flex items-center justify-center mt-10 '>
+             <div className='w-[40%]'> 
+             <img
+                      src={Image01}
+                      alt="Home Stock Illustration"
+                      className="max-w-md mt-8 transition-transform duration-300 animate-fade-in hover:scale-105"
+                    />
+                    </div>   
+            
+                
+                
+                                    <div className="table-wrapper w-[50%] mt-[50px] max-h-[300px] overflow-y-auto rounded-xl shadow-md ">
+                                        <table className="w-full">
+                                        <thead className="sticky top-0 z-10 text-center bg-green-600 bg-opacity-75">
+                                            <tr className='text-center'>
+                                            <th className='text-center font-Poppins text-[18px] font-semibold text-white py-2'>
+                                                Item Name
+                                            </th>
+                                            <th className='text-center font-Poppins text-[18px] font-semibold text-white py-2'>
+                                                Remaining 
+                                            </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className='bg-white bg-opacity-25 '>
+                                            {getInventorySummary().map((item, index) => (
+                                            <tr 
+                                                key={index} 
+                                                className={item.remaining < 0 ? 'negative' : '' }
+                                            >
+                                                <td className='text-center font-Poppins text-[16px] font-medium py-2 '>
+                                                {item.name}
+                                                </td>
+                                                <td className='text-center font-Poppins text-[16px] font-medium py-2'>
+                                                {item.remaining.toFixed(2)}
+                                                </td>
+                                            </tr>
+                                            ))}
+                                        </tbody>
+                                        </table>
+                                    </div>
 </div>
            
 
@@ -229,9 +242,10 @@ export default function Additem() {
                   
                     <Button
                     variant={activeTab === 'add' ? 'contained' : 'text'}
-                    className={`px-6 py-2 rounded-md font-medium transition-all duration-200 font-Poppins ${
+                    className={`px-6 py-2 rounded-md font-medium transition-all duration-200 font-Poppins
+                         ${
                         activeTab === 'add' 
-                        ? 'bg-blue-600 text-white shadow-md hover:bg-blue-700' 
+                        ? 'bg-green-600 text-white shadow-md hover:bg-green-700' 
                         : 'text-gray-600 hover:bg-gray-200 hover:text-gray-800'
                     }`}
                              onClick={() => setActiveTab('add')}
@@ -243,7 +257,7 @@ export default function Additem() {
                     variant={activeTab === 'use' ? 'contained' : 'text'}
                     className={`px-6 py-2 rounded-md font-medium transition-all duration-200 ${
                         activeTab === 'use' 
-                        ? 'bg-blue-600 text-white shadow-md hover:bg-blue-700' 
+                        ? 'bg-green-600 text-white shadow-md hover:bg-green-700' 
                         : 'text-gray-600 hover:bg-gray-200 hover:text-gray-800'
                     }`}
                     onClick={() => setActiveTab('use')}

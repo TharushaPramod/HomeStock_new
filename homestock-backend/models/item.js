@@ -13,7 +13,7 @@ const itemSchema = new Schema({
    
   },
   qty: {
-    type: Number,
+    type: String,
     required: true,
     min: 0
   },

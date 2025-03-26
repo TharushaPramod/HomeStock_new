@@ -1,17 +1,17 @@
-import { Box, TextField, Typography, Button } from '@mui/material';
+import { Box, TextField, Typography, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
 const ItemForm = ({ addItem, submitted, data, isEdit, updateItem }) => {
   const [id, setId] = useState('');
   const [name, setName] = useState('');
-  const [qty, setQty] = useState('');
+  const [qty, setQty] = useState(''); // Changed from qty to qtyType
   const [weight, setWeight] = useState('');
   const [price, setPrice] = useState('');
   const [expireDate, setExpireDate] = useState('');
   const [errors, setErrors] = useState({
     id: '',
     name: '',
-    qty: '',
+    qty: '', // Changed from qty to qtyType
     weight: '',
     price: '',
     expireDate: ''
@@ -29,7 +29,7 @@ const ItemForm = ({ addItem, submitted, data, isEdit, updateItem }) => {
     if (isEdit && data?.id) {
       setId(data.id);
       setName(data.name);
-      setQty(data.qty);
+      setQty(data.qty || ''); // Changed from qty to qtyType
       setWeight(data.weight);
       setPrice(data.price);
       setExpireDate(data.expireDate);
@@ -42,14 +42,14 @@ const ItemForm = ({ addItem, submitted, data, isEdit, updateItem }) => {
     if (!submitted) {
       setId(getNextId());
       setName('');
-      setQty('');
+      setQty(''); // Changed from qty to qtyType
       setWeight('');
       setPrice('');
       setExpireDate('');
       setErrors({
         id: '',
         name: '',
-        qty: '',
+        qty: '', // Changed from qty to qtyType
         weight: '',
         price: '',
         expireDate: ''
@@ -61,7 +61,7 @@ const ItemForm = ({ addItem, submitted, data, isEdit, updateItem }) => {
     const newErrors = {
       id: '',
       name: '',
-      qty: '',
+      qty: '', // Changed from qty to qtyType
       weight: '',
       price: '',
       expireDate: ''
@@ -71,9 +71,8 @@ const ItemForm = ({ addItem, submitted, data, isEdit, updateItem }) => {
     if (!name) newErrors.name = 'Name is required';
     else if (name.trim().length === 0) newErrors.name = 'Name cannot be just whitespace';
 
-    // Quantity validation
-    if (!qty) newErrors.qty = 'Quantity is required';
-    else if (isNaN(qty) || Number(qty) < 0) newErrors.qty = 'Quantity must be a non-negative number';
+    // Quantity Type validation
+    if (!qty) newErrors.qty = 'Quantity type is required';
 
     // Weight validation
     if (!weight) newErrors.weight = 'Weight is required';
@@ -110,7 +109,7 @@ const ItemForm = ({ addItem, submitted, data, isEdit, updateItem }) => {
       const itemData = {
         id: Number(id),
         name: name.trim(),
-        qty: Number(qty),
+        qty, // Changed from qty to qtyType, no need to convert to Number
         weight: Number(weight),
         price: Number(price),
         expireDate
@@ -131,7 +130,7 @@ const ItemForm = ({ addItem, submitted, data, isEdit, updateItem }) => {
       <Box className="flex flex-col items-center justify-center rounded-lg w-[90%]">
         <Box
           component="form"
-          className="grid grid-cols-1 gap-4 p-4 rounded-lg shadow-md bg-green-50 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-[100%]"
+          className="grid grid-cols-1 gap-4 p-4 rounded-lg shadow-md  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-[100%] bg-white bg-opacity-80"
         >
           <Typography variant="h5" className="mb-6 font-semibold font-Poppins">
             Add Grocery
@@ -145,7 +144,7 @@ const ItemForm = ({ addItem, submitted, data, isEdit, updateItem }) => {
             variant="outlined"
             size="small"
             value={id}
-            disabled // Make ID field read-only
+            disabled
             error={!!errors.id}
             helperText={errors.id}
             type="number"
@@ -164,26 +163,34 @@ const ItemForm = ({ addItem, submitted, data, isEdit, updateItem }) => {
             helperText={errors.name}
           />
 
-          <TextField
-            fullWidth
-            required
-            id="qty"
-            label="Quantity"
-            type="number"
-            variant="outlined"
-            size="small"
-            value={qty}
-            onChange={(e) => setQty(e.target.value)}
-            error={!!errors.qty}
-            helperText={errors.qty}
-            inputProps={{ min: 0 }}
-          />
+          <FormControl fullWidth required error={!!errors.qty}>
+            <InputLabel id="qty-type-label" size="small">Quantity Type</InputLabel>
+            <Select
+              labelId="qty-type-label"
+              id="qty"
+              value={qty}
+              label="Quantity Type"
+              onChange={(e) => setQty(e.target.value)}
+              variant="outlined"
+              size="small"
+            >
+              <MenuItem value="Kg">Kg</MenuItem>
+              <MenuItem value="gram">gram</MenuItem>
+              <MenuItem value="Liter">Liter</MenuItem>
+              <MenuItem value="Quantity">Quantity</MenuItem>
+              <MenuItem value="Packet">Packet</MenuItem>
+              
+            </Select>
+            {errors.qty && (
+              <Typography color="error" variant="caption">{errors.qty}</Typography>
+            )}
+          </FormControl>
 
           <TextField
             fullWidth
             required
             id="weight"
-            label="Weight"
+            label="Quantity"
             type="number"
             variant="outlined"
             size="small"

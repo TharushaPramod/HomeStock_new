@@ -25,14 +25,14 @@ const ItemTable = ({ rows, selectedItem, deleteItem }) => {
                         />
                     </div>
 
-                    <TableContainer component={Paper} className="w-full bg-white rounded-xl">
+                    <TableContainer component={Paper} className="w-full bg-white bg-opacity-50 rounded-xl">
                         <Table className="items-center justify-around flex-auto">
                             <TableHead className="bg-green-600 bg-opacity-75">
                                 <TableRow className="text-center">
                                     <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">ID</TableCell>
                                     <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">Name</TableCell>
+                                    <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">Qty Type</TableCell>
                                     <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">Quantity</TableCell>
-                                    <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">Weight</TableCell>
                                     <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">Price</TableCell>
                                     <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">Expire Date</TableCell>
                                     <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">Actions</TableCell>
@@ -41,7 +41,7 @@ const ItemTable = ({ rows, selectedItem, deleteItem }) => {
                             <TableBody>
                                 {filteredRows.length > 0 ? (
                                     filteredRows.map(row => (
-                                        <TableRow key={row.id} className="bg-green-50">
+                                        <TableRow key={row.id} className="bg-white bg-opacity-25">
                                             <TableCell component='th' className="text-[15px] font-Poppins text-center font-medium">
                                                 {row.id}
                                             </TableCell>
@@ -64,7 +64,8 @@ const ItemTable = ({ rows, selectedItem, deleteItem }) => {
                                                 <div className="flex justify-center space-x-1">
                                                     <Button
                                                         variant="contained"
-                                                         className="text-xl text-white bg-blue-500 shadow-md hover:bg-blue-700 font-Poppins text-[14px]"
+                                                         className="text-xl text-white bg-blue-500 shadow-md hover:bg-blue-700 font-Poppins text-[14px]
+                                                                    animate-fade-in hover:scale-105 transition-transform duration-300"
                                                         onClick={() => selectedItem({
                                                             id: row.id,
                                                             name: row.name,
@@ -79,7 +80,8 @@ const ItemTable = ({ rows, selectedItem, deleteItem }) => {
                                                     </Button>
                                                     <Button
                                                         variant="contained"
-                                                        className="text-xl text-white bg-red-500 shadow-md hover:bg-red-700 font-Poppins text-[14px]"
+                                                        className="text-xl text-white bg-red-500 shadow-md hover:bg-red-700 font-Poppins text-[14px]
+                                                                    animate-fade-in hover:scale-105 transition-transform duration-300"
                                                         onClick={() => deleteItem({ id: row.id })}
                                                         size="small"
                                                     >

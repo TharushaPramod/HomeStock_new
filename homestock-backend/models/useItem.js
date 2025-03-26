@@ -11,6 +11,10 @@ const useItemSchema = new Schema({
     type: String,
     required: true
   },
+  useType: {
+    type: String,
+    required: true
+  },
   useWeight: {
     type: Number,
     required: true

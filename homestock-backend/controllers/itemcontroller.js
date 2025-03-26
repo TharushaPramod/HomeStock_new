@@ -44,6 +44,7 @@ export const addUseItem = (req, res, next) => {
   const useitem = new useItem({
     useId: req.body.useId,
     useName: req.body.useName,
+    useType: req.body.useType,
     useWeight: req.body.useWeight,
    
   });
@@ -74,9 +75,9 @@ export const updateItem = (req, res, next) => {
 
 
 export const updateUseItem = (req, res, next) => {
-  const { useId, useName,  useWeight  } = req.body;
+  const { useId, useName, useType,  useWeight  } = req.body;
   useItem.updateOne({ useId: useId },
-    { $set: { useName: useName,  useWeight: useWeight } })
+    { $set: { useName: useName, useType:useType ,  useWeight: useWeight } })
     .then(response => {
       res.json({ response });
     })
