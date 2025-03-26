@@ -99,26 +99,26 @@ const RecipeGenerator = () => {
   const mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
 
   return (
-    <div className="max-w-4xl p-5 mx-auto bg-white bg-opacity-25 rounded-lg mt-7">
+    <div className="max-w-4xl p-5 mx-auto bg-white bg-opacity-25 rounded-lg mt-[50px]">
       <h1 className="mb-5 text-3xl font-bold text-center">Smart Recipe Generator</h1>
-      <p className="mb-8 text-center text-gray-600">Get personalized recipes based on your available ingredients</p>
+      <p className="mb-8 text-center text-gray-700">Get personalized recipes based on your available ingredients</p>
       
       <div className="mb-8">
-        <h3 className="mb-2 text-xl font-semibold">Available Ingredients</h3>
+        <h3 className="mb-2 text-xl font-semibold font-Poppins">Available Ingredients</h3>
         <div className="overflow-hidden bg-white rounded-lg shadow-md">
           <div className="overflow-y-auto max-h-72">
             <table className="w-full">
               <thead className="sticky top-0 bg-gray-100">
                 <tr>
-                  <th className="px-4 py-2 text-left">Ingredient</th>
-                  <th className="px-4 py-2 text-left">Available (kg)</th>
+                  <th className="px-4 py-2 text-center font-Poppins">Ingredient</th>
+                  <th className="px-4 py-2 text-center font-Poppins">Available </th>
                 </tr>
               </thead>
               <tbody>
                 {inventorySummary.map((item, index) => (
                   <tr key={index} className="border-t">
-                    <td className="px-4 py-2">{item.name}</td>
-                    <td className="px-4 py-2">{item.remaining.toFixed(2)}</td>
+                    <td className="px-4 py-2 text-center font-Poppins">{item.name}</td>
+                    <td className="px-4 py-2 text-center font-Poppins">{item.remaining.toFixed(2)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -130,7 +130,7 @@ const RecipeGenerator = () => {
       <form onSubmit={handleSubmit} className="mb-8">
         <div className="flex gap-5 mb-5">
           <div className="flex-1">
-            <label className="block mb-1 text-sm font-medium text-gray-700">Number of People</label>
+            <label className="block mb-1 text-sm font-medium text-gray-900 font-Poppins">Number of People</label>
             <input
               type="number"
               value={numPeople}
@@ -141,7 +141,7 @@ const RecipeGenerator = () => {
             />
           </div>
           <div className="flex-1">
-            <label className="block mb-1 text-sm font-medium text-gray-700">Meal Type</label>
+            <label className="block mb-1 text-sm font-medium text-gray-900 font-Poppins">Meal Type</label>
             <select
               value={mealType}
               onChange={(e) => setMealType(e.target.value)}
@@ -158,7 +158,7 @@ const RecipeGenerator = () => {
           </div>
         </div>
         <div className="mb-5">
-          <label className="block mb-1 text-sm font-medium text-gray-700">Additional preferences (optional)</label>
+          <label className="block mb-1 text-sm font-medium text-gray-900 font-Poppins">Additional preferences (optional)</label>
           <textarea
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
@@ -172,8 +172,8 @@ const RecipeGenerator = () => {
           disabled={isLoading}
           className={`w-full md:w-auto px-6 py-2 text-white rounded-md ${
             isLoading 
-              ? 'bg-blue-400 cursor-not-allowed' 
-              : 'bg-blue-600 hover:bg-blue-700'
+              ? 'bg-green-400 cursor-not-allowed' 
+              : 'bg-green-600 hover:bg-green-700'
           } transition-colors`}
         >
           {isLoading ? 'Generating Recipe...' : 'Generate Recipe'}

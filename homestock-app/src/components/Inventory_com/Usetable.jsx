@@ -67,7 +67,7 @@ const Usetable = ({ rows, selectedUseItem, deleteUseItem }) => {
                                                     variant="contained"
                                                     color="primary"
                                                     size="small"
-                                                   className="text-xl text-white bg-blue-500 shadow-md hover:bg-blue-700 font-Poppins text-[14px]
+                                                   className="text-xl text-white bg-blue-500 shadow-md hover:bg-blue-700 font-Poppins text-[12px]
                                                                     animate-fade-in hover:scale-105 transition-transform duration-300"
                                                 >
                                                     Update
@@ -77,7 +77,7 @@ const Usetable = ({ rows, selectedUseItem, deleteUseItem }) => {
                                                     variant="contained"
                                                     color="error"
                                                     size="small"
-                                                    className="text-xl text-white bg-red-500 shadow-md hover:bg-red-700 font-Poppins text-[14px]
+                                                    className="text-xl text-white bg-red-500 shadow-md hover:bg-red-700 font-Poppins text-[12px]
                                                                     animate-fade-in hover:scale-105 transition-transform duration-300"
                                                 >
                                                     Delete
