@@ -1,9 +1,9 @@
 import React from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Checkbox } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const GroceryTable = ({ items, onDelete, onEdit }) => {  // Add onEdit to props
+const GroceryTable = ({ items, onDelete, onEdit, checkedItems, onCheckboxChange }) => {
     return(
         <TableContainer 
             component={Paper} 
@@ -15,6 +15,7 @@ const GroceryTable = ({ items, onDelete, onEdit }) => {  // Add onEdit to props
             <Table>
                 <TableHead className="bg-white/60 backdrop-blur-md">
                     <TableRow>
+                        <TableCell className="font-bold text-gray-800">Purchased</TableCell>
                         <TableCell className="font-bold text-gray-800">Name</TableCell>
                         <TableCell className="font-bold text-gray-800">Quantity</TableCell>
                         <TableCell className="font-bold text-gray-800">Category</TableCell>
@@ -25,9 +26,16 @@ const GroceryTable = ({ items, onDelete, onEdit }) => {  // Add onEdit to props
                 <TableBody>
                     {items.map((item) =>(
                         <TableRow 
-                            key={item._id}  // Use _id instead of id
-                            className="hover:bg-green-100 transition duration-300"
+                            key={item._id}
+                            className={`hover:bg-green-100 transition duration-300 ${checkedItems[item._id] ? 'bg-gray-100 line-through' : ''}`}
                             >
+                            <TableCell>
+                                <Checkbox
+                                    checked={checkedItems[item._id] || false}
+                                    onChange={onCheckboxChange(item._id)}
+                                    color="primary"
+                                />
+                            </TableCell>
                             <TableCell>{item.name}</TableCell>
                             <TableCell>{item.quantity}</TableCell>
                             <TableCell>{item.category}</TableCell>
@@ -36,7 +44,7 @@ const GroceryTable = ({ items, onDelete, onEdit }) => {  // Add onEdit to props
                                 <IconButton 
                                     aria-label="edit" 
                                     color="primary"
-                                    onClick={() => onEdit(item._id)}  // Use the onEdit prop
+                                    onClick={() => onEdit(item._id)}
                                 >
                                     <EditIcon/>
                                 </IconButton>
