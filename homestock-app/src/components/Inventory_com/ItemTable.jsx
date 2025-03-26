@@ -64,7 +64,7 @@ const ItemTable = ({ rows, selectedItem, deleteItem }) => {
                                                 <div className="flex justify-center space-x-1">
                                                     <Button
                                                         variant="contained"
-                                                         className="text-xl text-white bg-blue-500 shadow-md hover:bg-blue-700 font-Poppins text-[14px]
+                                                         className="text-xl text-white bg-blue-500 shadow-md hover:bg-blue-700 font-Poppins text-[12px]
                                                                     animate-fade-in hover:scale-105 transition-transform duration-300"
                                                         onClick={() => selectedItem({
                                                             id: row.id,
@@ -80,7 +80,7 @@ const ItemTable = ({ rows, selectedItem, deleteItem }) => {
                                                     </Button>
                                                     <Button
                                                         variant="contained"
-                                                        className="text-xl text-white bg-red-500 shadow-md hover:bg-red-700 font-Poppins text-[14px]
+                                                        className="text-xl text-white bg-red-500 shadow-md hover:bg-red-700 font-Poppins text-[12px]
                                                                     animate-fade-in hover:scale-105 transition-transform duration-300"
                                                         onClick={() => deleteItem({ id: row.id })}
                                                         size="small"
