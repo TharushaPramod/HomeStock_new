@@ -1,6 +1,7 @@
 import React from 'react'
 import Api from '../api.jsx'
-import Navbar from '../components/navbar/navbar'
+import Navbar from '../components/navbar/Navbar.jsx'
+import Footer from '../components/Footer.jsx'
 
 
 export default function Recipe() {
@@ -8,6 +9,7 @@ export default function Recipe() {
     <div>
         <Navbar></Navbar>
         <Api></Api>
+        <Footer/>
       
     </div>
   )

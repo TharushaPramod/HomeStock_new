@@ -3,11 +3,10 @@ import React from 'react'
 import Navbar from '../components/navbar/Navbar'
 import'../App.css'
 
+import Footer from '../components/Footer';
 
-import Api from '../api.jsx';
-import InventorySummary from '../components/Inventory_com/InventorySummary.jsx';
 import Image01 from '../images/home-image.png';
-import Image02 from '../images/grc3.png';
+
 
 
 function Homepage() {
@@ -68,6 +67,7 @@ function Homepage() {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }

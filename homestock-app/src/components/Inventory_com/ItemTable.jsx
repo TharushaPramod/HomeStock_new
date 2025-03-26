@@ -10,7 +10,7 @@ const ItemTable = ({ rows, selectedItem, deleteItem }) => {
     );
 
     return (
-        <div className="flex justify-center mt-5 rounded-lg">
+        <div className="flex justify-center mt-5 mb-12 rounded-lg">
             <div className="flex justify-center w-[90%] rounded-lg">
                 <div className="w-full bg-green-100 rounded-lg">
                     {/* Search Input */}

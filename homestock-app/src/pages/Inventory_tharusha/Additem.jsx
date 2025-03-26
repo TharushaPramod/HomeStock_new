@@ -8,6 +8,7 @@ import Usetable from '../../components/Inventory_com/Usetable';
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import InventorySummary from '../../components/Inventory_com/InventorySummary';
 import Image01 from '../../images/home-image.png';
+import Footer from '../../components/Footer';
 
 export default function Additem() {
     const [items, setItems] = useState([]);
@@ -311,6 +312,7 @@ export default function Additem() {
                 )}
             </div>
 
+                <Footer/>
             
         </div>
     )

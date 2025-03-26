@@ -99,7 +99,7 @@ const RecipeGenerator = () => {
   const mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
 
   return (
-    <div className="max-w-4xl p-5 mx-auto bg-white bg-opacity-25 rounded-lg mt-7">
+    <div className="max-w-4xl p-5 mx-auto mb-12 bg-white bg-opacity-25 rounded-lg mt-7 ">
       <h1 className="mb-5 text-3xl font-bold text-center">Smart Recipe Generator</h1>
       <p className="mb-8 text-center text-gray-600">Get personalized recipes based on your available ingredients</p>
       

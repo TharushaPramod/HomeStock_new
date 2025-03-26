@@ -29,7 +29,7 @@ const Navbar = () => {
             </li>
             <li>
 
-              <a onClick={() => navigate('/grocery-List')} className='text-[12px] font-semibold hover:text-gray-200 font-Poppins  hover:underline'>Grocery List</a>
+              <a onClick={() => navigate('/grocery-List')} className='text-[18px] font-semibold hover:text-gray-200 font-Poppins  hover:underline'>Grocery List</a>
 
              
 
@@ -40,9 +40,9 @@ const Navbar = () => {
           </ul>
         </div>
         <div>
-          <button className='mr-5 text-[15px] font-Poppins  border-white rounded-[50px] h-7 w-[80px] hover:bg-[#ffffff] transition-colors duration-300 border hover:border-[#ffffff] '>
+          <button className='mr-5 text-[15px] '>
             <a onClick={() => navigate('/register')}>
-              SIGN IN
+           
             </a>
           </button>
 
