@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField, MenuItem, Snackbar, Alert } from "@mui/material";
 import axios from "axios"; // Add axios import
+import Footer from "../../components/Footer";
 
 const categories = [
     'Fruits',
@@ -175,6 +176,7 @@ export default function AddItemtoGL() {
                     {snackbarMessage}
                 </Alert>
             </Snackbar>
+            <Footer />
         </div>
     );
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Button, TextField, MenuItem, Snackbar, Alert } from '@mui/material';
+import Footer from '../../components/Footer';
 
 
 const API_URL = "http://localhost:3001/api/grocerylist"; // lowercase to match backend
@@ -123,7 +124,7 @@ export default function EditGroceryItem() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 style={{ background: 'linear-gradient(to bottom, #73AE88, #142D1D)' }} ">
+    <div className="min-h-screen" style={{ background: 'linear-gradient(to bottom, #73AE88, #142D1D)' }}>
       <div className="container mx-auto p-4 max-w-md">
         <div className="bg-white rounded-xl shadow-xl overflow-hidden">
           <div className="bg-green-600 py-4 px-6">
@@ -249,6 +250,7 @@ export default function EditGroceryItem() {
           <span className="font-semibold">{snackbar.message}</span>
         </Alert>
       </Snackbar>
+      <Footer />
     </div>
   );
 }
