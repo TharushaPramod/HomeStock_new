@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Navbar from "../../components/navbar/navbar";
+import Navbar from "../../components/navbar/Navbar";
 import Axios from "axios";
 import { Box } from "@mui/material";
 import ReminderForm from "../../components/reminderManagement/ReminderForm";

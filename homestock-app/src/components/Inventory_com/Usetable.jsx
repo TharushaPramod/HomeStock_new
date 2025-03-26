@@ -15,20 +15,33 @@ const Usetable = ({ rows, selectedUseItem, deleteUseItem }) => {
     return (
         <div className="flex justify-center mt-5 mb-12 rounded-lg ">
             <div className="flex justify-center w-[100%] rounded-lg">
-                <div className="w-[90%] bg-green-100 rounded-lg">
+                <div className="w-[90%]  rounded-lg">
                     {/* Search Input */}
-                    <div className="flex justify-end m-4">
+                    <div className="flex justify-start mt-4 mb-1">
                         <TextField
                             label="Search by Name"
                             variant="outlined"
                             size="small"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-[300px]"
+                            className="w-[300px] bg-white bg-opacity-80 rounded-3xl"
+                                sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                    border: 'none', // Removes the outline
+                                    },
+                                    '&:hover fieldset': {
+                                    border: 'none', // Removes outline on hover
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                    border: 'none', // Removes outline when focused
+                                    },
+                                },
+                                }}
                         />
                     </div>
 
-                    <TableContainer component={Paper} className="bg-white rounded-xl">
+                    <TableContainer component={Paper} className=" rounded-xl">
                         <Table>
                             <TableHead className="bg-green-600 bg-opacity-75">
                                 <TableRow>
@@ -42,7 +55,7 @@ const Usetable = ({ rows, selectedUseItem, deleteUseItem }) => {
                             <TableBody>
                                 {filteredRows.length > 0 ? (
                                     filteredRows.map(row => (
-                                        <TableRow key={row.useId} className="bg-green-50">
+                                        <TableRow key={row.useId} className="bg-green-100">
                                             <TableCell component="th" className="text-[15px] font-Poppins text-center font-medium">
                                                 {row.useId}
                                             </TableCell>
