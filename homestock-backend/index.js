@@ -32,4 +32,4 @@ const server = app.listen(port, host, () => {
 
 //app.use('/api', router );
 //app.use('/api', userRouter);
-app.use('/api', GLrouter);
+app.use('/api/groceryList', GLrouter);

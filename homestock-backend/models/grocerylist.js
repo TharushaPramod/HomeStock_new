@@ -2,28 +2,31 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const grocerylistSchema = new Schema({
-    id: {
-        type: String,
-        required: [true, 'ID is required'],
-        unique: true,
+    _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        auto: true
     },
     name: {
         type: String,
-        required: [true, 'Name is required']
+        required: true,
+        trim: true
     },
     quantity: {
         type: Number,
-        required: [true, 'Quantity is required']
+        required: true,
+        min: 1
     },
     category: {
         type: String,
-        required: [true, 'Category is required']
+        required: true,
+        enum: ['Fruits', 'Vegetables', 'Dairy', 'Meat', 'Bakery', 'Other']
     },
     status: {
         type: String,
-        required: [true, 'Status is required']
-    },
-});
+        enum: ['Pending', 'Purchased'],
+        default: 'Pending'
+    }
+}, { timestamps: true });
 
 const GroceryList = mongoose.model('GroceryList', grocerylistSchema);
 export default GroceryList;

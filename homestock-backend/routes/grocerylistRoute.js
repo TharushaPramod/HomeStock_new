@@ -1,11 +1,18 @@
 import express from 'express';
-import { getGroceryList, addItemtoGL, updateGroceryList, deleteGroceryList } from '../controllers/grocerylistController.js';
+import { 
+  getGroceryList, 
+  addItemtoGL, 
+  updateGroceryList, 
+  deleteGroceryList,
+  getItemById,
+} from '../controllers/grocerylistController.js';
 
 const GLrouter = express.Router();
 
-GLrouter.get('/groceryList', getGroceryList);
-GLrouter.get('/addItemGL', addItemtoGL);
-GLrouter.get('/updateGroceryList', updateGroceryList);
-GLrouter.get('/deleteGroceryList', deleteGroceryList);
+GLrouter.get('/', getGroceryList);
+GLrouter.post('/', addItemtoGL);
+GLrouter.get('/:id', getItemById); 
+GLrouter.put('/:id', updateGroceryList);
+GLrouter.delete('/:id', deleteGroceryList);
 
 export default GLrouter;
