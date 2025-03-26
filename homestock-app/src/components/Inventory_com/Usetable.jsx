@@ -1,70 +1,98 @@
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
+import { Button, Icon, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
+import { useState } from "react";
 
-const ItemTable = ({rows , selectedUseItem , deleteUseItem }) =>{
+const ItemTable = ({ rows, selectedUseItem, deleteUseItem }) => {
+    const [searchTerm, setSearchTerm] = useState('');
 
-return(
-    <div className="flex justify-center ">
-    <TableContainer component={Paper} className="w-[90%]  bg-white bg-opacity-60 mt-10">
-        <Table>
-            <TableHead>
-                <TableRow>
-                    <TableCell>ID</TableCell>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Weight</TableCell>
-                  
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {
-                    rows.length > 0 ? rows.map(row =>(
-                        <TableRow key={row.useId}>
+    // Filter rows based on search term
+    const filteredRows = rows.filter(row => 
+        row.useName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
-                                <TableCell component='th'>{row.useId}</TableCell>
-
-                                <TableCell component='th'>{row.useName}</TableCell>
-
-                                                                                      
-                                <TableCell component='th'>{row.useWeight}</TableCell>
-
-                                <TableCell component='th'>
-                                <Button
-                                       onClick={() => selectedUseItem({
-                                        useId: row.useId,
-                                        useName: row.useName,
-                                        useWeight: row.useWeight
-                                    })}
-                                     >Update
-                                    </Button>
-                                     
-                                    <Button
-                                        onClick={()=>deleteUseItem({
-                                            useId: row.useId
-                                        })}
-                                    >Deletes
-                                    </Button>
-                                </TableCell>
-
-                               
-                                                        
-                            
-                            
-                        </TableRow>
+    return (
+        <div className="flex justify-center mt-5 rounded-lg">
+            <div className="flex justify-center w-[90%] rounded-lg">
+                <div className="w-[90%]   bg-green-100 rounded-lg ">
+                    {/* Search Input */}
+                    <div className="flex justify-end m-4 ">
                         
-                    )) : (
-                        <TableRow>
-                            <TableCell component='th'>No data</TableCell>
-                        </TableRow>
-                     )
-            
-            }
-            </TableBody>
-        </Table>
+                        <TextField
+                            label="Search by Name"
+                            variant="outlined"
+                            size="small"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-[300px]"
+                        />
+                        
+                    </div>
 
-    </TableContainer>
-    </div>
-
-        );
-
+                    <TableContainer component={Paper} className="bg-white rounded-xl">
+                        <Table>
+                        
+                            <TableHead className="bg-green-600 bg-opacity-75">
+                                <TableRow>
+                                    
+                                    <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">ID</TableCell>
+                                    <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">Name</TableCell>
+                                    <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">Weight</TableCell>
+                                    <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">Action</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {filteredRows.length > 0 ? (
+                                    filteredRows.map(row => (
+                                        <TableRow key={row.useId} className="bg-green-50">
+                                            <TableCell component='th' className="text-[15px] font-Poppins text-center font-medium">
+                                                {row.useId}
+                                            </TableCell>
+                                            <TableCell component='th' className="text-[15px] font-Poppins text-center font-medium">
+                                                {row.useName}
+                                            </TableCell>
+                                            <TableCell component='th' className="text-[15px] font-Poppins text-center font-medium">
+                                                {row.useWeight}
+                                            </TableCell>
+                                            <TableCell component='th' className="text-[15px] font-Poppins text-center font-medium">
+                                                <Button
+                                                    onClick={() => selectedUseItem({
+                                                        useId: row.useId,
+                                                        useName: row.useName,
+                                                        useWeight: row.useWeight
+                                                    })}
+                                                    variant="contained"
+                                                    color="primary"
+                                                    size="small"
+                                                    className="mr-2"
+                                                >
+                                                    Update
+                                                </Button>
+                                                <Button
+                                                    onClick={() => deleteUseItem({
+                                                        useId: row.useId
+                                                    })}
+                                                    variant="contained"
+                                                    color="error"
+                                                    size="small"
+                                                >
+                                                    Delete
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                ) : (
+                                    <TableRow>
+                                        <TableCell colSpan={4} className="text-center font-Poppins text-[15px] font-medium">
+                                            {searchTerm ? "No matching items found" : "No data"}
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default ItemTable;

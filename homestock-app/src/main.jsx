@@ -8,6 +8,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import Register from './pages/User_gihan/Register.jsx'
 import Reminder from './pages/Reminder_gihan/Reminder.jsx'
+import Recipe from './pages/Recipe.jsx'
+
 
 
 
@@ -18,6 +20,7 @@ createRoot(document.getElementById('root')).render(
       <Route path='/groceryinventory' element={<Additem/>} />
       <Route path='/register' element={<Register/>} />
       <Route path='/reminder' element={<Reminder/>} />
+      <Route path='/recipe' element={<Recipe/>} />
       
       
     </Routes>

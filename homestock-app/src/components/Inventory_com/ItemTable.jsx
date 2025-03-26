@@ -1,80 +1,108 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
+import { useState } from "react";
 
-const ItemTable = ({rows ,selectedItem, deleteItem}) =>{
+const ItemTable = ({ rows, selectedItem, deleteItem }) => {
+    const [searchTerm, setSearchTerm] = useState('');
 
-return(
-    <div className="flex justify-center ">
-    <TableContainer component={Paper} className="w-[90%]  bg-white bg-opacity-60 mt-10">
-        <Table>
-            <TableHead>
-                <TableRow>
-                    <TableCell>ID</TableCell>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Quantity</TableCell>
-                    <TableCell>Weight</TableCell>
-                    <TableCell>Price</TableCell>
-                    <TableCell>Expire Date</TableCell>
-                    <TableCell>Actions</TableCell>
-                    {/* <TableCell>Use</TableCell>
-                    <TableCell>Avaialble</TableCell> */}
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {
-                    rows.length > 0 ? rows.map(row =>(   // rows map for row
-                        <TableRow key={row.id}>
+    // Filter rows based on search term
+    const filteredRows = rows.filter(row => 
+        row.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
-                                <TableCell component='th'>{row.id}</TableCell>
+    return (
+        <div className="flex justify-center mt-5 rounded-lg">
+            <div className="flex justify-center w-[90%] rounded-lg">
+                <div className="w-full bg-green-100 rounded-lg">
+                    {/* Search Input */}
+                    <div className="flex justify-end m-4 ">
+                        <TextField
+                            label="Search by Name"
+                            variant="outlined"
+                            size="small"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-[300px]"
+                        />
+                    </div>
 
-                                <TableCell component='th'>{row.name}</TableCell>
-
-                             
-                                <TableCell component='th'>{row.qty}</TableCell>
-
-                               
-                                <TableCell component='th'>{row.weight}</TableCell>
-
-                               
-                                <TableCell component='th'>{row.price}</TableCell>
-
-                                
-                                <TableCell component='th'>{new Date(row.expireDate).toLocaleDateString()}</TableCell>
-                              
-                                <TableCell>
-                                    
-                                    <Button
-                                        onClick={()=>selectedItem({id: row.id , name: row.name , qty : row.qty , weight:row.weight,price:row.price,expireDate:row.expireDate})}
-                                     >Update
-                                    </Button>
-                                     
-                                    <Button
-                                        onClick={()=>deleteItem({id:row.id})}
-                                    >Delete
-                                    </Button>
-                                    
-                                </TableCell>
-                                
-                              
-                                
-                               
-                            
-                        </TableRow>
-                        
-                    )) : (
-                        <TableRow>
-                            <TableCell component='th'>No data</TableCell>
-                        </TableRow>
-                     )
-            
-            }
-            </TableBody>
-        </Table>
-
-    </TableContainer>
-    </div>
-
-        );
-
+                    <TableContainer component={Paper} className="w-full bg-white rounded-xl">
+                        <Table className="items-center justify-around flex-auto">
+                            <TableHead className="bg-green-600 bg-opacity-75">
+                                <TableRow className="text-center">
+                                    <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">ID</TableCell>
+                                    <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">Name</TableCell>
+                                    <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">Quantity</TableCell>
+                                    <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">Weight</TableCell>
+                                    <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">Price</TableCell>
+                                    <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">Expire Date</TableCell>
+                                    <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">Actions</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {filteredRows.length > 0 ? (
+                                    filteredRows.map(row => (
+                                        <TableRow key={row.id} className="bg-green-50">
+                                            <TableCell component='th' className="text-[15px] font-Poppins text-center font-medium">
+                                                {row.id}
+                                            </TableCell>
+                                            <TableCell component='th' className="text-[15px] font-Poppins text-center font-medium">
+                                                {row.name}
+                                            </TableCell>
+                                            <TableCell component='th' className="text-[15px] font-Poppins text-center font-medium">
+                                                {row.qty}
+                                            </TableCell>
+                                            <TableCell component='th' className="text-[15px] font-Poppins text-center font-medium">
+                                                {row.weight}
+                                            </TableCell>
+                                            <TableCell component='th' className="text-[15px] font-Poppins text-center font-medium">
+                                                {row.price}
+                                            </TableCell>
+                                            <TableCell component='th' className="text-[15px] font-Poppins text-center font-medium">
+                                                {new Date(row.expireDate).toLocaleDateString()}
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="flex justify-center space-x-1">
+                                                    <Button
+                                                        variant="contained"
+                                                         className="text-xl text-white bg-blue-500 shadow-md hover:bg-blue-700 font-Poppins text-[14px]"
+                                                        onClick={() => selectedItem({
+                                                            id: row.id,
+                                                            name: row.name,
+                                                            qty: row.qty,
+                                                            weight: row.weight,
+                                                            price: row.price,
+                                                            expireDate: row.expireDate
+                                                        })}
+                                                        size="small"
+                                                    >
+                                                        Update
+                                                    </Button>
+                                                    <Button
+                                                        variant="contained"
+                                                        className="text-xl text-white bg-red-500 shadow-md hover:bg-red-700 font-Poppins text-[14px]"
+                                                        onClick={() => deleteItem({ id: row.id })}
+                                                        size="small"
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                </div>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                ) : (
+                                    <TableRow>
+                                        <TableCell colSpan={7} className="text-center font-Poppins text-[15px] font-medium">
+                                            {searchTerm ? "No matching items found" : "No data"}
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default ItemTable;

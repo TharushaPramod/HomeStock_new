@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 const InventorySummary = () => {
     const [items, setItems] = useState([]);
@@ -72,24 +71,35 @@ const InventorySummary = () => {
 
     return (
         <div className='flex items-center justify-center'>
-            <TableContainer component={Paper} className="w-[50%] flex bg-white bg-opacity-60 mt-10">
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Item Name</TableCell>
-                            <TableCell>Remaining (kg)</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
+            <div className="w-1/2 mt-[50px] max-h-[300px] overflow-y-auto rounded-xl shadow-md">
+                <table className="w-full">
+                    <thead className="sticky top-0 z-10 bg-green-600 bg-opacity-75">
+                        <tr>
+                            <th className="py-2 text-lg font-semibold text-center text-white font-Poppins">
+                                Item Name
+                            </th>
+                            <th className="py-2 text-lg font-semibold text-center text-white font-Poppins">
+                                Remaining (kg)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody className="bg-green-50">
                         {getInventorySummary().map((item, index) => (
-                            <TableRow key={index} className={item.remaining < 0 ? 'negative' : ''}>
-                                <TableCell>{item.name}</TableCell>
-                                <TableCell>{item.remaining.toFixed(2)}</TableCell>
-                            </TableRow>
+                            <tr 
+                                key={index}
+                                className={item.remaining < 0 ? 'bg-red-100' : ''}
+                            >
+                                <td className="text-center font-Poppins text-[15px] font-medium py-2">
+                                    {item.name}
+                                </td>
+                                <td className="text-center font-Poppins text-[15px] font-medium py-2">
+                                    {item.remaining.toFixed(2)}
+                                </td>
+                            </tr>
                         ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };

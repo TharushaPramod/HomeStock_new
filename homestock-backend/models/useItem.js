@@ -4,17 +4,19 @@ const { Schema } = mongoose;
 const useItemSchema = new Schema({
   useId: {
     type: Number,
+    required: true,
+    unique: true  // Only this validation
   },
   useName: {
     type: String,
-    
+    required: true
   },
   useWeight: {
     type: Number,
-    
+    required: true
   }
 });
 
-const Item = mongoose.model('useItem', useItemSchema);
+const UseItem = mongoose.model('UseItem', useItemSchema);
 
-export default Item; // Use ES Modules export
+export default UseItem;

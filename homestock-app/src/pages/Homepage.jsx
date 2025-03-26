@@ -9,7 +9,7 @@ function Homepage() {
   return (
     <div>
       <Navbar></Navbar>
-      <Api></Api>
+    
     
       
    

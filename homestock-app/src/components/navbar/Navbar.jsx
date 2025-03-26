@@ -31,7 +31,7 @@ const Navbar = () => {
               <a href='\' className='text-[18px] font-semibold hover:text-gray-200 font-Poppins  hover:underline'>Grocery List</a>
             </li>
             <li>
-              <a href='\' className='text-[18px] font-semibold hover:text-gray-200 font-Poppins  hover:underline'>Recipe</a>
+              <a onClick={() => navigate('/recipe')} className='text-[18px] font-semibold hover:text-gray-200 font-Poppins  hover:underline'>Recipe</a>
             </li>
           </ul>
         </div>
