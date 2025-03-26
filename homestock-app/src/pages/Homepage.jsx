@@ -1,10 +1,14 @@
-import React from 'react';
-import Navbar from '../components/navbar/navbar';
-import '../App.css';
+
+import React from 'react'
+import Navbar from '../components/navbar/Navbar'
+import'../App.css'
+
+
 import Api from '../api.jsx';
 import InventorySummary from '../components/Inventory_com/InventorySummary.jsx';
 import Image01 from '../images/home-image.png';
 import Image02 from '../images/grc3.png';
+
 
 function Homepage() {
   return (

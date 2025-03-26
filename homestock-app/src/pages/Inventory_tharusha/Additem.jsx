@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Itemform from '../../components/Inventory_com/Itemform'
-import Navbar from '../../components/navbar/navbar'
+import Navbar from '../../components/navbar/Navbar'
 import ItemTable from '../../components/Inventory_com/ItemTable';
 import Axios from 'axios';
 import Useform from '../../components/Inventory_com/Useform'

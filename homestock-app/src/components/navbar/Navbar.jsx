@@ -28,7 +28,11 @@ const Navbar = () => {
               <a onClick={() => navigate('/reminder')} className='text-[18px] font-semibold hover:text-gray-200 font-Poppins  hover:underline'>Reminders</a>
             </li>
             <li>
-              <a href='\' className='text-[18px] font-semibold hover:text-gray-200 font-Poppins  hover:underline'>Grocery List</a>
+
+              <a onClick={() => navigate('/grocery-List')} className='text-[12px] font-semibold hover:text-gray-200 font-Poppins  hover:underline'>Grocery List</a>
+
+             
+
             </li>
             <li>
               <a onClick={() => navigate('/recipe')} className='text-[18px] font-semibold hover:text-gray-200 font-Poppins  hover:underline'>Recipe</a>
