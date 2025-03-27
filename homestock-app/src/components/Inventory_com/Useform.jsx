@@ -16,7 +16,7 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
         useWeight: ''
     });
 
-    // Function to get the next available ID from localStorage
+    
     const getNextId = () => {
         const storedItems = JSON.parse(localStorage.getItem('groceryItems') || '[]');
         if (storedItems.length === 0) return 1;
@@ -24,7 +24,7 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
         return maxId + 1;
     };
 
-    // Populate form fields when editing
+    
     useEffect(() => {
         if (isEdit && data?.useId) {
             setUseId(data.useId);
@@ -52,18 +52,18 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
         }
     }, [submitted]);
 
-    // Extract names and qty types from items prop and create a mapping
+    
     useEffect(() => {
-        const names = items.map(item => item.name); // Extract item names
+        const names = items.map(item => item.name); 
         const nameToQtyMap = items.reduce((acc, item) => {
-            acc[item.name] = item.qty; // Map each name to its qty type (e.g., "Milk" -> "Liter")
+            acc[item.name] = item.qty; 
             return acc;
         }, {});
-        setItemNames(names); // Update Autocomplete options
-        setItemMap(nameToQtyMap); // Store the name-to-qty mapping
+        setItemNames(names); 
+        setItemMap(nameToQtyMap); 
     }, [items]);
 
-    // Validate form fields
+   
     const validateForm = () => {
         const newErrors = {
             useId: '',
@@ -83,17 +83,17 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
         return !Object.values(newErrors).some(error => !!error);
     };
 
-    // Handle name selection and auto-set useType
+   
     const handleNameChange = (event, newValue) => {
-        setUseName(newValue); // Update selected name
+        setUseName(newValue); 
         if (newValue && itemMap[newValue]) {
-            setUseType(itemMap[newValue]); // Automatically set useType based on selected name
+            setUseType(itemMap[newValue]); 
         } else {
-            setUseType(''); // Clear useType if no matching item
+            setUseType(''); 
         }
     };
 
-    // Save or update item in localStorage
+    
     const saveToLocalStorage = (itemData) => {
         const storedItems = JSON.parse(localStorage.getItem('groceryItems') || '[]');
         
@@ -156,7 +156,7 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
                     <Autocomplete
                         options={itemNames}
                         value={useName}
-                        onChange={handleNameChange} // Trigger name change and auto-set useType
+                        onChange={handleNameChange} 
                         renderInput={(params) => (
                             <TextField
                                 {...params}
@@ -175,9 +175,9 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
                         <Select
                             labelId="useType"
                             id="useType"
-                            value={useType} // Value is auto-set based on item selection
+                            value={useType} 
                             label="Quantity Type"
-                            onChange={(e) => setUseType(e.target.value)} // Allow manual override if needed
+                            onChange={(e) => setUseType(e.target.value)} 
                             variant="outlined"
                             size="small"
                             error={!!errors.useType}

@@ -111,7 +111,7 @@ const RecipeGenerator = () => {
               <thead className="sticky top-0 bg-gray-100">
                 <tr>
                   <th className="px-4 py-2 text-left">Ingredient</th>
-                  <th className="px-4 py-2 text-left">Available (kg)</th>
+                  <th className="px-4 py-2 text-left">Available </th>
                 </tr>
               </thead>
               <tbody>
