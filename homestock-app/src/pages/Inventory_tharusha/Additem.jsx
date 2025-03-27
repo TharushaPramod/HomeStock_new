@@ -17,9 +17,9 @@ export default function Additem() {
     const [isEdit, setIsEdit] = useState(false);
     const [selectedItem, setSelectedItem] = useState({});
     const [selectedUseItem, setSelectedUseItem] = useState({});
-    const [activeTab, setActiveTab] = useState('add'); // 'add' or 'use'
+    const [activeTab, setActiveTab] = useState('add');
 
-    // Load data on component mount
+    
     useEffect(() => {
         getItems();
         getUseItems();
@@ -78,7 +78,7 @@ export default function Additem() {
         Axios.post('http://localhost:3001/api/addUseItem', payload)
             .then(() => {
                 getUseItems();
-                getItems(); // Refresh both lists
+                getItems(); 
                 setSubmitted(false);
             })
             .catch(error => {
@@ -216,7 +216,7 @@ export default function Additem() {
                                             </th>
                                             </tr>
                                         </thead>
-                                        <tbody className='bg-white bg-opacity-25 '>
+                                        <tbody className='bg-white bg-opacity-25'>
                                             {getInventorySummary().map((item, index) => (
                                             <tr 
                                                 key={index} 
@@ -239,7 +239,7 @@ export default function Additem() {
             {/* Tab Navigation */}
             <div className="flex items-center justify-center mb-8">
                 
-  <div className="flex p-1 mt-10 space-x-1 bg-gray-100 rounded-lg shadow-inner">
+  <div className="flex p-1 mt-10 space-x-1 bg-gray-100 bg-opacity-75 rounded-lg shadow-inner">
                   
                     <Button
                     variant={activeTab === 'add' ? 'contained' : 'text'}

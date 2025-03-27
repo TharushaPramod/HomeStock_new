@@ -1,10 +1,10 @@
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField  } from "@mui/material";
 import { useState } from "react";
 
 const ItemTable = ({ rows, selectedItem, deleteItem }) => {
     const [searchTerm, setSearchTerm] = useState('');
 
-    // Filter rows based on search term
+    // search term
     const filteredRows = rows.filter(row => 
         row.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -12,18 +12,31 @@ const ItemTable = ({ rows, selectedItem, deleteItem }) => {
     return (
         <div className="flex justify-center mt-5 mb-12 rounded-lg">
             <div className="flex justify-center w-[90%] rounded-lg">
-                <div className="w-full bg-green-100 rounded-lg">
-                    {/* Search Input */}
-                    <div className="flex justify-end m-4 ">
-                        <TextField
-                            label="Search by Name"
-                            variant="outlined"
-                            size="small"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-[300px]"
-                        />
-                    </div>
+                <div className="w-full rounded-lg">
+                    
+                <div className="flex justify-start mt-4 mb-1">
+                            <TextField
+                                label="Search by Name"
+                                variant="outlined"
+                                size="small"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="w-[300px] bg-white bg-opacity-80 rounded-3xl"
+                                sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                    border: 'none', // Removes the outline
+                                    },
+                                    '&:hover fieldset': {
+                                    border: 'none', // Removes outline on hover
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                    border: 'none', // Removes outline when focused
+                                    },
+                                },
+                                }}
+                            />
+                            </div>
 
                     <TableContainer component={Paper} className="w-full bg-white bg-opacity-50 rounded-xl">
                         <Table className="items-center justify-around flex-auto">
@@ -41,7 +54,7 @@ const ItemTable = ({ rows, selectedItem, deleteItem }) => {
                             <TableBody>
                                 {filteredRows.length > 0 ? (
                                     filteredRows.map(row => (
-                                        <TableRow key={row.id} className="bg-white bg-opacity-25">
+                                        <TableRow key={row.id} className="bg-green-100 ">
                                             <TableCell component='th' className="text-[15px] font-Poppins text-center font-medium">
                                                 {row.id}
                                             </TableCell>

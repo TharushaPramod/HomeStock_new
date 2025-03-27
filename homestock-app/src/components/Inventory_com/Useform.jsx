@@ -133,7 +133,7 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
             <Box className="flex flex-col items-center justify-center rounded-lg w-[90%]">
                 <Box
                     component="form"
-                    className="grid grid-cols-1 gap-4 p-4 bg-white rounded-lg hadow-md bg-opacity-80 sm:grid-cols-2 md:grid-cols-6"
+                    className="grid grid-cols-1 gap-4 p-4 bg-gray-200 bg-opacity-50 rounded-lg hadow-md sm:grid-cols-2 md:grid-cols-6"
                 >
                     <Typography variant="h5" className="mb-6 font-semibold font-Poppins">
                         Use Grocery Item

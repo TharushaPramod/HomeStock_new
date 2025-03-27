@@ -4,20 +4,20 @@ import React, { useEffect, useState } from 'react';
 const ItemForm = ({ addItem, submitted, data, isEdit, updateItem }) => {
   const [id, setId] = useState('');
   const [name, setName] = useState('');
-  const [qty, setQty] = useState(''); // Changed from qty to qtyType
+  const [qty, setQty] = useState(''); 
   const [weight, setWeight] = useState('');
   const [price, setPrice] = useState('');
   const [expireDate, setExpireDate] = useState('');
   const [errors, setErrors] = useState({
     id: '',
     name: '',
-    qty: '', // Changed from qty to qtyType
+    qty: '', 
     weight: '',
     price: '',
     expireDate: ''
   });
 
-  // Function to get the next available ID from localStorage
+  
   const getNextId = () => {
     const storedItems = JSON.parse(localStorage.getItem('inventoryItems') || '[]');
     if (storedItems.length === 0) return 1;
@@ -29,7 +29,7 @@ const ItemForm = ({ addItem, submitted, data, isEdit, updateItem }) => {
     if (isEdit && data?.id) {
       setId(data.id);
       setName(data.name);
-      setQty(data.qty || ''); // Changed from qty to qtyType
+      setQty(data.qty || ''); 
       setWeight(data.weight);
       setPrice(data.price);
       setExpireDate(data.expireDate);
@@ -42,14 +42,14 @@ const ItemForm = ({ addItem, submitted, data, isEdit, updateItem }) => {
     if (!submitted) {
       setId(getNextId());
       setName('');
-      setQty(''); // Changed from qty to qtyType
+      setQty(''); 
       setWeight('');
       setPrice('');
       setExpireDate('');
       setErrors({
         id: '',
         name: '',
-        qty: '', // Changed from qty to qtyType
+        qty: '', 
         weight: '',
         price: '',
         expireDate: ''
@@ -61,28 +61,28 @@ const ItemForm = ({ addItem, submitted, data, isEdit, updateItem }) => {
     const newErrors = {
       id: '',
       name: '',
-      qty: '', // Changed from qty to qtyType
+      qty: '', 
       weight: '',
       price: '',
       expireDate: ''
     };
 
-    // Name validation
+    
     if (!name) newErrors.name = 'Name is required';
     else if (name.trim().length === 0) newErrors.name = 'Name cannot be just whitespace';
 
-    // Quantity Type validation
+    
     if (!qty) newErrors.qty = 'Quantity type is required';
 
-    // Weight validation
+    
     if (!weight) newErrors.weight = 'Weight is required';
     else if (isNaN(weight) || Number(weight) < 0.1) newErrors.weight = 'Weight must be at least 0.1';
 
-    // Price validation
+   
     if (!price) newErrors.price = 'Price is required';
     else if (isNaN(price) || Number(price) < 0) newErrors.price = 'Price must be a non-negative number';
 
-    // Expire Date validation
+    
     if (!expireDate) newErrors.expireDate = 'Expire date is required';
     else if (new Date(expireDate) < new Date()) newErrors.expireDate = 'Expire date cannot be in the past';
 
@@ -109,7 +109,7 @@ const ItemForm = ({ addItem, submitted, data, isEdit, updateItem }) => {
       const itemData = {
         id: Number(id),
         name: name.trim(),
-        qty, // Changed from qty to qtyType, no need to convert to Number
+        qty, 
         weight: Number(weight),
         price: Number(price),
         expireDate
@@ -130,13 +130,14 @@ const ItemForm = ({ addItem, submitted, data, isEdit, updateItem }) => {
       <Box className="flex flex-col items-center justify-center rounded-lg w-[90%]">
         <Box
           component="form"
-          className="grid grid-cols-1 gap-4 p-4 rounded-lg shadow-md  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-[100%] bg-white bg-opacity-80"
+          className="grid grid-cols-1 gap-4 p-4 rounded-lg shadow-md  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-[100%] bg-gray-200 bg-opacity-50"
         >
           <Typography variant="h5" className="mb-6 font-semibold font-Poppins">
             Add Grocery
           </Typography>
           
           <TextField
+            className=''
             fullWidth
             required
             id="id"
@@ -151,6 +152,7 @@ const ItemForm = ({ addItem, submitted, data, isEdit, updateItem }) => {
           />
 
           <TextField
+            
             fullWidth
             required
             id="name"

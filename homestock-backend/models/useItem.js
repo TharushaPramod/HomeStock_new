@@ -5,7 +5,7 @@ const useItemSchema = new Schema({
   useId: {
     type: Number,
     required: true,
-    unique: true  // Only this validation
+    unique: true 
   },
   useName: {
     type: String,
