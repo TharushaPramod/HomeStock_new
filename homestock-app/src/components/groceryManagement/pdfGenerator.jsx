@@ -3,7 +3,7 @@ import { jsPDF } from "jspdf";
 export const generateGroceryPDF = (items, checkedItems) => {
   const doc = new jsPDF();
   
-  // Set document properties
+  
   doc.setProperties({
     title: 'Grocery List',
     subject: 'Grocery Shopping List',
@@ -12,11 +12,11 @@ export const generateGroceryPDF = (items, checkedItems) => {
     creator: 'HomeStocks'
   });
 
-  // Set beige background for the entire document
+  // beige background
   doc.setFillColor(245, 245, 220);
   doc.rect(0, 0, doc.internal.pageSize.width, doc.internal.pageSize.height, 'F');
   
-  // Title with green box and white text
+  
   doc.setFillColor(0, 128, 0);
   doc.rect(20, 10, 170, 15, 'F');
   doc.setFontSize(22);
@@ -24,7 +24,7 @@ export const generateGroceryPDF = (items, checkedItems) => {
   doc.setTextColor(255, 255, 255);
   doc.text("GROCERY LIST", 105, 20, { align: 'center' });
   
-  // Group items by category
+  
   const categories = {};
   items.forEach(item => {
     if (!categories[item.category]) {
@@ -37,7 +37,7 @@ export const generateGroceryPDF = (items, checkedItems) => {
   const sortedCategories = Object.keys(categories).sort();
   
   sortedCategories.forEach(category => {
-    // Category header
+    
     doc.setFontSize(16);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(0, 128, 0);
@@ -45,7 +45,7 @@ export const generateGroceryPDF = (items, checkedItems) => {
     
     yPos += 10;
     
-    // Items list
+    
     doc.setFontSize(12);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(0, 0, 0);
@@ -53,7 +53,7 @@ export const generateGroceryPDF = (items, checkedItems) => {
     const sortedItems = categories[category].sort((a, b) => a.name.localeCompare(b.name));
     
     sortedItems.forEach((item) => {
-      // Draw checkbox
+     
       doc.setDrawColor(0, 0, 0);
       doc.rect(25, yPos - 4, 5, 5);
       if (checkedItems[item._id]) {
@@ -75,7 +75,7 @@ export const generateGroceryPDF = (items, checkedItems) => {
     }
   });
   
-  // Footer
+ 
   doc.setFontSize(10);
   doc.setFont('helvetica', 'italic');
   doc.setTextColor(100, 100, 100);
