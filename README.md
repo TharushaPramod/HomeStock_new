@@ -6,7 +6,7 @@
 <p>Inventory Management /
 Restocking Reminders /
 Grocery List Management /
-Auto Recipe Generator /</p>
+Auto Recipe Generator </p>
 <p>Scope: HomeStock focuses on efficient household inventory tracking for food supplies, groceries, and essentials, catering to individuals and families who value organization.</p>
 <p>Novelty: The AI-powered Recipe Generator sets HomeStock apart by analyzing available ingredients to suggest meal ideas, promoting efficient use of pantry items and minimizing waste.</p><h2>Technologies Used</h2>
 <hr><ul>
