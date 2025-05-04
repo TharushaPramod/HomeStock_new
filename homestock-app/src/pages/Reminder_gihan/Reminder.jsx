@@ -6,7 +6,7 @@ import ReminderForm from "../../components/reminderManagement/ReminderForm";
 
 import { data } from "react-router-dom";
 import ReminderTable from "../../components/reminderManagement/ReminderTable";
-import InventorySummary from "../../components/Inventory_com/InventorySummary";
+
 
 
 
@@ -109,7 +109,7 @@ const Reminder = () => {
     return (
         <Box>
             <Navbar />
-            <InventorySummary/>
+           
             <Box>
                 <ReminderForm
                     addReminder={addReminder}

@@ -204,35 +204,42 @@ export default function Additem() {
             
                 
                 
-                                    <div className="table-wrapper w-[50%] mt-[50px] max-h-[300px] overflow-y-auto rounded-xl shadow-md ">
-                                        <table className="w-full">
-                                        <thead className="sticky top-0 z-10 text-center bg-green-600 bg-opacity-75">
-                                            <tr className='text-center'>
-                                            <th className='text-center font-Poppins text-[18px] font-semibold text-white py-2'>
-                                                Item Name
-                                            </th>
-                                            <th className='text-center font-Poppins text-[18px] font-semibold text-white py-2'>
-                                                Remaining 
-                                            </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className='bg-white bg-opacity-25'>
-                                            {getInventorySummary().map((item, index) => (
-                                            <tr 
-                                                key={index} 
-                                                className={item.remaining < 0 ? 'negative' : '' }
-                                            >
-                                                <td className='text-center font-Poppins text-[16px] font-medium py-2 '>
-                                                {item.name}
-                                                </td>
-                                                <td className='text-center font-Poppins text-[16px] font-medium py-2'>
-                                                {item.remaining.toFixed(2)}
-                                                </td>
-                                            </tr>
-                                            ))}
-                                        </tbody>
-                                        </table>
-                                    </div>
+                    <div className="table-wrapper w-[50%] mt-[50px] max-h-[300px] overflow-y-auto rounded-xl shadow-md ">
+    <table className="w-full">
+        <thead className="sticky top-0 z-10 text-center bg-green-600 bg-opacity-75">
+            <tr className='text-center'>
+                <th className='text-center font-Poppins text-[18px] font-semibold text-white py-2'>
+                    Item Name
+                </th>
+                <th className='text-center font-Poppins text-[18px] font-semibold text-white py-2'>
+                    Quantity Type
+                </th>
+                <th className='text-center font-Poppins text-[18px] font-semibold text-white py-2'>
+                    Remaining
+                </th>
+            </tr>
+        </thead>
+        <tbody className='bg-white bg-opacity-25'>
+            {getInventorySummary().map((item, index) => {
+                // Find the quantity type from the first matching item in the items array
+                const qtyType = items.find(i => i.name === item.name)?.qty || 'Kg';
+                return (
+                    <tr key={index} className={item.remaining < 0 ? 'negative' : ''}>
+                        <td className='text-center font-Poppins text-[16px] font-medium py-2'>
+                            {item.name}
+                        </td>
+                        <td className='text-center font-Poppins text-[16px] font-medium py-2'>
+                            {qtyType}
+                        </td>
+                        <td className='text-center font-Poppins text-[16px] font-medium py-2'>
+                            {item.remaining.toFixed(2)}
+                        </td>
+                    </tr>
+                );
+            })}
+        </tbody>
+    </table>
+</div>
 </div>
            
 
@@ -291,14 +298,15 @@ export default function Additem() {
                     </>
                 ) : (
                     <>
-                        <Useform
-                            addUseItem={addUseItem}
-                            submitted={submitted}
-                            items={items}
-                            data={selectedUseItem}
-                            isEdit={isEdit}
-                            updateUseItem={updateUseItem}
-                        />
+                                        <Useform
+                        addUseItem={addUseItem}
+                        submitted={submitted}
+                        items={items}
+                        useItems={useItems} // Add this prop
+                        data={selectedUseItem}
+                        isEdit={isEdit}
+                        updateUseItem={updateUseItem}
+                    />
 
                         <Usetable 
                             rows={useItems}

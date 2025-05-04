@@ -1,22 +1,21 @@
 import { Box, TextField, Typography, Button, Autocomplete, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
-const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) => {
+const Useform = ({ addUseItem, submitted, items, useItems, data, updateUseItem, isEdit }) => {
     const [useId, setUseId] = useState('');
     const [useName, setUseName] = useState('');
     const [useType, setUseType] = useState('');
     const [useWeight, setUseWeight] = useState('');
-   
-    const [itemNames, setItemNames] = useState([]); // Store item names for Autocomplete
-    const [itemMap, setItemMap] = useState({}); // Store mapping of name to qty type
+    const [itemNames, setItemNames] = useState([]);
+    const [itemMap, setItemMap] = useState({});
     const [errors, setErrors] = useState({
         useId: '',
         useName: '',
         useType: '',
         useWeight: ''
     });
+    const [remainingWeight, setRemainingWeight] = useState(null);
 
-    
     const getNextId = () => {
         const storedItems = JSON.parse(localStorage.getItem('groceryItems') || '[]');
         if (storedItems.length === 0) return 1;
@@ -24,7 +23,39 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
         return maxId + 1;
     };
 
-    
+    const getTotalWeightByName = () => {
+        const weightMap = {};
+        items.forEach((item) => {
+            if (!weightMap[item.name]) {
+                weightMap[item.name] = 0;
+            }
+            weightMap[item.name] += Number(item.weight) || 0;
+        });
+        return weightMap;
+    };
+
+    const getTotalUsedWeightByName = () => {
+        const usedWeightMap = {};
+        useItems.forEach((item) => {
+            if (!usedWeightMap[item.useName]) {
+                usedWeightMap[item.useName] = 0;
+            }
+            usedWeightMap[item.useName] += Number(item.useWeight) || 0;
+        });
+        return usedWeightMap;
+    };
+
+    useEffect(() => {
+        if (useName) {
+            const available = getTotalWeightByName();
+            const used = getTotalUsedWeightByName();
+            const remaining = (available[useName] || 0) - (used[useName] || 0);
+            setRemainingWeight(remaining.toFixed(2));
+        } else {
+            setRemainingWeight(null);
+        }
+    }, [useName, items, useItems]);
+
     useEffect(() => {
         if (isEdit && data?.useId) {
             setUseId(data.useId);
@@ -36,7 +67,6 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
         }
     }, [data, isEdit]);
 
-    // Reset form after submission
     useEffect(() => {
         if (!submitted) {
             setUseId(getNextId());
@@ -49,21 +79,20 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
                 useType: '',
                 useWeight: ''
             });
+            setRemainingWeight(null);
         }
     }, [submitted]);
 
-    
     useEffect(() => {
-        const names = items.map(item => item.name); 
+        const names = items.map(item => item.name);
         const nameToQtyMap = items.reduce((acc, item) => {
-            acc[item.name] = item.qty; 
+            acc[item.name] = item.qty;
             return acc;
         }, {});
-        setItemNames(names); 
-        setItemMap(nameToQtyMap); 
+        setItemNames(names);
+        setItemMap(nameToQtyMap);
     }, [items]);
 
-   
     const validateForm = () => {
         const newErrors = {
             useId: '',
@@ -76,29 +105,41 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
         if (!useType) newErrors.useType = 'Quantity type is required';
         if (!useWeight) newErrors.useWeight = 'Weight is required';
         else if (isNaN(useWeight) || Number(useWeight) < 0.1) {
-            newErrors.useWeight = 'Weight must be at least 0.1 kg';
+            newErrors.useWeight = 'Weight must be at least 0.1';
+        } else {
+            const available = getTotalWeightByName()[useName] || 0;
+            const currentUsed = getTotalUsedWeightByName()[useName] || 0;
+            let effectiveRemaining = available - currentUsed;
+
+            // In edit mode, subtract the original useWeight to allow updating to a lower value
+            if (isEdit && data?.useWeight) {
+                const originalWeight = Number(data.useWeight);
+                effectiveRemaining += originalWeight; // Add back the original weight to adjust the remaining
+            }
+
+            if (Number(useWeight) > effectiveRemaining) {
+                newErrors.useWeight = `Weight cannot exceed remaining: ${effectiveRemaining.toFixed(2)}`;
+            }
         }
 
         setErrors(newErrors);
         return !Object.values(newErrors).some(error => !!error);
     };
 
-   
     const handleNameChange = (event, newValue) => {
-        setUseName(newValue); 
+        setUseName(newValue);
         if (newValue && itemMap[newValue]) {
-            setUseType(itemMap[newValue]); 
+            setUseType(itemMap[newValue]);
         } else {
-            setUseType(''); 
+            setUseType('');
         }
+        setUseWeight(''); // Reset weight when item changes
     };
 
-    
     const saveToLocalStorage = (itemData) => {
         const storedItems = JSON.parse(localStorage.getItem('groceryItems') || '[]');
-        
         if (isEdit) {
-            const updatedItems = storedItems.map(item => 
+            const updatedItems = storedItems.map(item =>
                 item.useId === itemData.useId ? itemData : item
             );
             localStorage.setItem('groceryItems', JSON.stringify(updatedItems));
@@ -108,7 +149,6 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
         }
     };
 
-    // Handle form submission
     const handleSubmit = () => {
         if (validateForm()) {
             const itemData = {
@@ -117,13 +157,11 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
                 useType,
                 useWeight: Number(useWeight)
             };
-            
             if (isEdit) {
                 updateUseItem(itemData);
             } else {
                 addUseItem(itemData);
             }
-            
             saveToLocalStorage(itemData);
         }
     };
@@ -133,7 +171,7 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
             <Box className="flex flex-col items-center justify-center rounded-lg w-[90%]">
                 <Box
                     component="form"
-                    className="grid grid-cols-1 gap-4 p-4 bg-gray-200 bg-opacity-50 rounded-lg hadow-md sm:grid-cols-2 md:grid-cols-6"
+                    className="grid grid-cols-1 gap-4 p-4 bg-gray-200 bg-opacity-50 rounded-lg shadow-md sm:grid-cols-2 md:grid-cols-6"
                 >
                     <Typography variant="h5" className="mb-6 font-semibold font-Poppins">
                         Use Grocery Item
@@ -156,7 +194,7 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
                     <Autocomplete
                         options={itemNames}
                         value={useName}
-                        onChange={handleNameChange} 
+                        onChange={handleNameChange}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
@@ -175,9 +213,9 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
                         <Select
                             labelId="useType"
                             id="useType"
-                            value={useType} 
+                            value={useType}
                             label="Quantity Type"
-                            onChange={(e) => setUseType(e.target.value)} 
+                            onChange={(e) => setUseType(e.target.value)}
                             variant="outlined"
                             size="small"
                             error={!!errors.useType}
@@ -204,14 +242,18 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
                         value={useWeight}
                         onChange={(e) => setUseWeight(e.target.value)}
                         error={!!errors.useWeight}
-                        helperText={errors.useWeight}
-                        inputProps={{ min: 0.1, step: 0.1 }}
+                        helperText={errors.useWeight || (remainingWeight !== null ? `Remaining: ${remainingWeight}` : '')}
+                        inputProps={{
+                            min: 0.1,
+                            step: 0.1,
+                            max: remainingWeight !== null ? Number(remainingWeight) : undefined
+                        }}
                     />
                     
                     <Button
                         variant="contained"
                         color="primary"
-                        className="h-10 px-4 py-2 font-bold text-white bg-green-600 rounded focus:outline-none focus:shadow-outline hover:bg-green-900 "
+                        className="h-10 px-4 py-2 font-bold text-white bg-green-600 rounded focus:outline-none focus:shadow-outline hover:bg-green-900"
                         onClick={handleSubmit}
                     >
                         {isEdit ? 'Update' : 'Add'}
