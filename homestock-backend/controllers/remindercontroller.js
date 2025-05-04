@@ -26,8 +26,8 @@ export const getReminders = async (req, res) => {
 // @route   POST /api/reminders
 export const addReminder = async (req, res) => {
     try {
-        const { id, itemName, currentWeight, thresholdWeight, reminderDate } = req.body;
-        const newReminder = new Reminder({ id, itemName, currentWeight, thresholdWeight, reminderDate });
+        const { id, itemName, thresholdWeight } = req.body;
+        const newReminder = new Reminder({ id, itemName,thresholdWeight });
         await newReminder.save();
         res.status(201).json(newReminder);
     } catch (error) {
@@ -67,9 +67,9 @@ export const addReminder = async (req, res) => {
 // };
 
 export const updateReminder = (req, res, next) => {
-    const { id, itemName, currentWeight, thresholdWeight, reminderDate } = req.body;
+    const { id, itemName, thresholdWeight } = req.body;
     Reminder.updateOne({ id: id },
-        { $set: { itemName: itemName, currentWeight: currentWeight, thresholdWeight: thresholdWeight, reminderDate: reminderDate } }
+        { $set: { itemName: itemName, thresholdWeight: thresholdWeight} }
     )
         .then(response => {
             res.json({ response });
