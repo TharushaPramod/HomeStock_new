@@ -10,8 +10,8 @@ const CreateReminderPage = () => {
   const [formData, setFormData] = useState({
     id: '',
     itemName: '',
-    currentWeight: '',
-    thresholdWeight: '',
+    //currentWeight: '',
+    reminderWeight: '',
     reminderDate: ''
   });
 
@@ -25,8 +25,8 @@ const CreateReminderPage = () => {
       await axios.post('http://localhost:3001/api/addReminder', {
         ...formData,
         id: parseInt(formData.id),
-        currentWeight: parseFloat(formData.currentWeight),
-        thresholdWeight: parseFloat(formData.thresholdWeight),
+        //currentWeight: parseFloat(formData.currentWeight),
+        reminderWeight: parseFloat(formData.reminderWeight),
         reminderDate: new Date(formData.reminderDate)
       });
       navigate('/viewreminder');
@@ -39,8 +39,8 @@ const CreateReminderPage = () => {
     setFormData({
       id: '',
       itemName: '',
-      currentWeight: '',
-      thresholdWeight: '',
+      //currentWeight: '',
+      reminderWeight: '',
       reminderDate: ''
     });
   };
@@ -82,7 +82,7 @@ const CreateReminderPage = () => {
                 required
               />
             </div>
-            <div>
+            {/* <div>
               <label className="block mb-1 text-sm font-medium text-gray-700">Current Weight</label>
               <input
                 type="number"
@@ -92,13 +92,13 @@ const CreateReminderPage = () => {
                 className="w-full p-3 transition duration-200 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required
               />
-            </div>
+            </div> */}
             <div>
-              <label className="block mb-1 text-sm font-medium text-gray-700">Threshold Weight</label>
+              <label className="block mb-1 text-sm font-medium text-gray-700">Reminder Weight</label>
               <input
                 type="number"
-                name="thresholdWeight"
-                value={formData.thresholdWeight}
+                name="reminderWeight"
+                value={formData.reminderWeight}
                 onChange={handleChange}
                 className="w-full p-3 transition duration-200 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required

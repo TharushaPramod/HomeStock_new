@@ -11,8 +11,8 @@ const UpdateReminder = () => {
   const [formData, setFormData] = useState({
     id: '',
     itemName: '',
-    currentWeight: '',
-    thresholdWeight: '',
+    //currentWeight: '',
+    reminderWeight: '',
     reminderDate: ''
   });
   const [error, setError] = useState(null);
@@ -28,8 +28,8 @@ const UpdateReminder = () => {
       setFormData({
         id: reminder.id,
         itemName: reminder.itemName,
-        currentWeight: reminder.currentWeight,
-        thresholdWeight: reminder.thresholdWeight,
+        //currentWeight: reminder.currentWeight,
+        reminderWeight: reminder.reminderWeight,
         reminderDate: new Date(reminder.reminderDate).toISOString().split('T')[0]
       });
       setError(null);
@@ -49,8 +49,8 @@ const UpdateReminder = () => {
     try {
       await axios.put(`http://localhost:3001/api/updateReminder/${id}`, {
         itemName: formData.itemName,
-        currentWeight: parseFloat(formData.currentWeight),
-        thresholdWeight: parseFloat(formData.thresholdWeight),
+        //currentWeight: parseFloat(formData.currentWeight),
+        reminderWeight: parseFloat(formData.reminderWeight),
         reminderDate: new Date(formData.reminderDate)
       });
       navigate('/viewreminder');
@@ -64,8 +64,8 @@ const UpdateReminder = () => {
     setFormData({
       id: '',
       itemName: '',
-      currentWeight: '',
-      thresholdWeight: '',
+      //currentWeight: '',
+      reminderWeight: '',
       reminderDate: ''
     });
     navigate('/viewreminder');
@@ -108,7 +108,7 @@ const UpdateReminder = () => {
                 required
               />
             </div>
-            <div>
+            {/* <div>
               <label className="block mb-1 text-sm font-medium text-gray-700">Current Weight</label>
               <input
                 type="number"
@@ -118,13 +118,13 @@ const UpdateReminder = () => {
                 className="w-full p-3 transition duration-200 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required
               />
-            </div>
+            </div> */}
             <div>
-              <label className="block mb-1 text-sm font-medium text-gray-700">Threshold Weight</label>
+              <label className="block mb-1 text-sm font-medium text-gray-700">Reminder Weight</label>
               <input
                 type="number"
-                name="thresholdWeight"
-                value={formData.thresholdWeight}
+                name="reminderWeight"
+                value={formData.reminderWeight}
                 onChange={handleChange}
                 className="w-full p-3 transition duration-200 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required

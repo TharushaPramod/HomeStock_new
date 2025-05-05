@@ -94,12 +94,12 @@ const ViewReminderPage = () => {
 
     const doc = new jsPDF();
 
-    const tableColumn = ['ID', 'Item Name', 'Current Weight', 'Threshold Weight', 'Reminder Date'];
+    const tableColumn = ['ID', 'Item Name', 'Reminder Weight', 'Reminder Date'];
     const tableRows = reportReminders.map((r) => [
       r.id,
       r.itemName,
-      r.currentWeight,
-      r.thresholdWeight,
+      //r.currentWeight,
+      r.reminderWeight,
       new Date(r.reminderDate).toLocaleDateString(),
     ]);
 
@@ -182,8 +182,8 @@ const ViewReminderPage = () => {
                 </th>
                 <th className="p-4 text-sm font-bold tracking-wider text-left uppercase">ID</th>
                 <th className="p-4 text-sm font-bold tracking-wider text-left uppercase">Item Name</th>
-                <th className="p-4 text-sm font-bold tracking-wider text-left uppercase">Current Weight</th>
-                <th className="p-4 text-sm font-bold tracking-wider text-left uppercase">Threshold Weight</th>
+                {/* <th className="p-4 text-sm font-bold tracking-wider text-left uppercase">Current Weight</th> */}
+                <th className="p-4 text-sm font-bold tracking-wider text-left uppercase">Reminder Weight</th>
                 <th className="p-4 text-sm font-bold tracking-wider text-left uppercase">Reminder Date</th>
                 <th className="p-4 text-sm font-bold tracking-wider text-left uppercase">Actions</th>
               </tr>
@@ -203,8 +203,8 @@ const ViewReminderPage = () => {
                   </td>
                   <td className="p-4 font-medium text-gray-700">{reminder.id}</td>
                   <td className="p-4 text-gray-700">{reminder.itemName}</td>
-                  <td className="p-4 text-gray-700">{reminder.currentWeight}</td>
-                  <td className="p-4 text-gray-700">{reminder.thresholdWeight}</td>
+                  {/* <td className="p-4 text-gray-700">{reminder.currentWeight}</td> */}
+                  <td className="p-4 text-gray-700">{reminder.reminderWeight}</td>
                   <td className="p-4 text-gray-700">
                     {new Date(reminder.reminderDate).toLocaleDateString()}
                   </td>
