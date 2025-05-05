@@ -1,105 +1,66 @@
 import Reminder from '../models/reminder_model.js';
 
-
-// @desc    Get all reminders
-// @route   GET /api/reminders
+// Fetch all reminders
 export const getReminders = async (req, res) => {
     try {
         const reminders = await Reminder.find();
         res.status(200).json(reminders);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 };
 
-// export const getReminders = (req, res, next) => {
-//     Reminder.find()
-//         .then(response => {
-//             res.json({ response });
-//         })
-//         .catch(error => {
-//             res.json({ error: error });
-//         });
-// };
-
-// @desc    Add a new reminder
-// @route   POST /api/reminders
+// Add a new reminder
 export const addReminder = async (req, res) => {
     try {
-        const { id, itemName, thresholdWeight } = req.body;
-        const newReminder = new Reminder({ id, itemName,thresholdWeight });
+        const { id, itemName, currentWeight, thresholdWeight, reminderDate } = req.body;
+        const newReminder = new Reminder({ id, itemName, currentWeight, thresholdWeight, reminderDate });
         await newReminder.save();
         res.status(201).json(newReminder);
     } catch (error) {
-        res.status(400).json({ message: "Invalid reminder data" });
+        res.status(400).json({ message: "Invalid reminder data", error: error.message });
     }
 };
 
-// export const addReminder = (req, res, next) => {
-//     const user = new Reminder({
-//         id: req.body.id,
-//         itemName: req.body.itemName,
-//         currentWeight: req.body.currentWeight,
-//         thresholdWeight: req.body.thresholdWeight,
-//         reminderDate: req.body.reminderDate,
-//         confirmPassword: req.body.confirmPassword,
-
-//     });
-//     user.save()
-//         .then(response => {
-//             res.json({ response });
-//         })
-//         .catch(error => {
-//             res.json({ error: error });
-//         });
-// };
-
-// @desc    Update a reminder
-// @route   PUT /api/reminders/:id
-// export const updateReminder = async (req, res) => {
-//     try {
-//         const updatedReminder = await Reminder.findByIdAndUpdate(req.params.id, req.body, { new: true });
-//         if (!updatedReminder) return res.status(404).json({ message: "Reminder not found" });
-//         res.status(200).json(updatedReminder);
-//     } catch (error) {
-//         res.status(500).json({ message: "Update failed" });
-//     }
-// };
-
-export const updateReminder = (req, res, next) => {
-    const { id, itemName, thresholdWeight } = req.body;
-    Reminder.updateOne({ id: id },
-        { $set: { itemName: itemName, thresholdWeight: thresholdWeight} }
-    )
-        .then(response => {
-            res.json({ response });
-        })
-        .catch(error => {
-            res.json({ error: error });
-        });
+// Update an existing reminder
+export const updateReminder = async (req, res) => {
+    const { id } = req.params;
+    const { itemName, currentWeight, thresholdWeight, reminderDate } = req.body;
+    try {
+        const updatedReminder = await Reminder.updateOne(
+            { id: parseInt(id) },
+            { $set: { itemName, currentWeight, thresholdWeight, reminderDate } }
+        );
+        res.status(200).json({ message: "Reminder updated successfully" });
+    } catch (error) {
+        res.status(400).json({ message: "Error updating reminder", error: error.message });
+    }
 };
 
-// @desc    Delete a reminder
-// @route   DELETE /api/reminders/:id
-// export const deleteReminder = async (req, res) => {
-//     try {
-//         const deletedReminder = await Reminder.findByIdAndDelete(req.params.id);
-//         if (!deletedReminder) return res.status(404).json({ message: "Reminder not found" });
-//         res.status(200).json({ message: "Reminder deleted successfully" });
-//     } catch (error) {
-//         res.status(500).json({ message: "Deletion failed" });
-//     }
-// };
-
-export const deleteReminder = (req, res, next) => {
-    const id = req.body.id;
-    Reminder.deleteOne({ id: id })
-        .then(response => {
-            res.json({ response });
-        })
-        .catch(error => {
-            res.json({ error: error });
-        });
+// Delete a reminder
+export const deleteReminder = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const deletedReminder = await Reminder.deleteOne({ id: parseInt(id) });
+        if (deletedReminder.deletedCount === 0) {
+            return res.status(404).json({ message: "Reminder not found" });
+        }
+        res.status(200).json({ message: "Reminder deleted successfully" });
+    } catch (error) {
+        res.status(400).json({ message: "Error deleting reminder", error: error.message });
+    }
 };
 
-
+// Fetch a reminder by ID
+export const getReminderById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const reminder = await Reminder.findOne({ id: parseInt(id) });
+        if (!reminder) {
+            return res.status(404).json({ message: "Reminder not found" });
+        }
+        res.status(200).json(reminder);
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};

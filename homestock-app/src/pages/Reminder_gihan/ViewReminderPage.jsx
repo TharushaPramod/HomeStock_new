@@ -3,11 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import Navbar from '../../components/navbar/Navbar';
+import Footer from '../../components/Footer';
 
 const ViewReminderPage = () => {
   const [reminders, setReminders] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
+  const [selectedReminders, setSelectedReminders] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,6 +39,14 @@ const ViewReminderPage = () => {
     setSearchQuery(e.target.value);
   };
 
+  const handleCheckboxChange = (id) => {
+    setSelectedReminders((prev) =>
+      prev.includes(id)
+        ? prev.filter((reminderId) => reminderId !== id)
+        : [...prev, id]
+    );
+  };
+
   const isValidDate = (date) => {
     const parsedDate = new Date(date);
     return !isNaN(parsedDate.getTime());
@@ -52,27 +63,37 @@ const ViewReminderPage = () => {
       return reminderDate === selectedDate;
     });
 
-  const generateReport = () => {
-    if (!selectedDate) {
-      alert('Please select a date to generate report.');
-      return;
-    }
+  const generateReport = (type) => {
+    let reportReminders = [];
+    let reportTitle = '';
 
-    const selected = new Date(selectedDate);
-    const reportReminders = reminders.filter((r) => {
-      if (!isValidDate(r.reminderDate)) return false;
-      const rDate = new Date(r.reminderDate).toISOString().split('T')[0];
-      return rDate === selectedDate;
-    });
-
-    if (reportReminders.length === 0) {
-      alert('No reminders found for the selected date.');
-      return;
+    if (type === 'selected') {
+      if (selectedReminders.length === 0) {
+        alert('Please select at least one reminder to generate the report.');
+        return;
+      }
+      reportReminders = reminders.filter((r) => selectedReminders.includes(r.id));
+      reportTitle = 'Selected Reminders Report';
+    } else if (type === 'date') {
+      if (!selectedDate) {
+        alert('Please select a date to generate the report.');
+        return;
+      }
+      const selected = new Date(selectedDate);
+      reportReminders = reminders.filter((r) => {
+        if (!isValidDate(r.reminderDate)) return false;
+        const rDate = new Date(r.reminderDate).toISOString().split('T')[0];
+        return rDate === selectedDate;
+      });
+      if (reportReminders.length === 0) {
+        alert('No reminders found for the selected date.');
+        return;
+      }
+      reportTitle = `Reminders Report for ${selected.toLocaleDateString()}`;
     }
 
     const doc = new jsPDF();
 
-    // Important: Ensure 'autoTable' is properly invoked
     const tableColumn = ['ID', 'Item Name', 'Current Weight', 'Threshold Weight', 'Reminder Date'];
     const tableRows = reportReminders.map((r) => [
       r.id,
@@ -82,95 +103,144 @@ const ViewReminderPage = () => {
       new Date(r.reminderDate).toLocaleDateString(),
     ]);
 
-    doc.text('Reminders Report', 14, 20);
-    doc.text(`Date: ${selected.toLocaleDateString()}`, 14, 30);
+    doc.text(reportTitle, 14, 20);
+    if (type === 'date') {
+      doc.text(`Date: ${new Date(selectedDate).toLocaleDateString()}`, 14, 30);
+    }
 
-    // Correct usage of autoTable
     autoTable(doc, {
       head: [tableColumn],
       body: tableRows,
-      startY: 40,
+      startY: type === 'date' ? 40 : 30,
       theme: 'grid',
       styles: { fontSize: 10 },
       headStyles: { fillColor: [100, 100, 100] },
     });
 
-    doc.save(`reminders_report_${selectedDate}.pdf`);
+    const fileName = type === 'selected' ? 'selected_reminders_report.pdf' : `reminders_report_${selectedDate}.pdf`;
+    doc.save(fileName);
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">View Reminders</h1>
-      <div className="flex justify-between mb-4 items-center">
-        <Link to="/createreminder" className="text-blue-500">Create New Reminder</Link>
-        <div className="flex space-x-4">
-          <input
-            type="text"
-            placeholder="Search by Item Name"
-            value={searchQuery}
-            onChange={handleSearch}
-            className="border p-2 rounded w-64"
-          />
-          <div className="flex space-x-2">
+    <div>
+      <Navbar />
+      <div className="container p-6 mx-auto mt-12">
+        <h1 className="mb-6 text-3xl font-extrabold text-gray-800">View Reminders</h1>
+        <div className="flex flex-col gap-4 mb-6 sm:flex-row sm:justify-end sm:items-center">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
             <input
-              type="date"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              className="border p-2 rounded"
+              type="text"
+              placeholder="Search by Item Name"
+              value={searchQuery}
+              onChange={handleSearch}
+              className="w-full p-3 transition duration-200 border border-gray-300 rounded-lg sm:w-64 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
-            <button
-              onClick={generateReport}
-              className="bg-green-500 text-white px-4 py-2 rounded"
-            >
-              Generate Report
-            </button>
+            <div className="flex flex-wrap gap-2">
+              <input
+                type="date"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className="p-3 transition duration-200 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+              />
+              <button
+                onClick={() => generateReport('date')}
+                className="px-4 py-2 font-semibold text-white transition duration-200 bg-red-600 rounded-md shadow-md bg-opacity-85 hover:bg-red-700"
+              >
+                Generate Date Report
+              </button>
+              <button
+                onClick={() => generateReport('selected')}
+                className="px-4 py-2 font-semibold text-white transition duration-200 bg-red-600 rounded-md shadow-md bg-opacity-85 hover:bg-red-700"
+              >
+                Generate Selected Report
+              </button>
+              <Link
+                to="/createreminder"
+                className="flex items-center justify-center inline-block px-4 py-2 font-semibold text-white transition duration-200 bg-blue-600 rounded-md shadow-md bg-opacity-85 rpounded-md hover:bg-blue-700"
+              >
+                Create New Reminder
+              </Link>
+            </div>
           </div>
         </div>
+        <div className="overflow-x-auto rounded-lg shadow-lg">
+          <table className="w-full bg-white border border-gray-200">
+            <thead className="bg-green-600 bg-opacity-90">
+              <tr className="text-white bg-gradient-to-r">
+                <th className="p-4 text-sm font-bold tracking-wider text-left uppercase">
+                  <input
+                    type="checkbox"
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedReminders(filteredReminders.map((r) => r.id));
+                      } else {
+                        setSelectedReminders([]);
+                      }
+                    }}
+                    checked={filteredReminders.length > 0 && selectedReminders.length === filteredReminders.length}
+                  />
+                </th>
+                <th className="p-4 text-sm font-bold tracking-wider text-left uppercase">ID</th>
+                <th className="p-4 text-sm font-bold tracking-wider text-left uppercase">Item Name</th>
+                <th className="p-4 text-sm font-bold tracking-wider text-left uppercase">Current Weight</th>
+                <th className="p-4 text-sm font-bold tracking-wider text-left uppercase">Threshold Weight</th>
+                <th className="p-4 text-sm font-bold tracking-wider text-left uppercase">Reminder Date</th>
+                <th className="p-4 text-sm font-bold tracking-wider text-left uppercase">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredReminders.map((reminder, index) => (
+                <tr
+                  key={reminder._id}
+                  className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-blue-50 transition duration-150`}
+                >
+                  <td className="p-4">
+                    <input
+                      type="checkbox"
+                      checked={selectedReminders.includes(reminder.id)}
+                      onChange={() => handleCheckboxChange(reminder.id)}
+                    />
+                  </td>
+                  <td className="p-4 font-medium text-gray-700">{reminder.id}</td>
+                  <td className="p-4 text-gray-700">{reminder.itemName}</td>
+                  <td className="p-4 text-gray-700">{reminder.currentWeight}</td>
+                  <td className="p-4 text-gray-700">{reminder.thresholdWeight}</td>
+                  <td className="p-4 text-gray-700">
+                    {new Date(reminder.reminderDate).toLocaleDateString()}
+                  </td>
+                  <td className="p-4">
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => navigate(`/updatereminder/${reminder.id}`)}
+                        className="px-3 py-1 font-semibold text-white transition duration-200 bg-blue-500 rounded-lg hover:bg-blue-600"
+                      >
+                        Update
+                      </button>
+                      <button
+                        onClick={() => handleDelete(reminder.id)}
+                        className="px-3 py-1 font-semibold text-white transition duration-200 bg-red-500 rounded-lg hover:bg-red-600"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {filteredReminders.length === 0 && (
+                <tr>
+                  <td
+                    colSpan="7"
+                    className="p-4 font-medium text-center text-gray-500"
+                  >
+                    No reminders found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <table className="w-full border">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="border p-2">ID</th>
-            <th className="border p-2">Item Name</th>
-            <th className="border p-2">Current Weight</th>
-            <th className="border p-2">Threshold Weight</th>
-            <th className="border p-2">Reminder Date</th>
-            <th className="border p-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredReminders.map((reminder) => (
-            <tr key={reminder._id}>
-              <td className="border p-2">{reminder.id}</td>
-              <td className="border p-2">{reminder.itemName}</td>
-              <td className="border p-2">{reminder.currentWeight}</td>
-              <td className="border p-2">{reminder.thresholdWeight}</td>
-              <td className="border p-2">{new Date(reminder.reminderDate).toLocaleDateString()}</td>
-              <td className="border p-2">
-                <button
-                  onClick={() => navigate(`/updatereminder/${reminder.id}`)}
-                  className="bg-yellow-500 text-white px-2 py-1 rounded mr-2"
-                >
-                  Update
-                </button>
-                <button
-                  onClick={() => handleDelete(reminder.id)}
-                  className="bg-red-500 text-white px-2 py-1 rounded"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-          {filteredReminders.length === 0 && (
-            <tr>
-              <td colSpan="6" className="border p-2 text-center">
-                No reminders found
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <Footer />
     </div>
   );
 };

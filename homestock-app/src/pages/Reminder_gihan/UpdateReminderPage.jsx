@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import axios from 'axios';
+import { Paper } from '@mui/material';
+import Navbar from '../../components/navbar/Navbar';
+import Footer from '../../components/Footer';
 
 const UpdateReminder = () => {
   const { id } = useParams();
@@ -57,70 +60,106 @@ const UpdateReminder = () => {
     }
   };
 
+  const handleCancel = () => {
+    setFormData({
+      id: '',
+      itemName: '',
+      currentWeight: '',
+      thresholdWeight: '',
+      reminderDate: ''
+    });
+    navigate('/viewreminder');
+  };
+
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Update Reminder</h1>
-      <Link to="/viewreminder" className="text-blue-500 mb-4 inline-block">View Reminders</Link>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block">ID</label>
-          <input
-            type="number"
-            name="id"
-            value={formData.id}
-            className="w-full border p-2"
-            readOnly
-          />
-        </div>
-        <div>
-          <label className="block">Item Name</label>
-          <input
-            type="text"
-            name="itemName"
-            value={formData.itemName}
-            onChange={handleChange}
-            className="w-full border p-2"
-            required
-          />
-        </div>
-        <div>
-          <label className="block">Current Weight</label>
-          <input
-            type="number"
-            name="currentWeight"
-            value={formData.currentWeight}
-            onChange={handleChange}
-            className="w-full border p-2"
-            required
-          />
-        </div>
-        <div>
-          <label className="block">Threshold Weight</label>
-          <input
-            type="number"
-            name="thresholdWeight"
-            value={formData.thresholdWeight}
-            onChange={handleChange}
-            className="w-full border p-2"
-            required
-          />
-        </div>
-        <div>
-          <label className="block">Reminder Date</label>
-          <input
-            type="date"
-            name="reminderDate"
-            value={formData.reminderDate}
-            onChange={handleChange}
-            className="w-full border p-2"
-            required
-          />
-        </div>
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-          Update Reminder
-        </button>
-      </form>
+    <div>
+      <Navbar />
+      <div className="container p-6 mx-auto mt-16 mb-10">
+        <Paper elevation={3} className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-3xl font-extrabold text-gray-800">Update Reminder</h1>
+            <Link
+              to="/viewreminder"
+              className="px-6 py-2 font-semibold text-white transition duration-200 bg-green-600 rounded-lg shadow-md hover:bg-green-700"
+            >
+              View Reminders
+            </Link>
+          </div>
+          {error && <p className="mb-6 font-medium text-red-500">{error}</p>}
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label className="block mb-1 text-sm font-medium text-gray-700">ID</label>
+              <input
+                type="number"
+                name="id"
+                value={formData.id}
+                className="w-full p-3 transition duration-200 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed"
+                readOnly
+              />
+            </div>
+            <div>
+              <label className="block mb-1 text-sm font-medium text-gray-700">Item Name</label>
+              <input
+                type="text"
+                name="itemName"
+                value={formData.itemName}
+                onChange={handleChange}
+                className="w-full p-3 transition duration-200 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                required
+              />
+            </div>
+            <div>
+              <label className="block mb-1 text-sm font-medium text-gray-700">Current Weight</label>
+              <input
+                type="number"
+                name="currentWeight"
+                value={formData.currentWeight}
+                onChange={handleChange}
+                className="w-full p-3 transition duration-200 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                required
+              />
+            </div>
+            <div>
+              <label className="block mb-1 text-sm font-medium text-gray-700">Threshold Weight</label>
+              <input
+                type="number"
+                name="thresholdWeight"
+                value={formData.thresholdWeight}
+                onChange={handleChange}
+                className="w-full p-3 transition duration-200 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                required
+              />
+            </div>
+            <div>
+              <label className="block mb-1 text-sm font-medium text-gray-700">Reminder Date</label>
+              <input
+                type="date"
+                name="reminderDate"
+                value={formData.reminderDate}
+                onChange={handleChange}
+                className="w-full p-3 transition duration-200 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                required
+              />
+            </div>
+            <div className="flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={handleCancel}
+                className="px-6 py-2 font-semibold text-white transition duration-200 bg-green-600 rounded-lg shadow-md hover:bg-green-700"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-6 py-2 font-semibold text-white transition duration-200 bg-green-600 rounded-lg shadow-md hover:bg-green-700"
+              >
+                Update Reminder
+              </button>
+            </div>
+          </form>
+        </Paper>
+      </div>
+      <Footer />
     </div>
   );
 };
