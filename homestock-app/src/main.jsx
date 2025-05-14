@@ -11,6 +11,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Register from './pages/User_gihan/Register.jsx'
 import Reminder from './pages/Reminder_gihan/Reminder.jsx'
 import Recipe from './pages/Recipe.jsx'
+import CreateReminderPage from './pages/Reminder_gihan/CreateReminderPage.jsx'
+import ViewReminderPage from './pages/Reminder_gihan/ViewReminderPage.jsx'
+import UpdateReminderPage from './pages/Reminder_gihan/UpdateReminderPage.jsx'
 
 
 
@@ -27,6 +30,10 @@ createRoot(document.getElementById('root')).render(
       <Route path='/register' element={<Register/>} />
       <Route path='/reminder' element={<Reminder/>} />
       <Route path='/recipe' element={<Recipe/>} />
+
+      <Route path='/createreminder' element={<CreateReminderPage/>} />
+      <Route path='/viewreminder' element={<ViewReminderPage/>} />
+      <Route path="/updatereminder/:id" element={<UpdateReminderPage/>} />
 
       
       

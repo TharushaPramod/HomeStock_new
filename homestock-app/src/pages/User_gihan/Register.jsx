@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import Navbar from "../../components/navbar/navbar";
+
 import UsersTable from "../../components/userManagement/UsersTable";
 import RegisterFrom from "../../components/userManagement/RegisterForm";
 import Axios from "axios";

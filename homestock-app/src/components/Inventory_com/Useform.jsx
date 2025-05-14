@@ -1,22 +1,21 @@
 import { Box, TextField, Typography, Button, Autocomplete, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
-const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) => {
+const Useform = ({ addUseItem, submitted, items, useItems, data, updateUseItem, isEdit }) => {
     const [useId, setUseId] = useState('');
     const [useName, setUseName] = useState('');
     const [useType, setUseType] = useState('');
     const [useWeight, setUseWeight] = useState('');
-   
-    const [itemNames, setItemNames] = useState([]); // Store item names for Autocomplete
-    const [itemMap, setItemMap] = useState({}); // Store mapping of name to qty type
+    const [itemNames, setItemNames] = useState([]);
+    const [itemMap, setItemMap] = useState({});
     const [errors, setErrors] = useState({
         useId: '',
         useName: '',
         useType: '',
         useWeight: ''
     });
+    const [remainingWeight, setRemainingWeight] = useState(null);
 
-    // Function to get the next available ID from localStorage
     const getNextId = () => {
         const storedItems = JSON.parse(localStorage.getItem('groceryItems') || '[]');
         if (storedItems.length === 0) return 1;
@@ -24,7 +23,39 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
         return maxId + 1;
     };
 
-    // Populate form fields when editing
+    const getTotalWeightByName = () => {
+        const weightMap = {};
+        items.forEach((item) => {
+            if (!weightMap[item.name]) {
+                weightMap[item.name] = 0;
+            }
+            weightMap[item.name] += Number(item.weight) || 0;
+        });
+        return weightMap;
+    };
+
+    const getTotalUsedWeightByName = () => {
+        const usedWeightMap = {};
+        useItems.forEach((item) => {
+            if (!usedWeightMap[item.useName]) {
+                usedWeightMap[item.useName] = 0;
+            }
+            usedWeightMap[item.useName] += Number(item.useWeight) || 0;
+        });
+        return usedWeightMap;
+    };
+
+    useEffect(() => {
+        if (useName) {
+            const available = getTotalWeightByName();
+            const used = getTotalUsedWeightByName();
+            const remaining = (available[useName] || 0) - (used[useName] || 0);
+            setRemainingWeight(remaining.toFixed(2));
+        } else {
+            setRemainingWeight(null);
+        }
+    }, [useName, items, useItems]);
+
     useEffect(() => {
         if (isEdit && data?.useId) {
             setUseId(data.useId);
@@ -36,7 +67,6 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
         }
     }, [data, isEdit]);
 
-    // Reset form after submission
     useEffect(() => {
         if (!submitted) {
             setUseId(getNextId());
@@ -49,56 +79,66 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
                 useType: '',
                 useWeight: ''
             });
+            setRemainingWeight(null);
         }
     }, [submitted]);
 
-    // Extract names and qty types from items prop and create a mapping
     useEffect(() => {
-        const names = items.map(item => item.name); // Extract item names
+        const names = items.map(item => item.name);
         const nameToQtyMap = items.reduce((acc, item) => {
-            acc[item.name] = item.qty; // Map each name to its qty type (e.g., "Milk" -> "Liter")
+            acc[item.name] = item.qty;
             return acc;
         }, {});
-        setItemNames(names); // Update Autocomplete options
-        setItemMap(nameToQtyMap); // Store the name-to-qty mapping
+        setItemNames(names);
+        setItemMap(nameToQtyMap);
     }, [items]);
 
-    // Validate form fields
     const validateForm = () => {
         const newErrors = {
             useId: '',
             useName: '',
             useType: '',
-            useWeight: ''
+            useWeight: '' // Fixed syntax error here
         };
 
         if (!useName) newErrors.useName = 'Item selection is required';
         if (!useType) newErrors.useType = 'Quantity type is required';
         if (!useWeight) newErrors.useWeight = 'Weight is required';
         else if (isNaN(useWeight) || Number(useWeight) < 0.1) {
-            newErrors.useWeight = 'Weight must be at least 0.1 kg';
+            newErrors.useWeight = 'Weight must be at least 0.1';
+        } else {
+            const available = getTotalWeightByName()[useName] || 0;
+            const currentUsed = getTotalUsedWeightByName()[useName] || 0;
+            let effectiveRemaining = available - currentUsed;
+
+            if (isEdit && data?.useWeight) {
+                const originalWeight = Number(data.useWeight);
+                effectiveRemaining += originalWeight;
+            }
+
+            if (Number(useWeight) > effectiveRemaining) {
+                newErrors.useWeight = `Weight cannot exceed remaining: ${effectiveRemaining.toFixed(2)}`;
+            }
         }
 
         setErrors(newErrors);
         return !Object.values(newErrors).some(error => !!error);
     };
 
-    // Handle name selection and auto-set useType
     const handleNameChange = (event, newValue) => {
-        setUseName(newValue); // Update selected name
+        setUseName(newValue);
         if (newValue && itemMap[newValue]) {
-            setUseType(itemMap[newValue]); // Automatically set useType based on selected name
+            setUseType(itemMap[newValue]);
         } else {
-            setUseType(''); // Clear useType if no matching item
+            setUseType('');
         }
+        setUseWeight('');
     };
 
-    // Save or update item in localStorage
     const saveToLocalStorage = (itemData) => {
         const storedItems = JSON.parse(localStorage.getItem('groceryItems') || '[]');
-        
         if (isEdit) {
-            const updatedItems = storedItems.map(item => 
+            const updatedItems = storedItems.map(item =>
                 item.useId === itemData.useId ? itemData : item
             );
             localStorage.setItem('groceryItems', JSON.stringify(updatedItems));
@@ -108,7 +148,6 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
         }
     };
 
-    // Handle form submission
     const handleSubmit = () => {
         if (validateForm()) {
             const itemData = {
@@ -117,28 +156,30 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
                 useType,
                 useWeight: Number(useWeight)
             };
-            
             if (isEdit) {
                 updateUseItem(itemData);
             } else {
                 addUseItem(itemData);
             }
-            
             saveToLocalStorage(itemData);
         }
     };
 
     return (
-        <div className='flex items-center justify-center'>
-            <Box className="flex flex-col items-center justify-center rounded-lg w-[90%]">
+        <div className="flex justify-center px-4 mt-8 mb-[100px]">
+            <Box className="w-full max-w-6xl">
+
                 <Box
                     component="form"
-                    className="grid grid-cols-1 gap-4 p-4 bg-gray-200 bg-opacity-50 rounded-lg hadow-md sm:grid-cols-2 md:grid-cols-6"
+                    className="grid grid-cols-1 gap-6 p-6 bg-white border shadow-2xl rounded-xl sm:grid-cols-2 md:grid-cols-3 opacity-90"
                 >
-                    <Typography variant="h5" className="mb-6 font-semibold font-Poppins">
-                        Use Grocery Item
+                    <Typography
+                        variant="h5"
+                        className="mb-4 font-semibold text-center text-gray-800 font-Poppins col-span-full"
+                    >
+                        {isEdit ? 'Update Used Item' : 'Use Grocery Item'}
                     </Typography>
-                    
+
                     <TextField
                         fullWidth
                         required
@@ -151,12 +192,23 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
                         type="number"
                         error={!!errors.useId}
                         helperText={errors.useId}
+                        className="bg-white rounded-lg shadow-sm"
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                borderRadius: '8px',
+                                '& fieldset': { borderColor: '#e2e8f0' },
+                                '&:hover fieldset': { borderColor: '#34d399' },
+                                '&.Mui-focused fieldset': { borderColor: '#34d399' },
+                            },
+                            '& .MuiInputLabel-root': { color: '#6b7280' },
+                            '& .MuiInputLabel-root.Mui-focused': { color: '#34d399' },
+                        }}
                     />
 
                     <Autocomplete
                         options={itemNames}
                         value={useName}
-                        onChange={handleNameChange} // Trigger name change and auto-set useType
+                        onChange={handleNameChange}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
@@ -166,21 +218,41 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
                                 required
                                 error={!!errors.useName}
                                 helperText={errors.useName}
+                                className="bg-white rounded-lg shadow-sm"
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        borderRadius: '8px',
+                                        '& fieldset': { borderColor: '#e2e8f0' },
+                                        '&:hover fieldset': { borderColor: '#34d399' },
+                                        '&.Mui-focused fieldset': { borderColor: '#34d399' },
+                                    },
+                                    '& .MuiInputLabel-root': { color: '#6b7280' },
+                                    '& .MuiInputLabel-root.Mui-focused': { color: '#34d399' },
+                                }}
                             />
                         )}
                     />
 
                     <FormControl fullWidth required>
-                        <InputLabel id="useType" size="small">Quantity Type</InputLabel>
+                        <InputLabel id="useType" size="small" sx={{ color: '#6b7280' }}>
+                            Quantity Type
+                        </InputLabel>
                         <Select
                             labelId="useType"
                             id="useType"
-                            value={useType} // Value is auto-set based on item selection
+                            value={useType}
                             label="Quantity Type"
-                            onChange={(e) => setUseType(e.target.value)} // Allow manual override if needed
+                            onChange={(e) => setUseType(e.target.value)}
                             variant="outlined"
                             size="small"
                             error={!!errors.useType}
+                            className="bg-white rounded-lg shadow-sm"
+                            sx={{
+                                borderRadius: '8px',
+                                '& .MuiOutlinedInput-notchedOutline': { borderColor: '#e2e8f0' },
+                                '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#34d399' },
+                                '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#34d399' },
+                            }}
                         >
                             <MenuItem value="Kg">Kg</MenuItem>
                             <MenuItem value="gram">gram</MenuItem>
@@ -189,7 +261,9 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
                             <MenuItem value="Packet">Packet</MenuItem>
                         </Select>
                         {errors.useType && (
-                            <Typography color="error" variant="caption">{errors.useType}</Typography>
+                            <Typography color="error" variant="caption" className="mt-1">
+                                {errors.useType}
+                            </Typography>
                         )}
                     </FormControl>
 
@@ -204,14 +278,28 @@ const Useform = ({ addUseItem, submitted, items, data, updateUseItem, isEdit }) 
                         value={useWeight}
                         onChange={(e) => setUseWeight(e.target.value)}
                         error={!!errors.useWeight}
-                        helperText={errors.useWeight}
-                        inputProps={{ min: 0.1, step: 0.1 }}
+                        helperText={errors.useWeight || (remainingWeight !== null ? `Remaining: ${remainingWeight}` : '')}
+                        inputProps={{
+                            min: 0.1,
+                            step: 0.1,
+                            max: remainingWeight !== null ? Number(remainingWeight) : undefined
+                        }}
+                        className="bg-white rounded-lg shadow-sm"
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                borderRadius: '8px',
+                                '& fieldset': { borderColor: '#e2e8f0' },
+                                '&:hover fieldset': { borderColor: '#34d399' },
+                                '&.Mui-focused fieldset': { borderColor: '#34d399' },
+                            },
+                            '& .MuiInputLabel-root': { color: '#6b7280' },
+                            '& .MuiInputLabel-root.Mui-focused': { color: '#34d399' },
+                        }}
                     />
-                    
+
                     <Button
                         variant="contained"
-                        color="primary"
-                        className="h-10 px-4 py-2 font-bold text-white bg-green-600 rounded focus:outline-none focus:shadow-outline hover:bg-green-900 "
+                        className="px-6 py-2 text-sm text-white transition-all duration-300 transform rounded-lg shadow-md bg-gradient-to-r from-green-500 to-emerald-600 font-Poppins hover:from-green-600 hover:to-emerald-700 hover:scale-105 col-span-full sm:col-span-2 md:col-span-1 md:col-start-3"
                         onClick={handleSubmit}
                     >
                         {isEdit ? 'Update' : 'Add'}

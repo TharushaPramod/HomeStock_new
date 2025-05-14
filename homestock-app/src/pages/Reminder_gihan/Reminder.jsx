@@ -6,7 +6,8 @@ import ReminderForm from "../../components/reminderManagement/ReminderForm";
 
 import { data } from "react-router-dom";
 import ReminderTable from "../../components/reminderManagement/ReminderTable";
-import InventorySummary from "../../components/Inventory_com/InventorySummary";
+
+
 
 
 
@@ -53,9 +54,9 @@ const Reminder = () => {
         const payload = {
             id: data.id,
             itemName: data.itemName,
-            currentWeight: data.currentWeight,
+            // currentWeight: data.currentWeight,
             thresholdWeight: data.thresholdWeight,
-            reminderDate: data.reminderDate,
+            // reminderDate: data.reminderDate,
 
         }
 
@@ -77,9 +78,9 @@ const Reminder = () => {
         const payload = {
             id: data.id,
             itemName: data.itemName,
-            currentWeight: data.currentWeight,
+            // currentWeight: data.currentWeight,
             thresholdWeight: data.thresholdWeight,
-            reminderDate: data.reminderDate,
+            // reminderDate: data.reminderDate,
 
         }
 
@@ -109,7 +110,7 @@ const Reminder = () => {
     return (
         <Box>
             <Navbar />
-            <InventorySummary/>
+
             <Box>
                 <ReminderForm
                     addReminder={addReminder}
@@ -130,6 +131,7 @@ const Reminder = () => {
                 />
 
             </Box>
+            <Footer/>
 
 
         </Box>

@@ -8,7 +8,7 @@ const Navbar = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <header className='mt-8'>
+    <header className='mt-8 cursor-pointer'>
       <nav className='flex items-center justify-between w-[95%] mx-auto h-8 rounded-[20px] bg-transparent'>
         <div className='w-16 ml-5 text-4xl font-extrabold text-black font-Poppins'>
           HOMESTOCK
@@ -32,20 +32,7 @@ const Navbar = () => {
               </a>
             </li>
             <li>
-              <a
-                onClick={() => navigate('/reminder')}
-                className={`text-[18px] font-semibold font-Poppins hover:underline ${isActive('/reminder') ? 'text-green-700 underline' : 'hover:text-gray-200'}`}
-              >
-                Reminders
-              </a>
-            </li>
-            <li>
-              <a
-                onClick={() => navigate('/list-dashboard')}
-                className={`text-[18px] font-semibold font-Poppins hover:underline ${isActive('/list-dashboard') ? 'text-green-700 underline' : 'hover:text-gray-200'}`}
-              >
-                Grocery List
-              </a>
+
             </li>
             <li>
               <a
@@ -60,7 +47,7 @@ const Navbar = () => {
         <div>
           <button className='mr-5 text-[15px]'>
             <a onClick={() => navigate('/register')}>
-              {/* Register button content here if needed */}
+
             </a>
           </button>
         </div>

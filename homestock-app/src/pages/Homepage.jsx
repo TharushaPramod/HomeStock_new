@@ -14,21 +14,30 @@ function Homepage() {
     <div>
       <Navbar></Navbar>
 
-      {/* Hero Section */}
-      <div className="flex flex-col items-center">
-        <h1 className="text-[100px] font-Poppins font-extrabold text-white mt-[50px] animate-fade-in hover:scale-105 transition-transform duration-300 text-opacity-25">
-          Welcome to Home Stock
-        </h1>
-        <p className="flex justify-center max-w-2xl mt-4 text-lg font-medium leading-relaxed text-center text-white transition-transform duration-300 opacity-60 md:text-xl font-Poppins animate-fade-in hover:scale-105">
-          Manage your home inventory, groceries, and household essentials with ease. Keep track of what you have and what you need, all in one place.
-        </p>
+    {/* Hero Section */}
+<div 
+  className="flex flex-col items-center mt-[20px]"
+  // style={{
+  //   backgroundImage: "url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop')",
+  //   backgroundSize: 'cover',
+  //   backgroundPosition: 'center',
+  //   backgroundRepeat: 'no-repeat',
+  //   minHeight: '100vh' // Optional: Ensures the section takes up at least the full viewport height
+  // }}
+>
+  <h1 className="text-[100px] font-Poppins font-extrabold text-white mt-[50px] animate-fade-in hover:scale-105 transition-transform duration-300 text-opacity-25">
+    Welcome to Home Stock
+  </h1>
+  <p className="flex justify-center max-w-2xl mt-4 text-lg font-medium leading-relaxed text-center text-white transition-transform duration-300 opacity-60 md:text-xl font-Poppins animate-fade-in hover:scale-105">
+    Manage your home inventory, groceries, and household essentials with ease. Keep track of what you have and what you need, all in one place.
+  </p>
 
-        <img
-          src={Image01}
-          alt="Home Stock Illustration"
-          className="flex justify-end w-full max-w-md mt-8 transition-transform duration-300 animate-fade-in hover:scale-105"
-        />
-      </div>
+  <img
+    src={Image01}
+    alt="Home Stock Illustration"
+    className="flex justify-end w-full max-w-md mt-8 transition-transform duration-300 animate-fade-in hover:scale-105"
+  />
+</div>
 
       {/* Features Section */}
       <div className="flex flex-col items-center mt-16 mb-16">
