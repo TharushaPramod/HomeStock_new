@@ -32,8 +32,13 @@ const Navbar = () => {
               </a>
             </li>
             <li>
-
+              <a onClick={() => navigate('/viewReminder')} className={`text-[18px] font-semibold font-Poppins hover:underline ${isActive('/viewReminder') ? 'text-green-700 underline' : 'hover:text-gray-200'}`}>Reminders</a>
             </li>
+            
+            <li>
+              <a onClick={() => navigate('/list-dashboard')} className={`text-[18px] font-semibold font-Poppins hover:underline ${isActive('/list-dashboard') ? 'text-green-700 underline' : 'hover:text-gray-200'}`}>Grocery List</a>
+            </li>
+            
             <li>
               <a
                 onClick={() => navigate('/recipe')}
