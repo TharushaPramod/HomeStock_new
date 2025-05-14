@@ -1,61 +1,140 @@
-import { Box, TextField, Typography, Button } from '@mui/material';
+import { Box, TextField, Typography, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
-const ItemForm = ({addItem , submitted ,data , isEdit ,updateItem}) => {
-
+const ItemForm = ({ addItem, submitted, data, isEdit, updateItem }) => {
   const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [qty, setQty] = useState('');
   const [weight, setWeight] = useState('');
   const [price, setPrice] = useState('');
   const [expireDate, setExpireDate] = useState('');
+  const [errors, setErrors] = useState({
+    id: '',
+    name: '',
+    qty: '',
+    weight: '',
+    price: '',
+    expireDate: ''
+  });
 
-  useEffect(()=>{
-    if(!submitted){
-      setId(0);
-      setName(''),
-      setQty(0);
-      setWeight(0);
-      setPrice(0);
-      setExpireDate('')
-      
+  const getNextId = () => {
+    const storedItems = JSON.parse(localStorage.getItem('inventoryItems') || '[]');
+    if (storedItems.length === 0) return 1;
+    const maxId = Math.max(...storedItems.map(item => item.id));
+    return maxId + 1;
+  };
+
+  useEffect(() => {
+    if (isEdit && data?.id) {
+      setId(data.id);
+      setName(data.name);
+      setQty(data.qty || '');
+      setWeight(data.weight);
+      setPrice(data.price);
+      setExpireDate(data.expireDate);
+    } else {
+      setId(getNextId());
     }
-  },[submitted]);
+  }, [data, isEdit]);
 
-    useEffect(()=>{
-      if(data?.id  && data.id !==0){
-        setId(data.id);
-        setName(data.name);
-        setQty(data.qty);
-        setWeight(data.weight);
-        setPrice(data.price);
-        setExpireDate(data.expireDate)
+  useEffect(() => {
+    if (!submitted) {
+      setId(getNextId());
+      setName('');
+      setQty('');
+      setWeight('');
+      setPrice('');
+      setExpireDate('');
+      setErrors({
+        id: '',
+        name: '',
+        qty: '',
+        weight: '',
+        price: '',
+        expireDate: ''
+      });
+    }
+  }, [submitted]);
+
+  const validateForm = () => {
+    const newErrors = {
+      id: '',
+      name: '',
+      qty: '',
+      weight: '',
+      price: '',
+      expireDate: ''
+    };
+
+    if (!name) newErrors.name = 'Name is required';
+    else if (name.trim().length === 0) newErrors.name = 'Name cannot be just whitespace';
+
+    if (!qty) newErrors.qty = 'Quantity type is required';
+
+    if (!weight) newErrors.weight = 'Weight is required';
+    else if (isNaN(weight) || Number(weight) < 0.1) newErrors.weight = 'Weight must be at least 0.1';
+
+    if (!price) newErrors.price = 'Price is required';
+    else if (isNaN(price) || Number(price) < 0) newErrors.price = 'Price must be a non-negative number';
+
+    if (!expireDate) newErrors.expireDate = 'Expire date is required';
+    else {
+      const selectedDate = new Date(expireDate);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Reset time for comparison
+      if (selectedDate < today) newErrors.expireDate = 'Expire date cannot be in the past';
+    }
+
+    setErrors(newErrors);
+    return !Object.values(newErrors).some(error => !!error);
+  };
+
+  const saveToLocalStorage = (itemData) => {
+    const storedItems = JSON.parse(localStorage.getItem('inventoryItems') || '[]');
+    if (isEdit) {
+      const updatedItems = storedItems.map(item =>
+        item.id === itemData.id ? itemData : item
+      );
+      localStorage.setItem('inventoryItems', JSON.stringify(updatedItems));
+    } else {
+      storedItems.push(itemData);
+      localStorage.setItem('inventoryItems', JSON.stringify(storedItems));
+    }
+  };
+
+  const handleSubmit = () => {
+    if (validateForm()) {
+      const itemData = {
+        id: Number(id),
+        name: name.trim(),
+        qty,
+        weight: Number(weight),
+        price: Number(price),
+        expireDate
+      };
+      if (isEdit) {
+        updateItem(itemData);
+      } else {
+        addItem(itemData);
       }
-    },[data])
+      saveToLocalStorage(itemData);
+    }
+  };
 
-
-
-    
   return (
+    <div className="flex justify-center px-4 mt-8 mb-[100px]">
+      <Box className="w-full max-w-7xl">
+        <Box
+          component="form"
+          className="grid grid-cols-1 gap-6 p-6 bg-white shadow-2xl rounded-xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 opacity-90"
+        >
+          <Typography
+            variant="h5"
+            className="mb-4 font-semibold text-center text-gray-800 font-Poppins col-span-full"
+          >
+            {isEdit ? 'Update Grocery Item' : 'Add Grocery Item'}
+          </Typography>
 
-    <div className="flex justify-center">
-    
-    <Box className="flex flex-col items-center justify-center w-[70%]  mt-7 ml-2 ">
-      
-
-
-
-      <Box
-        component="form"
-        className="grid grid-cols-3 gap-3 p-6 bg-white rounded-lg shadow-md sm:grid-cols-3 bg-opacity-30"
-        
-      >
-        <Typography  className="mb-2 text-xl font-bold font-Poppins">
-        Add Grocery Item
-      </Typography>
-      
-        {/* ID Field */}
-        <div className="mb-4 ">
           <TextField
             fullWidth
             required
@@ -64,15 +143,23 @@ const ItemForm = ({addItem , submitted ,data , isEdit ,updateItem}) => {
             variant="outlined"
             size="small"
             value={id}
-            onChange={(e) => setId(e.target.value)}
-            
-            
-            className="w-full max-w-[200px]"
+            disabled
+            type="number"
+            error={!!errors.id}
+            helperText={errors.id}
+            className="bg-white rounded-lg shadow-sm"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '8px',
+                '& fieldset': { borderColor: '#e2e8f0' },
+                '&:hover fieldset': { borderColor: '#34d399' },
+                '&.Mui-focused fieldset': { borderColor: '#34d399' },
+              },
+              '& .MuiInputLabel-root': { color: '#6b7280' },
+              '& .MuiInputLabel-root.Mui-focused': { color: '#34d399' },
+            }}
           />
-        </div>
 
-        {/* Name Field */}
-        <div className="mb-4">
           <TextField
             fullWidth
             required
@@ -80,51 +167,82 @@ const ItemForm = ({addItem , submitted ,data , isEdit ,updateItem}) => {
             label="Name"
             variant="outlined"
             size="small"
-            className="w-full max-w-[200px]"
             value={name}
             onChange={(e) => setName(e.target.value)}
-
-            
+            error={!!errors.name}
+            helperText={errors.name}
+            className="bg-white rounded-lg shadow-sm"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '8px',
+                '& fieldset': { borderColor: '#e2e8f0' },
+                '&:hover fieldset': { borderColor: '#34d399' },
+                '&.Mui-focused fieldset': { borderColor: '#34d399' },
+              },
+              '& .MuiInputLabel-root': { color: '#6b7280' },
+              '& .MuiInputLabel-root.Mui-focused': { color: '#34d399' },
+            }}
           />
-        </div>
 
-        {/* Quantity Field */}
-        <div className="mb-4">
-          <TextField
-            fullWidth
-            required
-            id="qty"
-            label="Quantity"
-            type="number"
-            variant="outlined"
-           size="small"
-            className="w-full max-w-[200px]"
-            value={qty}
-            onChange={(e) => setQty(e.target.value)}
-            
-          />
-        </div>
+          <FormControl fullWidth required error={!!errors.qty}>
+            <InputLabel id="qty-type-label" size="small" sx={{ color: '#6b7280' }}>
+              Quantity Type
+            </InputLabel>
+            <Select
+              labelId="qty-type-label"
+              id="qty"
+              value={qty}
+              label="Quantity Type"
+              onChange={(e) => setQty(e.target.value)}
+              variant="outlined"
+              size="small"
+              className="bg-white rounded-lg shadow-sm"
+              sx={{
+                borderRadius: '8px',
+                '& .MuiOutlinedInput-notchedOutline': { borderColor: '#e2e8f0' },
+                '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#34d399' },
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#34d399' },
+              }}
+            >
+              <MenuItem value="Kg">Kg</MenuItem>
+              <MenuItem value="gram">gram</MenuItem>
+              <MenuItem value="Liter">Liter</MenuItem>
+              <MenuItem value="Quantity">Quantity</MenuItem>
+              <MenuItem value="Packet">Packet</MenuItem>
+            </Select>
+            {errors.qty && (
+              <Typography color="error" variant="caption" className="mt-1">
+                {errors.qty}
+              </Typography>
+            )}
+          </FormControl>
 
-        {/* Weight Field */}
-        <div className="mb-4">
           <TextField
             fullWidth
             required
             id="weight"
-            label="Weight"
+            label="Quantity"
             type="number"
             variant="outlined"
-           size="small"
-            className="w-full max-w-[100px]"
+            size="small"
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
-            
-            
+            error={!!errors.weight}
+            helperText={errors.weight}
+            inputProps={{ min: 0.1, step: "0.1" }}
+            className="bg-white rounded-lg shadow-sm"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '8px',
+                '& fieldset': { borderColor: '#e2e8f0' },
+                '&:hover fieldset': { borderColor: '#34d399' },
+                '&.Mui-focused fieldset': { borderColor: '#34d399' },
+              },
+              '& .MuiInputLabel-root': { color: '#6b7280' },
+              '& .MuiInputLabel-root.Mui-focused': { color: '#34d399' },
+            }}
           />
-        </div>
 
-        {/* Price Field */}
-        <div className="mb-4">
           <TextField
             fullWidth
             required
@@ -132,16 +250,25 @@ const ItemForm = ({addItem , submitted ,data , isEdit ,updateItem}) => {
             label="Price"
             type="number"
             variant="outlined"
-           size="small"
-            className="w-full max-w-[200px]"
+            size="small"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
-           
+            error={!!errors.price}
+            helperText={errors.price}
+            inputProps={{ min: 0, step: "0.01" }}
+            className="bg-white rounded-lg shadow-sm"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '8px',
+                '& fieldset': { borderColor: '#e2e8f0' },
+                '&:hover fieldset': { borderColor: '#34d399' },
+                '&.Mui-focused fieldset': { borderColor: '#34d399' },
+              },
+              '& .MuiInputLabel-root': { color: '#6b7280' },
+              '& .MuiInputLabel-root.Mui-focused': { color: '#34d399' },
+            }}
           />
-        </div>
 
-        {/* Expire Date Field */}
-        <div className="mb-6">
           <TextField
             fullWidth
             required
@@ -150,30 +277,33 @@ const ItemForm = ({addItem , submitted ,data , isEdit ,updateItem}) => {
             type="date"
             variant="outlined"
             size="small"
-            className="w-full max-w-[200px]"
-            InputLabelProps={{
-              shrink: true, // Ensures the label doesn't overlap the date input
-            }}
+            InputLabelProps={{ shrink: true }}
             value={expireDate}
             onChange={(e) => setExpireDate(e.target.value)}
+            error={!!errors.expireDate}
+            helperText={errors.expireDate}
+            className="bg-white rounded-lg shadow-sm"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '8px',
+                '& fieldset': { borderColor: '#e2e8f0' },
+                '&:hover fieldset': { borderColor: '#34d399' },
+                '&.Mui-focused fieldset': { borderColor: '#34d399' },
+              },
+              '& .MuiInputLabel-root': { color: '#6b7280' },
+              '& .MuiInputLabel-root.Mui-focused': { color: '#34d399' },
+            }}
           />
-        </div>
 
-        {/* Submit Button */}
-        <div className="flex justify-center"></div>
-        <Button
-          type="submit"
-          variant="contained"
-          className="h-10 px-4 py-2 font-bold text-white bg-green-600 rounded focus:outline-none focus:shadow-outline hover:bg-green-900 " 
-          onClick={()=> isEdit? updateItem({id,name,qty,weight,price,expireDate}) : addItem({id,name,qty,weight,price,expireDate})}
-        >
-          {
-            isEdit ? 'Update' : 'Add'
-          }
-        </Button>
-        
+          <Button
+            variant="contained"
+            className="px-6 py-2 text-sm text-white transition-all duration-300 transform rounded-lg shadow-md bg-gradient-to-r from-green-500 to-emerald-600 font-Poppins hover:from-green-600 hover:to-emerald-700 hover:scale-105 col-span-full sm:col-span-2 md:col-span-1 lg:col-span-1 lg:col-start-4"
+            onClick={handleSubmit}
+          >
+            {isEdit ? 'Update' : 'Add'}
+          </Button>
+        </Box>
       </Box>
-    </Box>
     </div>
   );
 }
