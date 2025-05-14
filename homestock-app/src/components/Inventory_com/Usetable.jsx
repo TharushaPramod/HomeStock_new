@@ -1,7 +1,9 @@
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, InputAdornment } from "@mui/material";
 import { useState } from "react";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import SearchIcon from "@mui/icons-material/Search";
+import InventoryIcon from "@mui/icons-material/Inventory";
 
 const Usetable = ({ rows, selectedUseItem, deleteUseItem }) => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -11,26 +13,17 @@ const Usetable = ({ rows, selectedUseItem, deleteUseItem }) => {
         row.useName.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    // Debug: Log the rows to check data
-    console.log('Table rows:', rows);
-
     // Function to generate and download PDF
     const generatePDF = () => {
-        console.log("Generating PDF for Usetable...");
-        console.log("Filtered Rows:", filteredRows);
-
         if (filteredRows.length === 0) {
             alert("No data available to generate PDF.");
             return;
         }
 
         const doc = new jsPDF();
-        
-        // Add title
         doc.setFontSize(18);
         doc.text("Used Items Report", 14, 22);
 
-        // Define table columns and data
         const tableColumns = [
             { header: "ID", dataKey: "useId" },
             { header: "Name", dataKey: "useName" },
@@ -45,17 +38,13 @@ const Usetable = ({ rows, selectedUseItem, deleteUseItem }) => {
             useWeight: row.useWeight,
         }));
 
-        console.log("Table Columns:", tableColumns);
-        console.log("Table Rows:", tableRows);
-
-        // Generate table using autoTable
         autoTable(doc, {
             columns: tableColumns,
             body: tableRows,
             startY: 30,
             theme: "striped",
-            headStyles: { fillColor: [67, 160, 71] }, // Green color matching table header
-            styles: { fontSize: 10 },
+            headStyles: { fillColor: [34, 139, 87], textColor: [255, 255, 255] },
+            styles: { fontSize: 10, textColor: [33, 33, 33] },
             columnStyles: {
                 useId: { cellWidth: 20 },
                 useName: { cellWidth: 50 },
@@ -64,114 +53,113 @@ const Usetable = ({ rows, selectedUseItem, deleteUseItem }) => {
             },
         });
 
-        // Save the PDF
         doc.save("used-items.pdf");
     };
 
     return (
-        <div className="flex justify-center mt-5 mb-12 rounded-lg ">
-            <div className="flex justify-center w-[100%] rounded-lg">
-                <div className="w-[90%] rounded-lg">
-                    {/* Search Input and Download Button */}
-                    <div className="flex items-center justify-between mt-4 mb-1">
-                        <TextField
-                            label="Search by Name"
-                            variant="outlined"
-                            size="small"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-[300px] bg-white bg-opacity-80 rounded-3xl"
-                            sx={{
-                                '& .MuiOutlinedInput-root': {
-                                    '& fieldset': {
-                                        border: 'none', // Removes the outline
-                                    },
-                                    '&:hover fieldset': {
-                                        border: 'none', // Removes outline on hover
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                        border: 'none', // Removes outline when focused
-                                    },
-                                },
-                            }}
-                        />
-                        <Button
-                            variant="contained"
-                            className="text-white bg-green-600 hover:bg-green-700 font-Poppins text-[12px] animate-fade-in hover:scale-105 transition-transform duration-300"
-                            onClick={generatePDF}
-                            size="small"
-                        >
-                            Download PDF
-                        </Button>
-                    </div>
+        <div className="flex justify-center px-4 mt-8 mb-12">
+            <div className="w-full max-w-6xl">
+                {/* Header Section */}
+                <div className="flex items-center justify-between mb-6">
+                    <TextField
+                        label="Search Items"
+                        variant="outlined"
+                        size="small"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full max-w-xs bg-white rounded-lg shadow-sm"
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <SearchIcon className="text-gray-400" />
+                                </InputAdornment>
+                            ),
+                        }}
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                borderRadius: '8px',
+                                backgroundColor: 'white',
+                                '& fieldset': { borderColor: '#e2e8f0' },
+                                '&:hover fieldset': { borderColor: '#34d399' },
+                                '&.Mui-focused fieldset': { borderColor: '#34d399' },
+                            },
+                            '& .MuiInputLabel-root': { color: '#6b7280' },
+                            '& .MuiInputLabel-root.Mui-focused': { color: '#34d399' },
+                        }}
+                    />
+                    <Button
+                        variant="contained"
+                        className="px-6 py-2 text-sm text-white transition-all duration-300 transform rounded-lg shadow-md bg-gradient-to-r from-green-500 to-emerald-600 font-Poppins hover:from-green-600 hover:to-emerald-700 hover:scale-105"
+                        onClick={generatePDF}
+                    >
+                        Download PDF
+                    </Button>
+                </div>
 
-                    <TableContainer component={Paper} className="rounded-xl">
-                        <Table>
-                            <TableHead className="bg-green-600 bg-opacity-75">
-                                <TableRow>
-                                    <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">ID</TableCell>
-                                    <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">Name</TableCell>
-                                    <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">Type</TableCell>
-                                    <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">QTY</TableCell>
-                                    <TableCell className="font-semibold text-[18px] font-Poppins text-center text-white">Action</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {filteredRows.length > 0 ? (
-                                    filteredRows.map(row => (
-                                        <TableRow key={row.useId} className="bg-green-100">
-                                            <TableCell component="th" className="text-[15px] font-Poppins text-center font-medium">
-                                                {row.useId}
-                                            </TableCell>
-                                            <TableCell component="th" className="text-[15px] font-Poppins text-center font-medium">
-                                                {row.useName}
-                                            </TableCell>
-                                            <TableCell component="th" className="text-[15px] font-Poppins text-center font-medium">
-                                                {row.useType} 
-                                            </TableCell>
-                                            <TableCell component="th" className="text-[15px] font-Poppins text-center font-medium">
-                                                {row.useWeight}
-                                            </TableCell>
-                                            <TableCell component="th" className="text-[15px] font-Poppins text-center font-medium space-x-1">
+                {/* Table Section */}
+                <TableContainer component={Paper} className="overflow-x-auto bg-white shadow-lg rounded-xl">
+                    <Table>
+                        <TableHead>
+                            <TableRow className="bg-gradient-to-r from-green-600 to-emerald-600">
+                                <TableCell className="text-base font-semibold text-center text-white font-Poppins">ID</TableCell>
+                                <TableCell className="text-base font-semibold text-center text-white font-Poppins">Name</TableCell>
+                                <TableCell className="text-base font-semibold text-center text-white font-Poppins">Type</TableCell>
+                                <TableCell className="text-base font-semibold text-center text-white font-Poppins">QTY</TableCell>
+                                <TableCell className="text-base font-semibold text-center text-white font-Poppins">Action</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {filteredRows.length > 0 ? (
+                                filteredRows.map(row => (
+                                    <TableRow
+                                        key={row.useId}
+                                        className="transition-colors duration-200 hover:bg-gray-50 even:bg-gray-50/50"
+                                        sx={{ '&:hover': { boxShadow: '0 2px 8px rgba(0,0,0,0.1)' } }}
+                                    >
+                                        <TableCell className="text-sm text-center text-gray-800 font-Poppins">{row.useId}</TableCell>
+                                        <TableCell className="text-sm text-center text-gray-800 font-Poppins">{row.useName}</TableCell>
+                                        <TableCell className="text-sm text-center text-gray-800 font-Poppins">{row.useType}</TableCell>
+                                        <TableCell className="text-sm text-center text-gray-800 font-Poppins">{row.useWeight}</TableCell>
+                                        <TableCell>
+                                            <div className="flex justify-center space-x-2">
                                                 <Button
+                                                    variant="contained"
+                                                    className="px-4 py-1 text-xs text-white transition-all duration-300 transform rounded-md shadow-sm bg-gradient-to-r from-blue-500 to-indigo-600 font-Poppins hover:from-blue-600 hover:to-indigo-700 hover:scale-105"
                                                     onClick={() => selectedUseItem({
                                                         useId: row.useId,
                                                         useName: row.useName,
                                                         useType: row.useType,
                                                         useWeight: row.useWeight
                                                     })}
-                                                    variant="contained"
-                                                    color="primary"
-                                                    size="small"
-                                                    className="text-xl text-white bg-blue-500 shadow-md hover:bg-blue-700 font-Poppins text-[12px]
-                                                               animate-fade-in hover:scale-105 transition-transform duration-300"
                                                 >
                                                     Update
                                                 </Button>
                                                 <Button
-                                                    onClick={() => deleteUseItem({ useId: row.useId })}
                                                     variant="contained"
-                                                    color="error"
-                                                    size="small"
-                                                    className="text-xl text-white bg-red-500 shadow-md hover:bg-red-700 font-Poppins text-[12px]
-                                                               animate-fade-in hover:scale-105 transition-transform duration-300"
+                                                    className="px-4 py-1 text-xs text-white transition-all duration-300 transform rounded-md shadow-sm bg-gradient-to-r from-red-500 to-rose-600 font-Poppins hover:from-red-600 hover:to-rose-700 hover:scale-105"
+                                                    onClick={() => deleteUseItem({ useId: row.useId })}
                                                 >
                                                     Delete
                                                 </Button>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))
-                                ) : (
-                                    <TableRow>
-                                        <TableCell colSpan={5} className="text-center font-Poppins text-[15px] font-medium">
-                                            {searchTerm ? "No matching items found" : "No data"}
+                                            </div>
                                         </TableCell>
                                     </TableRow>
-                                )}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </div>
+                                ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={5} className="py-12 text-center">
+                                        <div className="flex flex-col items-center">
+                                            <InventoryIcon className="mb-2 text-5xl text-gray-400" />
+                                            <span className="text-lg text-gray-500 font-Poppins">
+                                                {searchTerm ? "No matching items found" : "No used items available"}
+                                            </span>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             </div>
         </div>
     );

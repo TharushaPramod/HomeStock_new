@@ -205,120 +205,140 @@ export default function Additem() {
                 
                 
                     <div className="table-wrapper w-[40%] mt-[50px] max-h-[300px] overflow-y-auto rounded-xl shadow-md ">
-    <table className="w-full">
-        <thead className="sticky top-0 z-10 text-center bg-green-600 bg-opacity-75">
-            <tr className='text-center'>
-                <th className='text-center font-Poppins text-[18px] font-semibold text-white py-2'>
-                    Item Name
-                </th>
-                <th className='text-center font-Poppins text-[18px] font-semibold text-white py-2'>
-                    Quantity Type
-                </th>
-                <th className='text-center font-Poppins text-[18px] font-semibold text-white py-2'>
-                    Remaining
-                </th>
-            </tr>
-        </thead>
-        <tbody className='bg-white bg-opacity-25'>
-            {getInventorySummary().map((item, index) => {
-                // Find the quantity type from the first matching item in the items array
-                const qtyType = items.find(i => i.name === item.name)?.qty || 'Kg';
-                return (
-                    <tr key={index} className={item.remaining < 0 ? 'negative' : ''}>
-                        <td className='text-center font-Poppins text-[16px] font-medium py-2'>
-                            {item.name}
-                        </td>
-                        <td className='text-center font-Poppins text-[16px] font-medium py-2'>
-                            {qtyType}
-                        </td>
-                        <td className='text-center font-Poppins text-[16px] font-medium py-2'>
-                            {item.remaining.toFixed(2)}
-                        </td>
-                    </tr>
-                );
-            })}
-        </tbody>
-    </table>
+                    <table className="w-full overflow-hidden shadow-lg rounded-xl ">
+                                    <thead className="sticky top-0 z-10 text-white bg-gradient-to-r from-green-600 to-emerald-600">
+                                        <tr>
+                                        <th className="py-3 text-base font-semibold text-center font-Poppins">
+                                            Item Name
+                                        </th>
+                                        <th className="py-3 text-base font-semibold text-center font-Poppins">
+                                            Quantity Type
+                                        </th>
+                                        <th className="py-3 text-base font-semibold text-center font-Poppins">
+                                            Remaining
+                                        </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="bg-white">
+                                        {getInventorySummary().map((item, index) => {
+                                        const qtyType = items.find(i => i.name === item.name)?.qty || 'Kg';
+                                        return (
+                                            <tr
+                                            key={index}
+                                            className={`hover:bg-gray-50 transition-colors duration-200 even:bg-gray-50/50 ${
+                                                item.remaining < 0 ? 'bg-red-50' : ''
+                                            }`}
+                                            style={{ boxShadow: item.remaining < 0 ? 'inset 0 0 0 1px rgba(239, 68, 68, 0.2)' : 'none' }}
+                                            >
+                                            <td className="py-3 text-sm text-center text-gray-800 font-Poppins">
+                                                {item.name}
+                                            </td>
+                                            <td className="py-3 text-sm text-center text-gray-800 font-Poppins">
+                                                {qtyType}
+                                            </td>
+                                            <td className={`text-center font-Poppins text-sm py-3 ${
+                                                item.remaining < 0 ? 'text-red-600 font-semibold' : 'text-gray-800'
+                                            }`}>
+                                                {item.remaining.toFixed(2)}
+                                            </td>
+                                            </tr>
+                                        );
+                                        })}
+                                    </tbody>
+                </table>
 </div>
 </div>
            
 
-            {/* Tab Navigation */}
-            <div className="flex items-center justify-center mb-8">
-                
-  <div className="flex p-1 mt-10 space-x-1 bg-gray-100 bg-opacity-75 rounded-lg shadow-inner">
-                  
-                    <Button
-                    variant={activeTab === 'add' ? 'contained' : 'text'}
-                    className={`px-6 py-2 rounded-md font-medium transition-all duration-200 font-Poppins
-                         ${
-                        activeTab === 'add' 
-                        ? 'bg-green-600 text-white shadow-md hover:bg-green-700' 
-                        : 'text-gray-600 hover:bg-gray-200 hover:text-gray-800'
-                    }`}
-                             onClick={() => setActiveTab('add')}
-                    >
-                    Add Items
-                    </Button>
-    
-                    <Button
-                    variant={activeTab === 'use' ? 'contained' : 'text'}
-                    className={`px-6 py-2 rounded-md font-medium transition-all duration-200 ${
-                        activeTab === 'use' 
-                        ? 'bg-green-600 text-white shadow-md hover:bg-green-700' 
-                        : 'text-gray-600 hover:bg-gray-200 hover:text-gray-800'
-                    }`}
-                    onClick={() => setActiveTab('use')}
-                    >
-                    Use Items
-                    </Button>
+          {/* Tab Navigation and Pages */}
+      <div className="flex flex-col items-center justify-center w-full px-4 mx-auto mb-20 max-w-7xl">
+        {/* Tab Navigation */}
+        <div className="w-full p-2 mt-8 bg-white shadow-lg rounded-t-xl">
+          <div className="flex w-full space-x-2">
+            <Button
+              variant="contained"
+              className={`flex-1 px-6 py-2 rounded-t-lg font-Poppins text-sm font-medium transition-all duration-300 ${
+                activeTab === 'add'
+                  ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-md hover:from-green-600 hover:to-emerald-700 hover:scale-102'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-800 hover:scale-100'
+              }`}
+              onClick={() => setActiveTab('add')}
+              aria-selected={activeTab === 'add'}
+              role="tab"
+            >
+              Add Items
+            </Button>
+            <Button
+              variant="contained"
+              className={`flex-1 px-6 py-2 rounded-t-lg font-Poppins text-sm font-medium transition-all duration-300 ${
+                activeTab === 'use'
+                  ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-md hover:from-green-600 hover:to-emerald-700 hover:scale-102'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-800 hover:scale-100'
+              }`}
+              onClick={() => setActiveTab('use')}
+              aria-selected={activeTab === 'use'}
+              role="tab"
+            >
+              Use Items
+            </Button>
+          </div>
+        </div>
+
+        {/* Tab Content as Separate Pages */}
+      <Paper
+  elevation={3}
+  className={`w-full mt-[-1px] p-6 rounded-b-xl rounded-tr-xl transition-opacity duration-300 ${
+    activeTab === 'add' ? 'opacity-100' : 'opacity-0 hidden'
+  } bg-gray-200 text-gray-800`}
+>
+  <div className="min-h-[300px] bg-transparent">
+    <h2 className="mb-4 text-xl font-semibold text-black font-Poppins">Add Items</h2>
+    <Itemform
+      addItem={addItem}
+      submitted={submitted}
+      data={selectedItem}
+      isEdit={isEdit}
+      updateItem={updateItem}
+    />
+    <ItemTable
+      rows={items}
+      deleteItem={(data) => window.confirm('Are you sure?') && deleteItem(data)}
+      selectedItem={(data) => {
+        setSelectedItem(data);
+        setIsEdit(true);
+      }}
+    />
   </div>
-</div>
+</Paper>
 
-            {/* Tab Content */}
-            <div className="w-full tab-content ">
-                {activeTab === 'add' ? (
-                    <>
-                        <Itemform
-                            addItem={addItem}
-                            submitted={submitted}
-                            data={selectedItem}
-                            isEdit={isEdit}
-                            updateItem={updateItem}
-                        />
-
-                        <ItemTable
-                            rows={items}
-                            deleteItem={data => window.confirm("Are you Sure?") && deleteItem(data)}
-                            selectedItem={data => {
-                                setSelectedItem(data);
-                                setIsEdit(true);
-                            }}
-                        />
-                    </>
-                ) : (
-                    <>
-                                        <Useform
-                        addUseItem={addUseItem}
-                        submitted={submitted}
-                        items={items}
-                        useItems={useItems} // Add this prop
-                        data={selectedUseItem}
-                        isEdit={isEdit}
-                        updateUseItem={updateUseItem}
-                    />
-
-                        <Usetable 
-                            rows={useItems}
-                            deleteUseItem={data => window.confirm("Are you Sure?") && deleteUseItem(data)}
-                            selectedUseItem={data => {
-                                setSelectedUseItem(data);
-                                setIsEdit(true);
-                            }}
-                        />
-                    </>
-                )}
-            </div>
+<Paper
+  elevation={3}
+  className={`w-full mt-[-1px] p-6 rounded-b-xl rounded-tr-xl transition-opacity duration-300 ${
+    activeTab === 'use' ? 'opacity-100' : 'opacity-0 hidden'
+  } bg-gray-200 text-gray-800`}
+>
+  <div className="min-h-[300px] bg-transparent">
+    <h2 className="mb-4 text-xl font-semibold text-black font-Poppins">Use Items</h2>
+    <Useform
+      addUseItem={addUseItem}
+      submitted={submitted}
+      items={items}
+      useItems={useItems}
+      data={selectedUseItem}
+      isEdit={isEdit}
+      updateUseItem={updateUseItem}
+    />
+    <Usetable
+      rows={useItems}
+      deleteUseItem={(data) => window.confirm('Are you sure?') && deleteUseItem(data)}
+      selectedUseItem={(data) => {
+        setSelectedUseItem(data);
+        setIsEdit(true);
+      }}
+    />
+  </div>
+</Paper>
+      </div>
 
                 <Footer/>
             
