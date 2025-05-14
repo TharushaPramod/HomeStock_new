@@ -12,7 +12,7 @@ const CreateReminderPage = () => {
     itemName: '',
     //currentWeight: '',
     reminderWeight: '',
-    reminderDate: ''
+    // reminderDate: ''
   });
 
   const handleChange = (e) => {
@@ -27,7 +27,7 @@ const CreateReminderPage = () => {
         id: parseInt(formData.id),
         //currentWeight: parseFloat(formData.currentWeight),
         reminderWeight: parseFloat(formData.reminderWeight),
-        reminderDate: new Date(formData.reminderDate)
+        // reminderDate: new Date(formData.reminderDate)
       });
       navigate('/viewreminder');
     } catch (error) {
@@ -41,7 +41,7 @@ const CreateReminderPage = () => {
       itemName: '',
       //currentWeight: '',
       reminderWeight: '',
-      reminderDate: ''
+      // reminderDate: ''
     });
   };
 
@@ -104,7 +104,7 @@ const CreateReminderPage = () => {
                 required
               />
             </div>
-            <div>
+            {/* <div>
               <label className="block mb-1 text-sm font-medium text-gray-700">Reminder Date</label>
               <input
                 type="date"
@@ -114,7 +114,7 @@ const CreateReminderPage = () => {
                 className="w-full p-3 transition duration-200 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required
               />
-            </div>
+            </div> */}
             <div className="flex justify-end gap-2">
               <button
                 type="button"

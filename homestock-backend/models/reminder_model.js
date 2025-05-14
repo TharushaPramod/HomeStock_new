@@ -6,7 +6,7 @@ const ReminderSchema = new Schema({
     itemName: { type: String, required: false },
     //currentWeight: { type: Number, required: false },
     reminderWeight: { type: Number, required: false },
-    reminderDate: { type: Date, required: false },
+    // reminderDate: { type: Date, required: false },
     //status: { type: String, enum: ['Pending', 'Completed'], default: 'Pending' },
 });
 

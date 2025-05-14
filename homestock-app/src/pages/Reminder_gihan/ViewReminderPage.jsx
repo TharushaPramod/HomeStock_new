@@ -9,7 +9,6 @@ import Footer from '../../components/Footer';
 const ViewReminderPage = () => {
   const [reminders, setReminders] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedDate, setSelectedDate] = useState('');
   const [selectedReminders, setSelectedReminders] = useState([]);
   const navigate = useNavigate();
 
@@ -47,21 +46,17 @@ const ViewReminderPage = () => {
     );
   };
 
-  const isValidDate = (date) => {
-    const parsedDate = new Date(date);
-    return !isNaN(parsedDate.getTime());
-  };
+  // const isValidDate = (date) => {
+  //   const parsedDate = new Date(date);
+  //   return !isNaN(parsedDate.getTime());
+  // };
 
   const filteredReminders = reminders
     .filter((reminder) =>
-      reminder.itemName.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-    .filter((reminder) => {
-      if (!selectedDate) return true;
-      if (!isValidDate(reminder.reminderDate)) return false;
-      const reminderDate = new Date(reminder.reminderDate).toISOString().split('T')[0];
-      return reminderDate === selectedDate;
-    });
+      reminder.itemName && typeof reminder.itemName === 'string'
+        ? reminder.itemName.toLowerCase().includes(searchQuery.toLowerCase())
+        : false
+    );
 
   const generateReport = (type) => {
     let reportReminders = [];
@@ -97,8 +92,7 @@ const ViewReminderPage = () => {
     const tableColumn = ['ID', 'Item Name', 'Reminder Weight', 'Reminder Date'];
     const tableRows = reportReminders.map((r) => [
       r.id,
-      r.itemName,
-      //r.currentWeight,
+      r.itemName || 'N/A',
       r.reminderWeight,
       new Date(r.reminderDate).toLocaleDateString(),
     ]);
@@ -136,18 +130,6 @@ const ViewReminderPage = () => {
               className="w-full p-3 transition duration-200 border border-gray-300 rounded-lg sm:w-64 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
             <div className="flex flex-wrap gap-2">
-              <input
-                type="date"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-                className="p-3 transition duration-200 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-              />
-              <button
-                onClick={() => generateReport('date')}
-                className="px-4 py-2 font-semibold text-white transition duration-200 bg-red-600 rounded-md shadow-md bg-opacity-85 hover:bg-red-700"
-              >
-                Generate Date Report
-              </button>
               <button
                 onClick={() => generateReport('selected')}
                 className="px-4 py-2 font-semibold text-white transition duration-200 bg-red-600 rounded-md shadow-md bg-opacity-85 hover:bg-red-700"
@@ -156,7 +138,7 @@ const ViewReminderPage = () => {
               </button>
               <Link
                 to="/createreminder"
-                className="flex items-center justify-center inline-block px-4 py-2 font-semibold text-white transition duration-200 bg-blue-600 rounded-md shadow-md bg-opacity-85 rpounded-md hover:bg-blue-700"
+                className="flex items-center justify-center px-4 py-2 font-semibold text-white transition duration-200 bg-blue-600 rounded-md shadow-md bg-opacity-85 hover:bg-blue-700"
               >
                 Create New Reminder
               </Link>
@@ -182,9 +164,7 @@ const ViewReminderPage = () => {
                 </th>
                 <th className="p-4 text-sm font-bold tracking-wider text-left uppercase">ID</th>
                 <th className="p-4 text-sm font-bold tracking-wider text-left uppercase">Item Name</th>
-                {/* <th className="p-4 text-sm font-bold tracking-wider text-left uppercase">Current Weight</th> */}
                 <th className="p-4 text-sm font-bold tracking-wider text-left uppercase">Reminder Weight</th>
-                <th className="p-4 text-sm font-bold tracking-wider text-left uppercase">Reminder Date</th>
                 <th className="p-4 text-sm font-bold tracking-wider text-left uppercase">Actions</th>
               </tr>
             </thead>
@@ -202,12 +182,8 @@ const ViewReminderPage = () => {
                     />
                   </td>
                   <td className="p-4 font-medium text-gray-700">{reminder.id}</td>
-                  <td className="p-4 text-gray-700">{reminder.itemName}</td>
-                  {/* <td className="p-4 text-gray-700">{reminder.currentWeight}</td> */}
+                  <td className="p-4 text-gray-700">{reminder.itemName || 'N/A'}</td>
                   <td className="p-4 text-gray-700">{reminder.reminderWeight}</td>
-                  <td className="p-4 text-gray-700">
-                    {new Date(reminder.reminderDate).toLocaleDateString()}
-                  </td>
                   <td className="p-4">
                     <div className="flex gap-2">
                       <button
@@ -229,7 +205,7 @@ const ViewReminderPage = () => {
               {filteredReminders.length === 0 && (
                 <tr>
                   <td
-                    colSpan="7"
+                    colSpan="6"
                     className="p-4 font-medium text-center text-gray-500"
                   >
                     No reminders found

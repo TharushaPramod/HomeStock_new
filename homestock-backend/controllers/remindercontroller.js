@@ -13,8 +13,8 @@ export const getReminders = async (req, res) => {
 // Add a new reminder
 export const addReminder = async (req, res) => {
     try {
-        const { id, itemName, reminderWeight, reminderDate } = req.body;
-        const newReminder = new Reminder({ id, itemName, reminderWeight, reminderDate });
+        const { id, itemName, reminderWeight} = req.body;
+        const newReminder = new Reminder({ id, itemName, reminderWeight });
         await newReminder.save();
         res.status(201).json(newReminder);
     } catch (error) {
@@ -25,11 +25,11 @@ export const addReminder = async (req, res) => {
 // Update an existing reminder
 export const updateReminder = async (req, res) => {
     const { id } = req.params;
-    const { itemName, reminderWeight, reminderDate } = req.body;
+    const { itemName, reminderWeight } = req.body;
     try {
         const updatedReminder = await Reminder.updateOne(
             { id: parseInt(id) },
-            { $set: { itemName, reminderWeight, reminderDate } }
+            { $set: { itemName, reminderWeight } }
         );
         res.status(200).json({ message: "Reminder updated successfully" });
     } catch (error) {

@@ -13,7 +13,7 @@ const UpdateReminder = () => {
     itemName: '',
     //currentWeight: '',
     reminderWeight: '',
-    reminderDate: ''
+    // reminderDate: ''
   });
   const [error, setError] = useState(null);
 
@@ -30,7 +30,7 @@ const UpdateReminder = () => {
         itemName: reminder.itemName,
         //currentWeight: reminder.currentWeight,
         reminderWeight: reminder.reminderWeight,
-        reminderDate: new Date(reminder.reminderDate).toISOString().split('T')[0]
+        // reminderDate: new Date(reminder.reminderDate).toISOString().split('T')[0]
       });
       setError(null);
     } catch (error) {
@@ -51,7 +51,7 @@ const UpdateReminder = () => {
         itemName: formData.itemName,
         //currentWeight: parseFloat(formData.currentWeight),
         reminderWeight: parseFloat(formData.reminderWeight),
-        reminderDate: new Date(formData.reminderDate)
+        // reminderDate: new Date(formData.reminderDate)
       });
       navigate('/viewreminder');
     } catch (error) {
@@ -66,7 +66,7 @@ const UpdateReminder = () => {
       itemName: '',
       //currentWeight: '',
       reminderWeight: '',
-      reminderDate: ''
+      // reminderDate: ''
     });
     navigate('/viewreminder');
   };
@@ -130,7 +130,7 @@ const UpdateReminder = () => {
                 required
               />
             </div>
-            <div>
+            {/* <div>
               <label className="block mb-1 text-sm font-medium text-gray-700">Reminder Date</label>
               <input
                 type="date"
@@ -140,7 +140,7 @@ const UpdateReminder = () => {
                 className="w-full p-3 transition duration-200 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required
               />
-            </div>
+            </div> */}
             <div className="flex justify-end gap-2">
               <button
                 type="button"
