@@ -11,6 +11,7 @@ import ReminderTable from "../../components/reminderManagement/ReminderTable";
 
 
 
+
 const Reminder = () => {
 
     const [items, setItems] = useState([]);
@@ -53,9 +54,9 @@ const Reminder = () => {
         const payload = {
             id: data.id,
             itemName: data.itemName,
-            currentWeight: data.currentWeight,
+            // currentWeight: data.currentWeight,
             thresholdWeight: data.thresholdWeight,
-            reminderDate: data.reminderDate,
+            // reminderDate: data.reminderDate,
 
         }
 
@@ -77,9 +78,9 @@ const Reminder = () => {
         const payload = {
             id: data.id,
             itemName: data.itemName,
-            currentWeight: data.currentWeight,
+            // currentWeight: data.currentWeight,
             thresholdWeight: data.thresholdWeight,
-            reminderDate: data.reminderDate,
+            // reminderDate: data.reminderDate,
 
         }
 
@@ -109,7 +110,7 @@ const Reminder = () => {
     return (
         <Box>
             <Navbar />
-           
+
             <Box>
                 <ReminderForm
                     addReminder={addReminder}
@@ -130,6 +131,7 @@ const Reminder = () => {
                 />
 
             </Box>
+            <Footer/>
 
 
         </Box>
