@@ -204,7 +204,7 @@ export default function Additem() {
             
                 
                 
-                    <div className="table-wrapper w-[50%] mt-[50px] max-h-[300px] overflow-y-auto rounded-xl shadow-md ">
+                    <div className="table-wrapper w-[40%] mt-[50px] max-h-[300px] overflow-y-auto rounded-xl shadow-md ">
     <table className="w-full">
         <thead className="sticky top-0 z-10 text-center bg-green-600 bg-opacity-75">
             <tr className='text-center'>
