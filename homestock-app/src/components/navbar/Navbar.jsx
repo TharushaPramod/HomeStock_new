@@ -1,12 +1,11 @@
-
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
-
   const navigate = useNavigate();
+  const location = useLocation();
 
-
+  const isActive = (path) => location.pathname === path;
 
   return (
     <header className='mt-8'>
@@ -15,37 +14,55 @@ const Navbar = () => {
           HOMESTOCK
         </div>
         <div>
-
           <ul className='flex items-center space-x-8'>
             <li>
-
-              <a onClick={() => navigate('/')} className='text-[18px] font-semibold hover:text-gray-200 font-Poppins hover:underline '>Home</a>
+              <a
+                onClick={() => navigate('/')}
+                className={`text-[18px] font-semibold font-Poppins hover:underline ${isActive('/') ? 'text-green-700 underline' : 'hover:text-gray-200'}`}
+              >
+                Home
+              </a>
             </li>
             <li>
-              <a onClick={() => navigate('/groceryinventory')} className='text-[18px] font-semibold hover:text-gray-200 font-Poppins  hover:underline'>Grocery Stock</a>
+              <a
+                onClick={() => navigate('/groceryinventory')}
+                className={`text-[18px] font-semibold font-Poppins hover:underline ${isActive('/groceryinventory') ? 'text-green-700 underline' : 'hover:text-gray-200'}`}
+              >
+                Grocery Stock
+              </a>
             </li>
             <li>
-              <a onClick={() => navigate('/reminder')} className='text-[18px] font-semibold hover:text-gray-200 font-Poppins  hover:underline'>Reminders</a>
+              <a
+                onClick={() => navigate('/reminder')}
+                className={`text-[18px] font-semibold font-Poppins hover:underline ${isActive('/reminder') ? 'text-green-700 underline' : 'hover:text-gray-200'}`}
+              >
+                Reminders
+              </a>
             </li>
             <li>
-
-              <a onClick={() => navigate('/grocery-List')} className='text-[18px] font-semibold hover:text-gray-200 font-Poppins  hover:underline'>Grocery List</a>
-
-             
-
+              <a
+                onClick={() => navigate('/list-dashboard')}
+                className={`text-[18px] font-semibold font-Poppins hover:underline ${isActive('/list-dashboard') ? 'text-green-700 underline' : 'hover:text-gray-200'}`}
+              >
+                Grocery List
+              </a>
             </li>
             <li>
-              <a onClick={() => navigate('/recipe')} className='text-[18px] font-semibold hover:text-gray-200 font-Poppins  hover:underline'>Recipe</a>
+              <a
+                onClick={() => navigate('/recipe')}
+                className={`text-[18px] font-semibold font-Poppins hover:underline ${isActive('/recipe') ? 'text-green-700 underline' : 'hover:text-gray-200'}`}
+              >
+                Recipe
+              </a>
             </li>
           </ul>
         </div>
         <div>
-          <button className='mr-5 text-[15px] '>
+          <button className='mr-5 text-[15px]'>
             <a onClick={() => navigate('/register')}>
-           
+              {/* Register button content here if needed */}
             </a>
           </button>
-
         </div>
       </nav>
     </header>

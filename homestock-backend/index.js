@@ -3,7 +3,8 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 
 import router from './routes/itemrouter.js';
-import GLrouter from './routes/grocerylistRoute.js';
+import listRouter from './routes/grocerylistRoute.js';
+import gItemRouter from './routes/groceryItemRoute.js';
 import userRouter from './routes/userrouter.js';
 import reminderRouters from './routes/reminderrouter.js';
 
@@ -33,7 +34,8 @@ connect();
 app.use('/api', router);              // Item routes
 app.use('/api', userRouter);          // User routes
 app.use('/api', reminderRouters);     // Reminder routes
-app.use('/api/groceryList', GLrouter); // Grocery list routes
+app.use('/api/lists', listRouter); // Grocery list routes
+app.use('/api/groceryitems', gItemRouter); // Grocery item routes
 
 // Server Setup
 const port = 3001;
