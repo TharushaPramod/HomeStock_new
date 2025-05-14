@@ -57,7 +57,7 @@ const Usetable = ({ rows, selectedUseItem, deleteUseItem }) => {
     };
 
     return (
-        <div className="flex justify-center px-4 mt-8 mb-12">
+        <div className="flex justify-center px-4 py-5 mt-8 mb-5 border-2 border-white rounded-xl">
             <div className="w-full max-w-6xl">
                 {/* Header Section */}
                 <div className="flex items-center justify-between mb-6">

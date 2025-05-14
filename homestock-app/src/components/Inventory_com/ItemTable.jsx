@@ -63,7 +63,8 @@ const ItemTable = ({ rows, selectedItem, deleteItem }) => {
     };
 
     return (
-        <div className="flex justify-center px-4 mt-8 mb-12">
+     <div className="flex justify-center px-4 py-5 mb-5 border-2 border-white rounded-xl">
+
             <div className="w-full max-w-7xl">
                 {/* Header Section */}
                 <div className="flex items-center justify-between mb-6">

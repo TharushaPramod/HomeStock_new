@@ -126,7 +126,7 @@ const ItemForm = ({ addItem, submitted, data, isEdit, updateItem }) => {
       <Box className="w-full max-w-7xl">
         <Box
           component="form"
-          className="grid grid-cols-1 gap-6 p-6 bg-white shadow-lg rounded-xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 opacity-90"
+          className="grid grid-cols-1 gap-6 p-6 bg-white shadow-2xl rounded-xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 opacity-90"
         >
           <Typography
             variant="h5"
