@@ -1,32 +1,12 @@
-import mongoose from "mongoose";
-const { Schema } = mongoose;
+import mongoose from 'mongoose';
 
-const grocerylistSchema = new Schema({
-    _id: {
-        type: mongoose.Schema.Types.ObjectId,
-        auto: true
-    },
-    name: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    quantity: {
-        type: Number,
-        required: true,
-        min: 1
-    },
-    category: {
-        type: String,
-        required: true,
-        enum: ['Fruits', 'Vegetables', 'Dairy', 'Meat', 'Bakery', 'Other']
-    },
-    status: {
-        type: String,
-        enum: ['Pending', 'Purchased'],
-        default: 'Pending'
-    }
+const GroceryListSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  creationDate: { type: Date, required: true },
+  shoppingDate: { type: Date, required: true },
+  status: { type: String, enum: ['Not Started', 'In Progress', 'Complete'], default: 'Not Started' },
+  priority: { type: String, enum: ['Low', 'Medium', 'High'], default: 'Medium' },
+  notes: { type: String, default: '' },
 }, { timestamps: true });
 
-const GroceryList = mongoose.model('GroceryList', grocerylistSchema);
-export default GroceryList;
+export default mongoose.model('GroceryList', GroceryListSchema);
