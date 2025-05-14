@@ -1,10 +1,14 @@
-import Navbar from './components/navbar/navbar'
+import Navbar from './components/navbar/Navbar'
 
 import './App.css'
 import Users from './components/userManagement/User'
 
+import React, { useState } from 'react';
+
+
 
 function App() {
+
  
 
   return (
@@ -12,7 +16,9 @@ function App() {
     
     <div >
      <Navbar></Navbar>
-  
+     <h1>hi</h1>
+     
+     
    
    
    

@@ -4,31 +4,35 @@ const { Schema } = mongoose;
 const itemSchema = new Schema({
   id: {
     type: Number,
-    required: [true, 'ID is required'], 
-    unique: true, 
+    required: true,
+    unique: true 
   },
   name: {
     type: String,
-    required: [true, 'Name is required'] 
+    required: true,
+   
   },
   qty: {
-    type: Number,
-    required: [true, 'Name is required'] 
+    type: String,
+    required: true,
+    min: 0
   },
   weight: {
     type: Number,
-    required: [true, 'weight is required'] 
+    required: true,
+    min: 0.1
   },
   price: {
     type: Number,
-    required: [true, 'Price is required'] 
+    required: true,
+    min: 0
   },
   expireDate: {
     type: Date,
-    required: [true, 'Date is required'] 
-  },
+    required: true
+  }
 });
 
 const Item = mongoose.model('Item', itemSchema);
 
-export default Item; // Use ES Modules export
+export default Item;
