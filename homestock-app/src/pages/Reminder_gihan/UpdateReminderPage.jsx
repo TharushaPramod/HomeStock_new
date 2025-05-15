@@ -105,7 +105,7 @@ const UpdateReminder = () => {
                 value={formData.itemName}
                 onChange={handleChange}
                 className="w-full p-3 transition duration-200 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                required
+                readOnly
               />
             </div>
             {/* <div>
