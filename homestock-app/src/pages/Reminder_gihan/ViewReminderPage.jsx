@@ -89,12 +89,11 @@ const ViewReminderPage = () => {
 
     const doc = new jsPDF();
 
-    const tableColumn = ['ID', 'Item Name', 'Reminder Weight', 'Reminder Date'];
+    const tableColumn = ['ID', 'Item Name', 'Reminder Weight'];
     const tableRows = reportReminders.map((r) => [
       r.id,
       r.itemName || 'N/A',
       r.reminderWeight,
-      new Date(r.reminderDate).toLocaleDateString(),
     ]);
 
     doc.text(reportTitle, 14, 20);
