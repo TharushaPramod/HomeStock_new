@@ -235,7 +235,7 @@ const Useform = ({ addUseItem, submitted, items, useItems, data, updateUseItem, 
 
                     <FormControl fullWidth required>
                         <InputLabel id="useType" size="small" sx={{ color: '#6b7280' }}>
-                            Quantity Typessssssssssssssssssss
+                            Quantity Type
                         </InputLabel>
                         <Select
                             labelId="useType"

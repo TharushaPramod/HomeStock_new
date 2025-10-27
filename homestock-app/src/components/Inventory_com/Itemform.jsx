@@ -186,7 +186,7 @@ const ItemForm = ({ addItem, submitted, data, isEdit, updateItem }) => {
 
           <FormControl fullWidth required error={!!errors.qty}>
             <InputLabel id="qty-type-label" size="small" sx={{ color: '#6b7280' }}>
-              Quantity Typesss
+              Quantity Types
             </InputLabel>
             <Select
               labelId="qty-type-label"
